@@ -19,36 +19,18 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run build
-      - name: Deploy to Cloudflare Pages (with manifest)
+      - name: Deploy to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           cd dist
-          echo "--- building site.zip ---"
           zip -r ../site.zip . > /dev/null
           cd ..
           ls -lh site.zip
-
           echo "--- building manifest ---"
-          python3 -c "
-          import os, json, hashlib
-          src = "dist"
-          files = {}
-          deployed = []
-          for root, _, fs in os.walk(src):
-              for f in fs:
-                  full = os.path.join(root, f)
-                  rel = os.path.relpath(full, src).replace(os.sep, "/")
-                  with open(full, "rb") as fp:
-                      h = hashlib.sha256(fp.read()).hexdigest()
-                  files[rel] = {"contentType": "application/octet-stream", "contentHash": h}
-                  deployed.append(rel)
-          print(json.dumps({"files": files, "deployed": deployed}))
-          " > manifest.json
-          echo "Manifest entries: $(jq '.deployed | length' manifest.json)"
-
-          echo "--- deploying to Cloudflare Pages ---"
+          python3 scripts/build-manifest.py dist manifest.json
+          echo "--- deploying ---"
           STATUS=$(curl -s -o /tmp/cf_resp.json -w "%{http_code}" \
             -X POST \
             -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
@@ -56,7 +38,7 @@ jobs:
             -F "manifest=@manifest.json" \
             "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/fortune-adsense/deployments")
           echo "HTTP: $STATUS"
-          cat /tmp/cf_resp.json | head -10
+          cat /tmp/cf_resp.json | head -20
           if [ "$STATUS" != "200" ]; then
             echo "Deploy failed"
             exit 1
