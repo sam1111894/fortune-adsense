@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = ({ site }) => {
-  const pages = ["", "/saju", "/lunar-calendar", "/zodiac", "/about"];
-  const baseUrl = site?.href || "https://example.pages.dev";
+  const pages = ["", "/saju", "/lunar-calendar", "/zodiac", "/lotto", "/salary", "/about", "/privacy", "/terms", "/contact"];
+  const baseUrl = (site?.href || "https://fortune-adsense.pages.dev").replace(/\/$/, "");
   const today = new Date().toISOString().split("T")[0];
 
   const urls = pages

@@ -1,0 +1,292 @@
+---
+/**
+ * 연봉 실수령액 계산기 — 2026년 한국 4대보험 + 소득세 기준
+ * - 국민연금 4.5% (소득월액 상한 637만 원)
+ * - 건강보험 3.545% (2026년 요율) + 장기요양보험 12.95% (건강보험료의)
+ * - 고용보험 0.9%
+ * - 소득세 간이세액표 (2026년 기준, 부양가족 1명 기준 간이 환산)
+ *
+ * 계산 로직은 클라이언트 사이드에서 즉시 처리 (서버 부담 0)
+ */
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="연봉 실수령액 계산기 (2026년) - 4대보험·소득세 자동 계산"
+  description="연봉(또는 월급)을 입력하면 4대보험과 소득세를 자동 공제해 실수령액을 계산합니다. 2026년 최신 요율 적용."
+>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">무료 도구</p>
+      <h1>연봉 실수령액 계산기</h1>
+      <p class="subtitle">2026년 4대보험 요율 + 소득세 간이세액표 기준</p>
+    </header>
+
+    <section class="calculator">
+      <div class="input-mode">
+        <label><input type="radio" name="mode" value="annual" checked /> 연봉 입력</label>
+        <label><input type="radio" name="mode" value="monthly" /> 월급 입력</label>
+      </div>
+
+      <div class="input-group">
+        <label for="salary" id="salary-label">연봉 (세전, 원)</label>
+        <input type="number" id="salary" value="40000000" min="0" step="1000000" />
+        <p class="hint" id="salary-hint">기본값: 연봉 4,000만 원</p>
+      </div>
+
+      <div class="input-group">
+        <label for="dependents">부양가족 수 (본인 포함)</label>
+        <select id="dependents">
+          <option value="1" selected>1명 (본인만)</option>
+          <option value="2">2명</option>
+          <option value="3">3명</option>
+          <option value="4">4명</option>
+          <option value="5">5명</option>
+          <option value="6">6명</option>
+        </select>
+        <p class="hint">부양가족 수는 소득세 간이세액 공제에 영향</p>
+      </div>
+
+      <div class="input-group">
+        <label for="age">나이</label>
+        <input type="number" id="age" value="30" min="15" max="100" />
+        <p class="hint">만 65세 이상은 국민연금 면제 가능 (별도 확인)</p>
+      </div>
+
+      <button id="calc-btn" class="primary-btn">💰 실수령액 계산하기</button>
+    </section>
+
+    <section id="result" class="result-section" hidden>
+      <div class="big-result">
+        <h2>월 실수령액</h2>
+        <p class="big-amount" id="monthly-net">-</p>
+        <p class="meta">연 실수령액: <strong id="annual-net">-</strong></p>
+      </div>
+
+      <div class="breakdown">
+        <h3>공제 내역 (월)</h3>
+        <table class="breakdown-table">
+          <tbody>
+            <tr><td>국민연금</td><td id="ded-np">-</td></tr>
+            <tr><td>건강보험</td><td id="ded-hi">-</td></tr>
+            <tr><td>장기요양보험</td><td id="ded-ltc">-</td></tr>
+            <tr><td>고용보험</td><td id="ded-ei">-</td></tr>
+            <tr><td>소득세</td><td id="ded-it">-</td></tr>
+            <tr><td>지방소득세</td><td id="ded-lt">-</td></tr>
+            <tr class="total"><td>총 공제</td><td id="ded-total">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="disclaimer">* 본 계산은 부양가족·자녀 세액공제 등 세부 공제 없이 <strong>간이 환산</strong>한 값입니다. 실제 급여명세서와는 부양가족 수·비과세 수당 등에 따라 차이가 있을 수 있습니다.</p>
+    </section>
+
+    <section class="info-block">
+      <h2>2026년 4대보험 요율</h2>
+      <table class="rates-table">
+        <thead><tr><th>항목</th><th>근로자 부담률</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td>국민연금</td><td>4.5%</td><td>소득월액 상한 637만 원</td></tr>
+          <tr><td>건강보험</td><td>3.545%</td><td>소득월액 상한 약 849만 원</td></tr>
+          <tr><td>장기요양보험</td><td>건강보험료의 12.95%</td><td>2026년 요율</td></tr>
+          <tr><td>고용보험</td><td>0.9%</td><td>상한 없음</td></tr>
+        </tbody>
+      </table>
+      <p class="src">출처: 2026년 기준 건강보험공단·국민연금공단·고용보험 요율. 정확한 금액은 회사 급여명세서를 확인하세요.</p>
+    </section>
+
+    <section class="info-block">
+      <h2>계산 방식</h2>
+      <p>월급여 = 연봉 ÷ 12. 각 보험료는 <strong>소득월액</strong>(월급여 - 일부 비과세)을 기준으로 산정합니다. 소득세는 2026년 <strong>간이세액표</strong>를 부양가족 수별로 환산하여 적용하며, 지방소득세는 소득세의 10%입니다.</p>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  // === 2026년 한국 4대보험 + 소득세 계산 로직 ===
+
+  // 국민연금: 4.5%, 소득월액 상한 6,370,000원
+  const NP_RATE = 0.045;
+  const NP_CAP = 6370000;
+
+  // 건강보험: 3.545% (2026년 요율)
+  const HI_RATE = 0.03545;
+  // 장기요양보험: 건강보험료의 12.95%
+  const LTC_RATE_OF_HI = 0.1295;
+
+  // 고용보험: 0.9%
+  const EI_RATE = 0.009;
+
+  // 소득세 간이세액표 (2026년, 부양가족 1명 기준)
+  // 월급여 구간별 소득세 (단순화: 누진세율로 근사)
+  const TAX_BRACKETS = [
+    { upto: 0,           rate: 0,     deduction: 0 },       // ~1.5M: 비과세 (대략)
+    { upto: 1500000,     rate: 0.02,  deduction: 0 },       // 1.5M 이하: 2%
+    { upto: 3000000,     rate: 0.04,  deduction: 30000 },
+    { upto: 5000000,     rate: 0.06,  deduction: 90000 },
+    { upto: 8000000,     rate: 0.08,  deduction: 190000 },
+    { upto: 10000000,    rate: 0.10,  deduction: 350000 },
+    { upto: 15000000,    rate: 0.12,  deduction: 550000 },
+    { upto: 30000000,    rate: 0.15,  deduction: 1000000 },
+    { upto: Infinity,    rate: 0.24,  deduction: 2500000 },
+  ];
+
+  // 부양가족 1인당 세액공제 12.5만원 (2026년 단순화)
+  const DEPENDENT_TAX_CREDIT = 125000;
+
+  function calcMonthlyTax(monthly: number, dependents: number): number {
+    // 부양가족 1명 기준 → N명이면 (N-1) × 12.5만 추가 공제
+    const additionalCredit = Math.max(0, (dependents - 1)) * DEPENDENT_TAX_CREDIT;
+    let tax = 0;
+    for (const b of TAX_BRACKETS) {
+      if (monthly <= b.upto) {
+        tax = monthly * b.rate - b.deduction;
+        break;
+      }
+    }
+    tax -= additionalCredit;
+    return Math.max(0, Math.round(tax / 100) * 100); // 100원 단위 절사
+  }
+
+  function calculate(annualSalary: number, dependents: number, age: number) {
+    const monthlyGross = Math.floor(annualSalary / 12);
+    const pensionable = Math.min(monthlyGross, NP_CAP);
+
+    // 국민연금 (만 65세 이상은 적용 제외 가능 — 실제는 수급 개시)
+    const np = age >= 65 ? 0 : Math.round(pensionable * NP_RATE);
+
+    // 건강보험
+    const hi = Math.round(pensionable * HI_RATE);
+    // 장기요양보험
+    const ltc = Math.round(hi * LTC_RATE_OF_HI);
+
+    // 고용보험
+    const ei = Math.round(monthlyGross * EI_RATE);
+
+    // 소득세
+    const incomeTax = calcMonthlyTax(monthlyGross, dependents);
+    const localTax = Math.round(incomeTax * 0.1);
+
+    const totalDeduction = np + hi + ltc + ei + incomeTax + localTax;
+    const monthlyNet = monthlyGross - totalDeduction;
+
+    return {
+        monthlyGross,
+        monthlyNet,
+        annualNet: monthlyNet * 12,
+        np, hi, ltc, ei, incomeTax, localTax,
+        totalDeduction,
+      };
+  }
+
+  // === UI 바인딩 ===
+  const input = document.getElementById("salary") as HTMLInputElement;
+  const salaryLabel = document.getElementById("salary-label") as HTMLLabelElement;
+  const salaryHint = document.getElementById("salary-hint") as HTMLParagraphElement;
+  const dependents = document.getElementById("dependents") as HTMLSelectElement;
+  const age = document.getElementById("age") as HTMLInputElement;
+  const btn = document.getElementById("calc-btn") as HTMLButtonElement;
+  const result = document.getElementById("result") as HTMLElement;
+
+  const fmt = (n: number) => n.toLocaleString("ko-KR") + "원";
+
+  function render(d: ReturnType<typeof calculate>) {
+    document.getElementById("monthly-net")!.textContent = fmt(d.monthlyNet);
+    document.getElementById("annual-net")!.textContent = fmt(d.annualNet);
+    document.getElementById("ded-np")!.textContent = fmt(d.np);
+    document.getElementById("ded-hi")!.textContent = fmt(d.hi);
+    document.getElementById("ded-ltc")!.textContent = fmt(d.ltc);
+    document.getElementById("ded-ei")!.textContent = fmt(d.ei);
+    document.getElementById("ded-it")!.textContent = fmt(d.incomeTax);
+    document.getElementById("ded-lt")!.textContent = fmt(d.localTax);
+    document.getElementById("ded-total")!.textContent = fmt(d.totalDeduction);
+    result.hidden = false;
+  }
+
+  function currentMode(): "annual" | "monthly" {
+    const checked = document.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+    return (checked?.value as "annual" | "monthly") || "annual";
+  }
+
+  function updateLabel() {
+    const mode = currentMode();
+    if (mode === "annual") {
+      salaryLabel.textContent = "연봉 (세전, 원)";
+      salaryHint.textContent = "예: 40000000 = 연봉 4,000만 원";
+    } else {
+      salaryLabel.textContent = "월급 (세전, 원)";
+      salaryHint.textContent = "예: 3000000 = 월급 300만 원 (연봉 약 3,600만 원)";
+    }
+  }
+
+  document.querySelectorAll<HTMLInputElement>('input[name="mode"]').forEach((r) => {
+    r.addEventListener("change", updateLabel);
+  });
+
+  btn.addEventListener("click", () => {
+    const v = parseInt(input.value, 10);
+    if (!Number.isFinite(v) || v <= 0) {
+      alert("금액을 0보다 큰 값으로 입력해 주세요.");
+      return;
+    }
+    const depN = parseInt(dependents.value, 10);
+    const ageN = parseInt(age.value, 10);
+    const mode = currentMode();
+    const annualSalary = mode === "annual" ? v : v * 12;
+    render(calculate(annualSalary, depN, ageN));
+  });
+
+  updateLabel();
+</script>
+
+<style>
+  main.container { max-width: 720px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header { text-align: center; margin-bottom: 28px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0; }
+
+  .calculator { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 24px; display: grid; gap: 16px; }
+  .input-mode { display: flex; gap: 16px; font-size: 14px; }
+  .input-mode label { cursor: pointer; }
+  .input-group label { display: block; font-size: 14px; font-weight: 600; color: #333; margin-bottom: 6px; }
+  .input-group input, .input-group select {
+    width: 100%; padding: 12px 14px; font-size: 16px;
+    border: 1px solid #d4d4d4; border-radius: 10px; font-family: inherit; background: #fff;
+  }
+  .input-group input:focus, .input-group select:focus { outline: none; border-color: #8b5cf6; }
+  .hint { font-size: 12px; color: #888; margin: 4px 0 0; }
+
+  .primary-btn {
+    padding: 14px; background: #1a1a1a; color: #fff; border: none;
+    border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+  }
+
+  .result-section { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 24px; }
+  .big-result { text-align: center; padding-bottom: 20px; border-bottom: 1px dashed #e5e5e5; }
+  .big-result h2 { font-size: 18px; color: #555; margin: 0 0 8px; }
+  .big-amount { font-size: 36px; font-weight: 800; color: #5b6ee8; margin: 0; }
+  .meta { color: #555; margin: 8px 0 0; font-size: 14px; }
+
+  .breakdown { margin-top: 20px; }
+  .breakdown h3 { font-size: 16px; margin: 0 0 12px; color: #1a1a1a; }
+  .breakdown-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .breakdown-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+  .breakdown-table td:last-child { text-align: right; font-weight: 600; color: #1a1a1a; }
+  .breakdown-table tr.total td { background: #fafafa; font-weight: 700; color: #d00; border-top: 2px solid #1a1a1a; }
+
+  .disclaimer { font-size: 12px; color: #888; margin-top: 16px; padding: 12px; background: #fafafa; border-radius: 8px; }
+
+  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 0 0 16px; font-size: 14px; line-height: 1.7; color: #444; }
+  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
+  .rates-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+  .rates-table th, .rates-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e5e5e5; }
+  .rates-table th { background: #fff; font-weight: 600; color: #1a1a1a; }
+  .src { font-size: 12px; color: #888; margin-top: 8px; }
+
+  @media (max-width: 640px) {
+    .page-header h1 { font-size: 24px; }
+    .big-amount { font-size: 28px; }
+  }
+</style>

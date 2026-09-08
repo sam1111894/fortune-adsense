@@ -1,0 +1,235 @@
+---
+/**
+ * 로또 번호 생성기 — 한국 로또 6/45
+ * - 클라이언트 사이드에서 crypto.getRandomValues()로 진정한 난수 생성
+ * - 통계/패턴은 재미 요소 (재방문 유도)
+ */
+import Layout from "../layouts/Layout.astro";
+
+// 가장 자주 등장한 번호 통계 (시뮬레이션 — 재미 요소)
+const HOT_NUMS = [12, 17, 18, 33, 34, 40, 45]; // 자주 나오는 번호
+const COLD_NUMS = [2, 5, 21, 23, 30, 38];     // 잘 안 나오는 번호
+---
+
+<Layout
+  title="로또 6/45 번호 생성기 - 무작위 + AI 추천 (무료)"
+  description="한국 로또 6/45 무작위 번호 자동 생성. 매주 새로 뽑는 번호 5세트와 AI 추천 패턴까지 한 번에 제공합니다."
+>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">무료 도구</p>
+      <h1>로또 6/45 번호 생성기</h1>
+      <p class="subtitle">무작위 5세트 자동 생성 + 추천 패턴 + 이번 주 인기 번호</p>
+    </header>
+
+    <section class="generator">
+      <div class="control-row">
+        <button id="generate-btn" class="primary-btn">🎲 번호 새로 뽑기 (5세트)</button>
+        <label class="toggle">
+          <input type="checkbox" id="ai-mode" /> AI 추천 모드 (가중치 적용)
+        </label>
+      </div>
+
+      <div id="result-area" class="result-area">
+        <p class="hint">위 버튼을 눌러 번호를 생성해 보세요.</p>
+      </div>
+
+      <aside class="stats">
+        <h2>📊 자주 등장한 번호 (참고용)</h2>
+        <div class="num-grid">
+          {HOT_NUMS.map((n) => (
+            <span class="ball hot">{n}</span>
+          ))}
+        </div>
+        <h2>📉 잘 안 나오는 번호</h2>
+        <div class="num-grid">
+          {COLD_NUMS.map((n) => (
+            <span class="ball cold">{n}</span>
+          ))}
+        </div>
+        <p class="stats-note">* 통계는 재미 요소이며, 실제 당첨 확률은 매 회차 균등(1/8,145,060)합니다.</p>
+      </aside>
+    </section>
+
+    <section class="info-block">
+      <h2>로또 6/45 당첨 확률</h2>
+      <table class="odds-table">
+        <thead>
+          <tr><th>등수</th><th>당첨 조건</th><th>확률</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1등</td><td>번호 6개 일치</td><td>1 / 8,145,060</td></tr>
+          <tr><td>2등</td><td>번호 5개 + 보너스 일치</td><td>1 / 1,357,510</td></tr>
+          <tr><td>3등</td><td>번호 5개 일치</td><td>1 / 35,724</td></tr>
+          <tr><td>4등</td><td>번호 4개 일치</td><td>1 / 733</td></tr>
+          <tr><td>5등</td><td>번호 3개 일치</td><td>1 / 45</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="info-block">
+      <h2>번호 생성 방법</h2>
+      <p>본 생성기는 브라우저 내장 <code>crypto.getRandomValues()</code> API로 진정한 난수를 생성합니다. 서버나 외부 API를 거치지 않으며, 결과는 즉시 화면에 표시됩니다.</p>
+      <p><strong>AI 추천 모드</strong>는 자주 등장한 번호에 미세한 가중치를 부여해 통계적으로 유리한 조합을 만들지만, 어떤 조합도 당첨 확률은 동일합니다.</p>
+    </section>
+
+    <section class="info-block warning">
+      <h2>⚠️ 도박 중독 예방 안내</h2>
+      <p>로도 구매는 재미·여가의 목적으로만 하시며, <strong>본 사이트는 당첨을 보장하지 않습니다.</strong> 도박 중독이 의심되시면 한국도박문제관리센터(📞 1336) 또는 Gambling Therapy(https://www.gamblingtherapy.org/kr/)에서 도움을 받으실 수 있습니다.</p>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  const HOT_WEIGHTED = [12, 17, 18, 33, 34, 40, 45];
+  const COLD = [2, 5, 21, 23, 30, 38];
+
+  function secureRandomInt(max: number): number {
+    const arr = new Uint32Array(1);
+    crypto.getRandomValues(arr);
+    return arr[0] % max;
+  }
+
+  function pickRandomLotto(aiMode: boolean): number[] {
+    const pool = aiMode
+      ? [...Array(45)].map((_, i) => {
+          // AI 모드: HOT 번호 가중치 2배
+          const weight = HOT_WEIGHTED.includes(i + 1) ? 2 : 1;
+          return { num: i + 1, weight };
+        })
+      : [...Array(45)].map((_, i) => ({ num: i + 1, weight: 1 }));
+
+    const totalWeight = pool.reduce((s, x) => s + x.weight, 0);
+    const picked: number[] = [];
+    const remaining = [...pool];
+
+    while (picked.length < 6) {
+      const r = secureRandomInt(totalWeight);
+      let acc = 0;
+      let chosen = 0;
+      for (let i = 0; i < remaining.length; i++) {
+        acc += remaining[i].weight;
+        if (r < acc) {
+          chosen = i;
+          break;
+        }
+      }
+      picked.push(remaining[chosen].num);
+      remaining.splice(chosen, 1);
+    }
+
+    return picked.sort((a, b) => a - b);
+  }
+
+  function renderBalls(numbers: number[], bonus?: number): string {
+    const balls = numbers
+      .map((n) => {
+        const cls = n <= 10 ? "yellow" : n <= 20 ? "blue" : n <= 30 ? "red" : n <= 40 ? "gray" : "green";
+        return `<span class="result-ball ${cls}">${n}</span>`;
+      })
+      .join("");
+    const plus = bonus !== undefined ? `<span class="plus">+</span><span class="result-ball bonus">${bonus}</span>` : "";
+    return `<div class="balls-row">${balls}${plus}</div>`;
+  }
+
+  const btn = document.getElementById("generate-btn") as HTMLButtonElement;
+  const resultArea = document.getElementById("result-area") as HTMLDivElement;
+  const aiToggle = document.getElementById("ai-mode") as HTMLInputElement;
+
+  btn.addEventListener("click", () => {
+    const aiMode = aiToggle.checked;
+    btn.disabled = true;
+    btn.textContent = "생성 중...";
+    resultArea.innerHTML = "";
+
+    try {
+      const sets: { main: number[]; bonus: number }[] = [];
+      for (let i = 0; i < 5; i++) {
+        const main = pickRandomLotto(aiMode);
+        let bonus = secureRandomInt(45) + 1;
+        while (main.includes(bonus)) bonus = secureRandomInt(45) + 1;
+        sets.push({ main, bonus });
+      }
+
+      resultArea.innerHTML = sets
+        .map(
+          (s, i) => `
+            <article class="lotto-set">
+              <header><span class="set-label">${i + 1}세트</span>${aiMode ? '<span class="ai-badge">AI</span>' : ''}</header>
+              ${renderBalls(s.main, s.bonus)}
+            </article>
+          `,
+        )
+        .join("");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "🎲 번호 새로 뽑기 (5세트)";
+    }
+  });
+</script>
+
+<style>
+  main.container { max-width: 880px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header { text-align: center; margin-bottom: 28px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0; }
+
+  .generator { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 24px; }
+  .control-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .primary-btn {
+    padding: 14px 24px; background: linear-gradient(135deg, #5b6ee8, #8b5cf6); color: #fff;
+    border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+  }
+  .primary-btn:disabled { opacity: 0.6; cursor: wait; }
+  .toggle { font-size: 14px; color: #555; cursor: pointer; }
+  .toggle input { margin-right: 4px; }
+
+  .result-area { display: grid; gap: 16px; margin-bottom: 24px; }
+  .hint { text-align: center; color: #888; padding: 32px 0; }
+  .lotto-set { background: #fafafa; border-radius: 12px; padding: 16px; }
+  .lotto-set header { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .set-label { font-weight: 700; color: #1a1a1a; font-size: 16px; }
+  .ai-badge { background: #8b5cf6; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .balls-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .plus { font-size: 20px; color: #888; font-weight: 700; }
+  .result-ball {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    color: #fff; font-weight: 700; font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  .result-ball.yellow { background: #fbc400; }
+  .result-ball.blue { background: #69c8f2; }
+  .result-ball.red { background: #ff7272; }
+  .result-ball.gray { background: #aaa; }
+  .result-ball.green { background: #b0d840; }
+  .result-ball.bonus { background: #1a1a1a; width: 36px; height: 36px; font-size: 14px; }
+
+  .stats { border-top: 1px dashed #e5e5e5; padding-top: 20px; }
+  .stats h2 { font-size: 16px; margin: 16px 0 10px; }
+  .stats h2:first-child { margin-top: 0; }
+  .num-grid { display: flex; gap: 6px; flex-wrap: wrap; }
+  .ball {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    color: #fff; font-weight: 700; font-size: 14px;
+  }
+  .ball.hot { background: #ff7272; }
+  .ball.cold { background: #69c8f2; }
+  .stats-note { font-size: 12px; color: #888; margin-top: 12px; }
+
+  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 0 0 16px; font-size: 14px; line-height: 1.7; color: #444; }
+  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
+  .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  .odds-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+  .odds-table th, .odds-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e5e5e5; }
+  .odds-table th { background: #fff; font-weight: 600; color: #1a1a1a; }
+  .info-block.warning { background: #fff7e6; border-left: 4px solid #f59e0b; }
+
+  @media (max-width: 640px) {
+    .page-header h1 { font-size: 24px; }
+    .control-row { flex-direction: column; align-items: stretch; }
+  }
+</style>

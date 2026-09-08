@@ -1,0 +1,124 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const lastUpdated = "2026-09-08";
+const serviceName = "오늘의 운세 (fortune-adsense)";
+const operatorEmail = "contact@fortune-adsense.pages.dev";
+---
+
+<Layout
+  title="이용약관 - 오늘의 운세"
+  description="오늘의 운세(fortune-adsense) 이용약관. 본 서비스는 무료 정보 제공 목적이며, 결과는 의료·법률·재정 조언이 아닙니다."
+>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">법적 고지</p>
+      <h1>이용약관</h1>
+      <p class="subtitle">최종 업데이트: {lastUpdated}</p>
+    </header>
+
+    <section class="legal">
+      <p>본 이용약관(이하 "약관")은 <strong>{serviceName}</strong>(이하 "서비스")과 이용자 간의 권리·의무 및 책임 사항을 규정합니다. 본 서비스를 이용하는 경우 본 약관에 동의한 것으로 간주됩니다.</p>
+
+      <h2>제1조 (목적)</h2>
+      <p>본 약관은 서비스가 제공하는 만세력·사주·운세 계산 및 정보 제공 기능의 이용 조건과 절차, 이용자와 서비스 간의 권리·의무 및 책임 사항을 규정함을 목적으로 합니다.</p>
+
+      <h2>제2조 (용어의 정의)</h2>
+      <ul>
+        <li>"서비스"라 함은 운영자가 제공하는 {serviceName} 웹사이트 및 관련 기능을 말합니다.</li>
+        <li>"이용자"라 함은 본 약관에 동의하고 서비스를 이용하는 자를 말합니다.</li>
+        <li>"콘텐츠"라 함은 서비스가 제공하는 만세력 데이터, 사주 계산 결과, 운세 메시지, 점수 등을 말합니다.</li>
+      </ul>
+
+      <h2>제3조 (약관의 효력 및 변경)</h2>
+      <ol>
+        <li>본 약관은 서비스를 이용하는 모든 이용자에게 적용됩니다.</li>
+        <li>운영자는 관련 법령을 위배하지 않는 범위 내에서 약관을 변경할 수 있으며, 변경 시 본 페이지에 공지합니다.</li>
+        <li>변경된 약관은 공지 후 7일이 경과한 날부터 효력이 발생합니다.</li>
+      </ol>
+
+      <h2>제4조 (서비스의 제공)</h2>
+      <ol>
+        <li>서비스는 연중무휴, 1일 24시간 제공을 원칙으로 합니다.</li>
+        <li>서비스는 다음의 기능을 무료로 제공합니다:
+          <ul>
+            <li>오늘의 운세 (만세력 기반)</li>
+            <li>사주팔자 계산기</li>
+            <li>음력 ↔ 양력 변환기</li>
+            <li>12띠 가이드</li>
+            <li>기타 부가 기능</li>
+          </ul>
+        </li>
+        <li>서비스는 운영·기술적 필요에 따라 제공하는 기능을 변경·중단할 수 있습니다.</li>
+      </ol>
+
+      <h2>제5조 (서비스의 면책)</h2>
+      <p class="warning">본 서비스는 <strong>흥미·오락·교양 목적의 무료 정보</strong>를 제공합니다. 다음과 같은 목적으로 사용할 수 없으며, 서비스는 이에 대한 어떠한 책임도 지지 않습니다.</p>
+      <ul>
+        <li>의료·건강 진단·처방 또는 치료 목적</li>
+        <li>법률 자문 또는 소송 관련 판단</li>
+        <li>재정·투자 결정</li>
+        <li>인간관계·결혼·진로의 결정적 판단</li>
+        <li>기타 전문적 조언이 필요한 사항</li>
+      </ul>
+
+      <h2>제6조 (이용자의 의무)</h2>
+      <p>이용자는 다음 행위를 하여서는 안 됩니다.</p>
+      <ul>
+        <li>서비스의 운영을 방해하거나 안정성을 저해하는 행위</li>
+        <li>서비스의 콘텐츠를 무단으로 자동 수집(크롤링·스크래핑)하는 행위</li>
+        <li>서비스를 이용하여 법령을 위반하는 행위</li>
+        <li>기타 공공질서·미풍양속에 반하는 행위</li>
+      </ul>
+
+      <h2>제7조 (광고 게재)</h2>
+      <ol>
+        <li>서비스는 Google AdSense를 통한 광고를 게재할 수 있습니다.</li>
+        <li>광고의 내용·정당성에 대한 책임은 광고주에게 있으며, 서비스는 이에 대해 보증하지 않습니다.</li>
+        <li>이용자는 광고 노출에 대해 이의가 있을 경우 Google 광고 설정에서 맞춤 광고를 비활성화할 수 있습니다.</li>
+      </ol>
+
+      <h2>제8조 (저작권)</h2>
+      <ol>
+        <li>서비스가 작성한 본문·디자인·계산 로직의 저작권은 운영자에게 귀속됩니다.</li>
+        <li>사용된 한국 음력 데이터는 오픈소스 라이브러리(<code>@fullstackfamily/manseryeok</code>, MIT 라이선스)에서 제공됩니다.</li>
+        <li>이용자는 서비스의 콘텐츠를 사전 동의 없이 복제·배포·2차 저작물 작성할 수 없습니다.</li>
+      </ol>
+
+      <h2>제9조 (손해배상 및 면책)</h2>
+      <ol>
+        <li>서비스는 무료로 제공되며, 천재지변·기술적 장애·기타 불가항력으로 인한 서비스 중단에 대해 책임을 지지 않습니다.</li>
+        <li>이용자가 서비스를 이용하여 얻은 정보를 바탕으로 한 행동으로 인한 손해에 대해 서비스는 책임을 지지 않습니다.</li>
+      </ol>
+
+      <h2>제10조 (분쟁 해결)</h2>
+      <ol>
+        <li>본 약관은 대한민국 법률에 따라 해석됩니다.</li>
+        <li>서비스와 이용자 간 분쟁은 민사소송법상의 관할 법원을 제1심 관할 법원으로 합니다.</li>
+        <li>기타 문의 사항은 <a href={`mailto:${operatorEmail}`}>{operatorEmail}</a>로 연락 주시면 7일 이내 회신드립니다.</li>
+      </ol>
+
+      <p class="footer-note">© 2026 {serviceName} · 본 약관은 전자상거래법 제12조에 따라 사전 공지됩니다.</p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main.container { max-width: 760px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header { text-align: center; margin-bottom: 28px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0; font-size: 14px; }
+
+  .legal { background: #fff; padding: 28px; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); font-size: 15px; line-height: 1.85; color: #333; }
+  .legal h2 { font-size: 17px; margin: 28px 0 10px; color: #1a1a1a; }
+  .legal h2:first-of-type { margin-top: 0; }
+  .legal p { margin: 0 0 12px; }
+  .legal ul, .legal ol { padding-left: 20px; margin: 8px 0; }
+  .legal li { margin-bottom: 4px; }
+  .legal ul ul { margin: 4px 0; }
+  .legal a { color: #8b5cf6; }
+  .legal code { background: #f5f5f5; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  .legal .warning { background: #fff7e6; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 6px; margin: 12px 0; }
+  .footer-note { margin-top: 28px; padding-top: 16px; border-top: 1px dashed #e5e5e5; color: #888; font-size: 13px; }
+</style>
