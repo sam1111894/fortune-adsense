@@ -1,0 +1,172 @@
+---
+/**
+ * 오늘의 운세 - 랜딩 페이지
+ * 빌드 타임에 7일치 운세를 미리 계산해 SSG로 렌더 (정적 페이지 = Cloudflare Pages 무료 호스팅 최적)
+ */
+import Layout from "../layouts/Layout.astro";
+import { generateDailyFortune } from "../lib/fortune.ts";
+
+// 빌드 타임 기준 오늘 날짜 (UTC 기준, 한국 시간 = UTC+9)
+// 정적 빌드 후 7일치 미리 만들어서 SEO 색인 + 빠른 로딩
+function getKstToday(): { year: number; month: number; day: number } {
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return {
+    year: kst.getUTCFullYear(),
+    month: kst.getUTCMonth() + 1,
+    day: kst.getUTCDate(),
+  };
+}
+
+function addDays(
+  base: { year: number; month: number; day: number },
+  days: number,
+): { year: number; month: number; day: number } {
+  const d = new Date(Date.UTC(base.year, base.month - 1, base.day));
+  d.setUTCDate(d.getUTCDate() + days);
+  return {
+    year: d.getUTCFullYear(),
+    month: d.getUTCMonth() + 1,
+    day: d.getUTCDate(),
+  };
+}
+
+const today = getKstToday();
+const weekFortunes = Array.from({ length: 7 }, (_, i) => {
+  const d = addDays(today, i);
+  try {
+    return generateDailyFortune(d.year, d.month, d.day);
+  } catch (err) {
+    // 2050년 초과 시 fallback
+    return null;
+  }
+}).filter((f): f is NonNullable<typeof f> => f !== null);
+
+const todayFortune = weekFortunes[0];
+const todayDateLabel = `${today.year}년 ${today.month}월 ${today.day}일`;
+
+const weekdayKr = ["일", "월", "화", "수", "목", "금", "토"];
+const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, today.day)).getUTCDay()];
+---
+
+<Layout
+  title={`오늘의 운세 ${todayDateLabel} (${todayWeekday}요일) - 무료 사주팔자·만세력`}
+  description={`${todayDateLabel} 오늘의 운세를 확인하세요. 사주팔자, 운세 점수, 행운의 색과 숫자까지 무료로 제공합니다. 매일 업데이트.`}
+>
+  <main class="container">
+    <header class="hero">
+      <p class="eyebrow">무료 만세력 · 오늘의 운세</p>
+      <h1>{todayDateLabel} ({todayWeekday}요일) 운세</h1>
+      <p class="subtitle">음력 {todayFortune.lunarYear}년 {todayFortune.lunarMonth}월 {todayFortune.lunarDay}일{todayFortune.isLeapMonth ? " (윤달)" : ""} · 일간 {todayFortune.dayPillarHanja} · {todayFortune.zodiac}띠</p>
+    </header>
+
+    <section class="score-board" aria-label="오늘 운세 점수">
+      <div class="score-card primary">
+        <span class="score-label">총운</span>
+        <span class="score-value">{todayFortune.totalScore}</span>
+        <span class="score-unit">/100</span>
+      </div>
+      <div class="score-grid">
+        <div class="score-card"><span class="score-label">💰 금전</span><span class="score-value">{todayFortune.moneyScore}</span></div>
+        <div class="score-card"><span class="score-label">💕 연애</span><span class="score-value">{todayFortune.loveScore}</span></div>
+        <div class="score-card"><span class="score-label">💪 건강</span><span class="score-value">{todayFortune.healthScore}</span></div>
+        <div class="score-card"><span class="score-label">💼 일·학업</span><span class="score-value">{todayFortune.workScore}</span></div>
+      </div>
+    </section>
+
+    <section class="fortune-detail">
+      <h2>오늘의 메시지</h2>
+      <blockquote class="message">{todayFortune.message}</blockquote>
+      <div class="lucky">
+        <span>🍀 행운의 색: <strong>{todayFortune.luckyColor}</strong></span>
+        <span>🔢 행운의 숫자: <strong>{todayFortune.luckyNumber}</strong></span>
+        <span>⚖️ 일간 오행: <strong>{todayFortune.elementOfDay}</strong></span>
+        <span>🌾 절기: <strong>{todayFortune.solarTerm}</strong></span>
+      </div>
+    </section>
+
+    <section class="cta-buttons">
+      <a class="cta cta-primary" href="/saju">내 사주팔자 계산하기 →</a>
+      <a class="cta cta-secondary" href="/lunar-calendar">음력 ↔ 양력 변환기 →</a>
+      <a class="cta cta-secondary" href="/zodiac">띠별 운세 전체 보기 →</a>
+    </section>
+
+    <section class="week">
+      <h2>이번 주 운세 미리보기</h2>
+      <div class="week-grid">
+        {weekFortunes.map((f, i) => {
+          const wd = weekdayKr[new Date(Date.UTC(f.solarYear, f.solarMonth - 1, f.solarDay)).getUTCDay()];
+          return (
+            <article class={`week-card ${i === 0 ? "today" : ""}`}>
+              <header>
+                <span class="week-date">{f.solarMonth}/{f.solarDay}</span>
+                <span class="week-day">{wd}</span>
+              </header>
+              <div class="week-score">{f.totalScore}</div>
+              <p class="week-pillar">일주 {f.dayPillarHanja}</p>
+              <p class="week-zodiac">{f.zodiac}띠의 날</p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="info-block">
+      <h2>오늘의 운세는 어떻게 계산되나요?</h2>
+      <p>이 사이트는 <strong>만세력(한국 음력 1900~2050)</strong> 데이터베이스를 기반으로, 태어난 날의 <strong>사주팔자(四柱八字)</strong>와 오늘의 <strong>일진(日辰)</strong>을 비교하여 운세를 산출합니다. 천간·지지·오행·24절기 데이터를 한국 음력 변환 라이브러리(<code>@fullstackfamily/manseryeok</code>)로 계산하며, 결과는 매일 업데이트됩니다.</p>
+      <p>점수는 일진과 일간의 관계에서 파생된 결정론적 해시값을 기반으로 산정되며, 실제 상담이나 의료·법률 조언이 아닙니다.</p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main.container { max-width: 880px; margin: 0 auto; padding: 24px 16px 80px; }
+  .hero { text-align: center; padding: 32px 0 24px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .hero h1 { font-size: 36px; margin: 0 0 8px; color: #1a1a1a; }
+  .subtitle { color: #555; font-size: 15px; margin: 0; }
+
+  .score-board { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin: 24px 0; }
+  .score-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 14px; padding: 18px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+  .score-card.primary { background: linear-gradient(135deg, #5b6ee8, #8b5cf6); color: #fff; border: none; }
+  .score-label { display: block; font-size: 13px; opacity: 0.9; margin-bottom: 6px; }
+  .score-card.primary .score-label { color: rgba(255,255,255,0.85); }
+  .score-value { display: block; font-size: 38px; font-weight: 800; line-height: 1; }
+  .score-card:not(.primary) .score-value { color: #1a1a1a; font-size: 28px; }
+  .score-unit { font-size: 13px; opacity: 0.8; }
+
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .fortune-detail { background: #fafafa; border-radius: 16px; padding: 24px; margin: 24px 0; }
+  .fortune-detail h2 { margin: 0 0 12px; font-size: 20px; }
+  .message { font-size: 17px; line-height: 1.7; margin: 0 0 16px; padding: 16px 20px; background: #fff; border-left: 4px solid #8b5cf6; border-radius: 8px; }
+  .lucky { display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 14px; color: #333; }
+  .lucky strong { color: #1a1a1a; }
+
+  .cta-buttons { display: grid; gap: 10px; margin: 28px 0; }
+  .cta { display: block; text-align: center; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: transform 0.1s; }
+  .cta:hover { transform: translateY(-1px); }
+  .cta-primary { background: #1a1a1a; color: #fff; }
+  .cta-secondary { background: #fff; color: #1a1a1a; border: 1px solid #d4d4d4; }
+
+  .week h2 { font-size: 20px; margin: 0 0 16px; }
+  .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .week-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 10px 6px; text-align: center; }
+  .week-card.today { border-color: #8b5cf6; background: #f9f7ff; }
+  .week-card header { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 4px; }
+  .week-date { font-weight: 600; color: #1a1a1a; }
+  .week-day { color: #8b5cf6; font-weight: 700; }
+  .week-score { font-size: 22px; font-weight: 800; color: #1a1a1a; margin: 4px 0; }
+  .week-pillar { font-size: 11px; color: #555; margin: 0; }
+  .week-zodiac { font-size: 11px; color: #888; margin: 0; }
+
+  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 32px 0; font-size: 14px; line-height: 1.7; color: #444; }
+  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
+  .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 26px; }
+    .score-board { grid-template-columns: 1fr; }
+    .week-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

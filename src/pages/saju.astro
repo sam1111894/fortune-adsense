@@ -1,0 +1,176 @@
+---
+/**
+ * 사주팔자 계산기 - 정적 페이지 + 클라이언트 사이드 JS로 즉시 계산
+ * (빌드 타임에는 기본값 1990-01-01 12시만 SSG, 사용자가 입력하면 클라이언트 계산)
+ */
+import Layout from "../layouts/Layout.astro";
+import { calculateBirthSaju } from "../lib/fortune.ts";
+
+const defaultDate = "1990-01-01";
+const defaultHour = 12;
+
+// 기본값으로 미리 1개 계산해 SSR (SEO + 초기 렌더링)
+const defaultResult = calculateBirthSaju(1990, 1, 1, 12);
+---
+
+<Layout
+  title="무료 사주팔자 계산기 - 생년월일시 입력하면 즉시 결과"
+  description="생년월일과 태어난 시간을 입력하면 사주팔자(년주·월주·일주·시주)와 한자 표기를 바로 확인할 수 있습니다. 만세력 기반 정확한 계산."
+>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">무료 사주팔자</p>
+      <h1>사주팔자 계산기</h1>
+      <p class="subtitle">생년월일과 태어난 시간을 입력하면 사주 4주를 한자로 보여드립니다.</p>
+    </header>
+
+    <section class="calculator">
+      <form id="saju-form">
+        <div class="field">
+          <label for="birthdate">생년월일</label>
+          <input type="date" id="birthdate" name="birthdate" value={defaultDate} min="1900-01-01" max="2050-12-31" required />
+        </div>
+        <div class="field">
+          <label for="birthtime">태어난 시간</label>
+          <select id="birthtime" name="birthtime">
+            <option value="-1">모름 (정오 기준)</option>
+            {Array.from({ length: 24 }, (_, i) => (
+              <option value={i} selected={i === 12}>{String(i).padStart(2, "0")}:00</option>
+            ))}
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">사주 계산하기</button>
+      </form>
+
+      <div id="saju-result" class="result-box" aria-live="polite">
+        <h2>{((): string => { const [y, m, d] = defaultDate.split("-"); return `${y}년 ${parseInt(m, 10)}월 ${parseInt(d, 10)}일`; })()} {defaultHour}시 기준 예시</h2>
+        <div class="pillars">
+          <div class="pillar">
+            <span class="pos">년주</span>
+            <span class="hanja">{defaultResult.saju.yearPillarHanja}</span>
+            <span class="hangul">{defaultResult.saju.yearPillar}</span>
+          </div>
+          <div class="pillar">
+            <span class="pos">월주</span>
+            <span class="hanja">{defaultResult.saju.monthPillarHanja}</span>
+            <span class="hangul">{defaultResult.saju.monthPillar}</span>
+          </div>
+          <div class="pillar">
+            <span class="pos">일주</span>
+            <span class="hanja">{defaultResult.saju.dayPillarHanja}</span>
+            <span class="hangul">{defaultResult.saju.dayPillar}</span>
+          </div>
+          <div class="pillar">
+            <span class="pos">시주</span>
+            <span class="hanja">{defaultResult.saju.hourPillarHanja ?? "—"}</span>
+            <span class="hangul">{defaultResult.saju.hourPillar ?? "—"}</span>
+          </div>
+        </div>
+        <p class="lunar-info">양력 {defaultDate} = 음력 {defaultResult.lunar.lunar.year}년 {defaultResult.lunar.lunar.month}월 {defaultResult.lunar.lunar.day}일{defaultResult.lunar.lunar.isLeapMonth ? " (윤달)" : ""}</p>
+      </div>
+    </section>
+
+    <section class="info-block">
+      <h2>사주팔자란?</h2>
+      <p>사주팔자(四柱八字)는 태어난 연·월·일·시를 <strong>천간(天干) 10개</strong>와 <strong>지지(地支) 12개</strong>의 조합으로 나타낸 것입니다. 각 기둥은 한 글자의 천간과 한 글자의 지지로 이루어지며, 네 기둥이므로 "사주"라 부릅니다.</p>
+      <p>이 계산기는 한국 음력 데이터(<code>@fullstackfamily/manseryeok</code>)를 기반으로 1900~2050년생까지 정확하게 계산합니다. 시간 보정(<em>isTimeCorrected</em>)은 야간 시간대(23:30~00:30)에 자동 적용됩니다.</p>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  import { calculateBirthSaju } from "../lib/fortune.ts";
+
+  const form = document.getElementById("saju-form") as HTMLFormElement;
+  const resultBox = document.getElementById("saju-result") as HTMLDivElement;
+  const submitBtn = form.querySelector(".submit-btn") as HTMLButtonElement;
+  const submitLabel = submitBtn.textContent;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "계산 중...";
+
+    try {
+      const fd = new FormData(form);
+      const date = (fd.get("birthdate") as string).trim();
+      const hourRaw = (fd.get("birthtime") as string).trim();
+      const hour = hourRaw === "-1" ? 12 : parseInt(hourRaw, 10);
+
+      if (!date) throw new Error("생년월일을 입력해 주세요.");
+      const [y, m, d] = date.split("-").map((s) => parseInt(s, 10));
+      if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) {
+        throw new Error("날짜 형식이 올바르지 않습니다.");
+      }
+
+      const result = calculateBirthSaju(y, m, d, hour);
+      const saju = result.saju;
+      const lunar = result.lunar.lunar;
+
+      const hourLabel = hourRaw === "-1" ? "시간 미상 (정오 기준)" : `${String(hour).padStart(2, "0")}시`;
+      const lunarLabel = `음력 ${lunar.year}년 ${lunar.month}월 ${lunar.day}일${lunar.isLeapMonth ? " (윤달)" : ""}`;
+
+      resultBox.innerHTML = `
+        <h2>${y}년 ${m}월 ${d}일 ${hourLabel}</h2>
+        <div class="pillars">
+          <div class="pillar"><span class="pos">년주</span><span class="hanja">${saju.yearPillarHanja}</span><span class="hangul">${saju.yearPillar}</span></div>
+          <div class="pillar"><span class="pos">월주</span><span class="hanja">${saju.monthPillarHanja}</span><span class="hangul">${saju.monthPillar}</span></div>
+          <div class="pillar"><span class="pos">일주</span><span class="hanja">${saju.dayPillarHanja}</span><span class="hangul">${saju.dayPillar}</span></div>
+          <div class="pillar"><span class="pos">시주</span><span class="hanja">${saju.hourPillarHanja ?? "—"}</span><span class="hangul">${saju.hourPillar ?? "—"}</span></div>
+        </div>
+        <p class="lunar-info">${lunarLabel}${saju.isTimeCorrected ? " · 야간 시간 자동 보정됨" : ""}</p>
+      `;
+    } catch (err) {
+      resultBox.innerHTML = `
+        <h2>오류</h2>
+        <p class="error-msg">${(err as Error).message}</p>
+      `;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitLabel;
+    }
+  });
+</script>
+
+<style>
+  main.container { max-width: 880px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header { text-align: center; margin-bottom: 28px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0; }
+
+  .calculator { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  #saju-form { display: grid; gap: 16px; margin-bottom: 24px; }
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 14px; font-weight: 600; color: #333; }
+  .field input, .field select {
+    padding: 12px 14px; font-size: 16px; border: 1px solid #d4d4d4; border-radius: 10px;
+    font-family: inherit; background: #fff;
+  }
+  .field input:focus, .field select:focus { outline: none; border-color: #8b5cf6; }
+  .submit-btn {
+    padding: 14px; background: #1a1a1a; color: #fff; border: none;
+    border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+  }
+  .submit-btn:disabled { background: #888; cursor: not-allowed; }
+
+  .result-box h2 { font-size: 18px; margin: 0 0 20px; text-align: center; }
+  .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .pillar { background: #fafafa; border-radius: 10px; padding: 16px 8px; text-align: center; }
+  .pos { display: block; font-size: 12px; color: #888; margin-bottom: 6px; }
+  .hanja { display: block; font-size: 32px; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+  .hangul { display: block; font-size: 14px; color: #666; }
+  .lunar-info { text-align: center; color: #555; font-size: 14px; margin: 12px 0 0; }
+  .error-msg { background: #fee; border-left: 4px solid #c00; padding: 12px 16px; border-radius: 6px; color: #c00; }
+
+  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 32px 0; font-size: 14px; line-height: 1.7; color: #444; }
+  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
+  .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+  @media (max-width: 640px) {
+    .page-header h1 { font-size: 24px; }
+    .pillars { grid-template-columns: repeat(2, 1fr); }
+    .hanja { font-size: 26px; }
+  }
+</style>

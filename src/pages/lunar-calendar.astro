@@ -1,0 +1,176 @@
+---
+/**
+ * 음력 ↔ 양력 변환기 (1900~2050)
+ * 양력→음력 / 음력→양력 양방향 모두 지원
+ */
+import Layout from "../layouts/Layout.astro";
+import { convertSolarToLunar, convertLunarToSolar } from "../lib/fortune.ts";
+
+// 기본값: 오늘 양력 → 음력 미리 계산
+function getKstToday(): { year: number; month: number; day: number } {
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return {
+    year: kst.getUTCFullYear(),
+    month: kst.getUTCMonth() + 1,
+    day: kst.getUTCDate(),
+  };
+}
+
+const today = getKstToday();
+const defaultLunar = convertSolarToLunar(today.year, today.month, today.day);
+---
+
+<Layout
+  title="음력 ↔ 양력 변환기 (1900~2050) - 무료 만세력 계산"
+  description="양력을 음력으로, 음력을 양력으로 즉시 변환합니다. 윤달 지원. 1900~2050년 데이터로 정확한 변환을 제공합니다."
+>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">무료 만세력 변환</p>
+      <h1>음력 ↔ 양력 변환기</h1>
+      <p class="subtitle">한국 전통 음력과 양력 간의 즉시 변환. 윤달까지 정확하게.</p>
+    </header>
+
+    <section class="converter">
+      <div class="conversion-row">
+        <h2>양력 → 음력</h2>
+        <form id="solar-to-lunar-form" class="conv-form">
+          <div class="field">
+            <label for="solar-date">양력 날짜</label>
+            <input type="date" id="solar-date" name="solar-date" value={`${today.year}-${String(today.month).padStart(2, "0")}-${String(today.day).padStart(2, "0")}`} min="1900-01-01" max="2050-12-31" required />
+          </div>
+          <button type="submit" class="submit-btn">변환</button>
+        </form>
+        <div id="s2l-result" class="result">
+          <p>현재 양력 <strong>{today.year}년 {today.month}월 {today.day}일</strong>은</p>
+          <p class="big-result">음력 {defaultLunar.lunar.year}년 {defaultLunar.lunar.month}월 {defaultLunar.lunar.day}일 {defaultLunar.lunar.isLeapMonth ? "(윤달)" : ""}</p>
+          <p class="gapja-info">년주 {defaultLunar.gapja.yearPillarHanja} ({defaultLunar.gapja.yearPillar}) · 일주 {defaultLunar.gapja.dayPillarHanja} ({defaultLunar.gapja.dayPillar})</p>
+        </div>
+      </div>
+
+      <div class="conversion-row">
+        <h2>음력 → 양력</h2>
+        <form id="lunar-to-solar-form" class="conv-form">
+          <div class="field">
+            <label for="lunar-year">음력 연도</label>
+            <input type="number" id="lunar-year" name="lunar-year" min="1900" max="2050" value={today.year} required />
+          </div>
+          <div class="field">
+            <label for="lunar-month">음력 월</label>
+            <input type="number" id="lunar-month" name="lunar-month" min="1" max="12" value={defaultLunar.lunar.month} required />
+          </div>
+          <div class="field">
+            <label for="lunar-day">음력 일</label>
+            <input type="number" id="lunar-day" name="lunar-day" min="1" max="30" value={defaultLunar.lunar.day} required />
+          </div>
+          <div class="field checkbox-field">
+            <label><input type="checkbox" id="lunar-leap" name="lunar-leap" /> 윤달</label>
+          </div>
+          <button type="submit" class="submit-btn">변환</button>
+        </form>
+        <div id="l2s-result" class="result">
+          <p class="hint">음력 날짜를 입력하고 [변환]을 누르세요.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-block">
+      <h2>음력 / 양력이란?</h2>
+      <p><strong>양력(陽曆)</strong>은 태양의 움직임을 기준으로 한 달력(그레고리력)이고, <strong>음력(陰曆)</strong>은 달의 위상을 기준으로 한 달력입니다. 한국은 전통 명절(설·추석)을 음력으로 정하기 때문에 일상에서는 양력, 전통 행사에서는 음력을 사용합니다.</p>
+      <p>음력은 태양의 움직임도 보정하기 위해 <strong>윤달(閏月)</strong>을 넣는데, 같은 달이 두 번 나오는 해가 있습니다(예: 2020년 4월이 두 번). 이 변환기는 윤달 여부까지 정확하게 처리합니다.</p>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  import { convertSolarToLunar, convertLunarToSolar } from "../lib/fortune.ts";
+
+  const s2lForm = document.getElementById("solar-to-lunar-form") as HTMLFormElement;
+  const s2lResult = document.getElementById("s2l-result") as HTMLDivElement;
+  const l2sForm = document.getElementById("lunar-to-solar-form") as HTMLFormElement;
+  const l2sResult = document.getElementById("l2s-result") as HTMLDivElement;
+
+  function renderError(target: HTMLDivElement, msg: string) {
+    target.innerHTML = `<p class="error-msg">${msg}</p>`;
+  }
+
+  s2lForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    try {
+      const date = (new FormData(s2lForm).get("solar-date") as string).trim();
+      const [y, m, d] = date.split("-").map((s) => parseInt(s, 10));
+      if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) throw new Error("날짜 형식이 올바르지 않습니다.");
+      const lunar = convertSolarToLunar(y, m, d);
+      s2lResult.innerHTML = `
+        <p>입력한 양력 <strong>${y}년 ${m}월 ${d}일</strong>은</p>
+        <p class="big-result">음력 ${lunar.lunar.year}년 ${lunar.lunar.month}월 ${lunar.lunar.day}일 ${lunar.lunar.isLeapMonth ? "(윤달)" : ""}</p>
+        <p class="gapja-info">년주 ${lunar.gapja.yearPillarHanja} (${lunar.gapja.yearPillar}) · 일주 ${lunar.gapja.dayPillarHanja} (${lunar.gapja.dayPillar})</p>
+      `;
+    } catch (err) {
+      renderError(s2lResult, (err as Error).message);
+    }
+  });
+
+  l2sForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    try {
+      const fd = new FormData(l2sForm);
+      const y = parseInt(fd.get("lunar-year") as string, 10);
+      const m = parseInt(fd.get("lunar-month") as string, 10);
+      const d = parseInt(fd.get("lunar-day") as string, 10);
+      const isLeap = fd.get("lunar-leap") === "on";
+      if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) throw new Error("숫자를 입력해 주세요.");
+      const solar = convertLunarToSolar(y, m, d, isLeap);
+      l2sResult.innerHTML = `
+        <p>입력한 음력 <strong>${y}년 ${m}월 ${d}일${isLeap ? " (윤달)" : ""}</strong>은</p>
+        <p class="big-result">양력 ${solar.solar.year}년 ${solar.solar.month}월 ${solar.solar.day}일</p>
+        <p class="gapja-info">년주 ${solar.gapja.yearPillarHanja} (${solar.gapja.yearPillar}) · 일주 ${solar.gapja.dayPillarHanja} (${solar.gapja.dayPillar})</p>
+      `;
+    } catch (err) {
+      renderError(l2sResult, (err as Error).message);
+    }
+  });
+</script>
+
+<style>
+  main.container { max-width: 880px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header { text-align: center; margin-bottom: 28px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0; }
+
+  .converter { display: grid; gap: 20px; }
+  .conversion-row { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .conversion-row h2 { font-size: 20px; margin: 0 0 16px; }
+  .conv-form { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; align-items: end; margin-bottom: 16px; }
+  #lunar-to-solar-form { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 13px; font-weight: 600; color: #333; }
+  .field input[type="date"], .field input[type="number"], .field select {
+    padding: 12px 14px; font-size: 16px; border: 1px solid #d4d4d4; border-radius: 10px;
+    font-family: inherit; background: #fff;
+  }
+  .field input:focus { outline: none; border-color: #8b5cf6; }
+  .checkbox-field { align-self: end; padding-bottom: 12px; }
+  .checkbox-field label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .submit-btn {
+    padding: 12px; background: #1a1a1a; color: #fff; border: none;
+    border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;
+    font-family: inherit; height: 46px;
+  }
+  .result { background: #fafafa; padding: 18px; border-radius: 10px; border-left: 4px solid #8b5cf6; }
+  .result p { margin: 0 0 6px; color: #333; }
+  .big-result { font-size: 20px; font-weight: 700; color: #1a1a1a !important; margin: 8px 0 !important; }
+  .gapja-info { color: #555 !important; font-size: 13px; }
+  .hint { color: #888; font-style: italic; }
+  .error-msg { background: #fee; border-left: 4px solid #c00; padding: 12px 16px; border-radius: 6px; color: #c00; }
+
+  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 32px 0; font-size: 14px; line-height: 1.7; color: #444; }
+  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
+
+  @media (max-width: 640px) {
+    .page-header h1 { font-size: 24px; }
+    .conv-form, #lunar-to-solar-form { grid-template-columns: 1fr 1fr; }
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="서비스 소개 - 무료 만세력 운세"
+  description="오늘의 운세는 무료 만세력 기반 사주팔자 운세 서비스입니다. 데이터 출처, 계산 방식, 면책 사항 안내."
+>
+  <main class="container">
+    <header class="page-header">
+      <h1>서비스 소개</h1>
+    </header>
+
+    <section class="info-block">
+      <h2>무엇을 제공하나요?</h2>
+      <p>이 사이트는 한국 전통 음력(1900~2050)을 기반으로 한 무료 운세·사주 서비스입니다.</p>
+      <ul>
+        <li><strong>오늘의 운세</strong> — 매일 갱신되는 일진(日辰) 기반의 운세 점수, 행운의 색·숫자, 오행 메시지</li>
+        <li><strong>사주팔자 계산기</strong> — 생년월일시를 입력하면 사주 4주(년·월·일·시)를 한자로 보여드립니다</li>
+        <li><strong>음력 ↔ 양력 변환기</strong> — 양력을 음력으로, 음력을 양력으로 즉시 변환 (윤달 지원)</li>
+        <li><strong>12띠 가이드</strong> — 12띠별 성향과 오행 정보</li>
+      </ul>
+    </section>
+
+    <section class="info-block">
+      <h2>계산 방식</h2>
+      <p>모든 계산은 오픈소스 한국 음력 라이브러리 <code>@fullstackfamily/manseryeok</code>을 사용합니다. 이 라이브러리는 1900년~2050년의 한국 음력 데이터를 DB 없이 순수 JavaScript로 계산하며, 24절기·천간지지·오행 정보를 제공합니다.</p>
+      <p>점수와 메시지는 일간(日干)과 오행에 기반해 결정론적으로 산출됩니다(같은 날짜면 같은 결과).</p>
+    </section>
+
+    <section class="info-block warning">
+      <h2>면책 사항</h2>
+      <p>본 서비스는 일반적인 흥미·오락 목적의 무료 콘텐츠입니다. 다음에 해당하지 않습니다.</p>
+      <ul>
+        <li>의료·건강 진단 및 처방</li>
+        <li>법률·재정 조언</li>
+        <li>인간관계·결혼·진로의 결정적 판단 근거</li>
+      </ul>
+      <p>중요한 결정은 반드시 해당 분야 전문가와 상의하시기 바랍니다.</p>
+    </section>
+
+    <section class="info-block">
+      <h2>광고·수익 운영</h2>
+      <p>이 사이트는 Google AdSense를 통해 운영되며, 페이지에 노출되는 광고 수익으로 호스팅 비용과 운영 시간을 충당합니다. 사용자에게 별도의 비용은 발생하지 않습니다.</p>
+    </section>
+
+    <section class="info-block">
+      <h2>기술 스택</h2>
+      <ul>
+        <li>정적 사이트: <strong>Astro 7</strong></li>
+        <li>호스팅: <strong>Cloudflare Pages</strong> (무료, 한국 CDN)</li>
+        <li>음력 데이터: <code>@fullstackfamily/manseryeok</code> (MIT)</li>
+        <li>광고: <strong>Google AdSense</strong></li>
+      </ul>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main.container { max-width: 760px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 24px; text-align: center; }
+
+  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 0 0 16px; font-size: 14px; line-height: 1.7; color: #444; }
+  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
+  .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  .info-block ul { padding-left: 20px; margin: 8px 0; }
+  .info-block li { margin-bottom: 4px; }
+  .info-block.warning { background: #fff7e6; border-left: 4px solid #f59e0b; }
+</style>
