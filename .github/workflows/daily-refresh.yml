@@ -26,18 +26,10 @@ jobs:
           CLOUDFLARE_PAGES_PROJECT: fortune-adsense
         run: |
           python3 scripts/deploy.py dist
-      - name: Notify Google
-        env:
-          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
-          GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
-          GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+      - name: Verify deployment
         run: |
-          ACCESS_TOKEN=$(curl -s -X POST https://oauth2.googleapis.com/token \
-            -d "client_id=$GOOGLE_OAUTH_CLIENT_ID" \
-            -d "client_secret=$GOOGLE_OAUTH_CLIENT_SECRET" \
-            -d "refresh_token=$GOOGLE_REFRESH_TOKEN" \
-            -d "grant_type=refresh_token" | jq -r .access_token)
-          echo "Token: ${ACCESS_TOKEN:0:30}..."
-          curl -s "https://www.google.com/ping?sitemap=https://lucksajueun.com/sitemap.xml" -o /dev/null -w "Ping: %{http_code}"
-          echo ""
-          echo "Done"
+          sleep 10
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://lucksajueun.com/)
+          echo "Site status: $STATUS"
+          if [ "$STATUS" != "200" ]; then exit 1; fi
+          echo "Daily refresh complete"
