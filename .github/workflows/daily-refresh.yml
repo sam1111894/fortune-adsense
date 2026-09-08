@@ -1,0 +1,43 @@
+name: Daily Fortune Refresh & Deploy
+
+on:
+  schedule:
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          cd dist && zip -r ../site.zip . && cd ..
+          curl -X POST \
+            -H "Authorization: Bearer ***" \
+            -F "file=@site.zip" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/fortune-adsense/deployments"
+      - name: Notify Google
+        env:
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+          GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+        run: |
+          ACCESS_TOKEN=*** -s -X POST https://oauth2.googleapis.com/token \
+            -d "client_id=$GOOGLE_OAUTH_CLIENT_ID" \
+            -d "client_secret=$GOOGLE_OAUTH_CLIENT_SECRET" \
+            -d "refresh_token=$GOOGLE_REFRESH_TOKEN" \
+            -d "grant_type=refresh_token" | jq -r .access_token)
+          curl -s "https://www.google.com/ping?sitemap=https://lucksajueun.com/sitemap.xml" -o /dev/null
