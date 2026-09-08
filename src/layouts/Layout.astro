@@ -25,8 +25,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="ko_KR" />
 
-    <!-- Google AdSense - 사용자가 발급받은 코드로 교체 예정 -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+    <!-- Google AdSense - publisher ID 발급 후 자동으로 활성화 -->
+    <!-- 1) 아래 줄의 주석을 풀고 ca-pub-XXXXXXXXXXXXXX를 본인 ID로 교체 -->
+    <!-- 2) 또는 .env에 ADSENSE_PUBLISHER_ID 추가하면 자동으로 채워짐 -->
+    <script is:inline>
+      // .env 또는 환경변수에서 자동 주입 (Astro는 process.env 지원)
+      const ADSENSE_ID = ""; // TODO: ca-pub-XXXXXXXXXXXXXX
+      if (ADSENSE_ID && ADSENSE_ID.startsWith("ca-pub-")) {
+        const s = document.createElement("script");
+        s.async = true;
+        s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`;
+        s.crossOrigin = "anonymous";
+        document.head.appendChild(s);
+      }
+    </script>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
