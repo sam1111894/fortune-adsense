@@ -16,6 +16,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+
+    <!-- Naver Search Advisor 인증 (한국 SEO 필수) -->
+    <meta name="naver-site-verification" content="84b01b1cd554d55c926c692f9549456aac58ea20" />
+
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
