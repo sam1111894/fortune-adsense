@@ -48,7 +48,24 @@ def make_multipart_body(zip_data, manifest_str, boundary):
         f"--{boundary}--\r\n"
     ).encode()
 
-def deploy(account_id, api_token, project, src_dir):
+def ensure_extra_files(dist_dir, project_root):
+    """Copy files from public/ that aren't in dist/ (like IndexNow key)"""
+    import shutil, os
+    public_dir = os.path.join(project_root, 'public')
+    if os.path.isdir(public_dir):
+        for f in os.listdir(public_dir):
+            src = os.path.join(public_dir, f)
+            dst = os.path.join(dist_dir, f)
+            if os.path.isfile(src) and not os.path.exists(dst):
+                shutil.copy(src, dst)
+                print(f"Copied: {f}")
+
+
+def deploy(account_id, api_token, project, src_dir, project_root='.'):
+    """Deploy to Cloudflare Pages"""
+    # public/의 키 파일 등을 dist/로 복사
+    ensure_extra_files(src_dir, project_root)
+
     """Deploy to Cloudflare Pages"""
     zip_data = make_zip(src_dir)
     manifest = make_manifest(src_dir)
