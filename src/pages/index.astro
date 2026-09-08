@@ -86,10 +86,57 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
     </section>
 
     <section class="cta-buttons">
-      <a class="cta cta-primary" href="/saju">내 사주팔자 계산하기 →</a>
-      <a class="cta cta-secondary" href="/lunar-calendar">음력 ↔ 양력 변환기 →</a>
-      <a class="cta cta-secondary" href="/zodiac">띠별 운세 전체 보기 →</a>
-    </section>
+          <a class="cta cta-primary" href="/saju">내 사주팔자 계산하기 →</a>
+          <a class="cta cta-secondary" href="/lunar-calendar">음력 ↔ 양력 변환기 →</a>
+          <a class="cta cta-secondary" href="/lotto">🎲 로또 번호 생성기 →</a>
+          <a class="cta cta-secondary" href="/salary">💰 연봉 실수령액 계산기 →</a>
+          <a class="cta cta-secondary" href="/zodiac">띠별 운세 전체 보기 →</a>
+        </section>
+
+        <section class="tools-grid" aria-label="전체 도구 둘러보기">
+          <header class="tools-header">
+            <h2>🛠️ 모든 무료 도구</h2>
+            <p>6가지 도구를 자유롭게 이용해 보세요. 가입 없이 바로 사용 가능합니다.</p>
+          </header>
+          <div class="cards">
+            <a class="tool-card" href="/saju">
+              <span class="tool-icon">🔮</span>
+              <h3>사주팔자 계산기</h3>
+              <p>생년월일시 입력 → 4주 한자 즉시 표시</p>
+              <span class="tool-meta">약 2분 소요</span>
+            </a>
+            <a class="tool-card" href="/lunar-calendar">
+              <span class="tool-icon">📅</span>
+              <h3>음력 ↔ 양력 변환기</h3>
+              <p>양력↔음력 즉시 변환. 윤달 지원 (1900~2050)</p>
+              <span class="tool-meta">즉시 결과</span>
+            </a>
+            <a class="tool-card" href="/zodiac">
+              <span class="tool-icon">🐉</span>
+              <h3>12띠 성향 가이드</h3>
+              <p>자축인묘진사오미신유술해 성향·오행 한눈에</p>
+              <span class="tool-meta">읽는 도구</span>
+            </a>
+            <a class="tool-card" href="/lotto">
+              <span class="tool-icon">🎲</span>
+              <h3>로또 6/45 생성기</h3>
+              <p>무작위 + AI 가중치 추천 모드</p>
+              <span class="tool-meta">5세트 자동</span>
+            </a>
+            <a class="tool-card" href="/salary">
+              <span class="tool-icon">💰</span>
+              <h3>연봉 실수령액 계산기</h3>
+              <p>4대보험·소득세 자동 계산 (2026년 요율)</p>
+              <span class="tool-meta">즉시 결과</span>
+            </a>
+            <a class="tool-card tool-card-featured" href="/saju">
+              <span class="tool-icon">⭐</span>
+              <h3>오늘의 운세 (지금 보고 계신 페이지)</h3>
+              <p>매일 KST 기준 자동 갱신되는 일진 운세</p>
+              <span class="tool-meta">매일 업데이트</span>
+            </a>
+          </div>
+        </section>
 
     <section class="week">
       <h2>이번 주 운세 미리보기</h2>
@@ -164,9 +211,39 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
   .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
 
+  /* === Tools grid (전체 도구 둘러보기) === */
+  .tools-grid { margin: 40px 0 8px; }
+  .tools-header { text-align: center; margin-bottom: 20px; }
+  .tools-header h2 { font-size: 22px; margin: 0 0 6px; color: #1a1a1a; }
+  .tools-header p { color: #666; margin: 0; font-size: 14px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .tool-card {
+    display: block; background: #fff; border: 1px solid #e5e5e5;
+    border-radius: 14px; padding: 20px; text-decoration: none; color: inherit;
+    transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+  }
+  .tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    border-color: #8b5cf6;
+  }
+  .tool-card-featured {
+    background: linear-gradient(135deg, #f9f7ff, #fff);
+    border-color: #d4c5f9;
+  }
+  .tool-card-featured:hover { border-color: #8b5cf6; }
+  .tool-icon { display: block; font-size: 28px; margin-bottom: 8px; }
+  .tool-card h3 { margin: 0 0 6px; font-size: 16px; color: #1a1a1a; }
+  .tool-card p { margin: 0 0 8px; font-size: 13px; color: #555; line-height: 1.5; }
+  .tool-meta {
+    display: inline-block; padding: 3px 10px; background: #f3f0fb;
+    color: #6b46c1; border-radius: 10px; font-size: 11px; font-weight: 600;
+  }
+
   @media (max-width: 640px) {
     .hero h1 { font-size: 26px; }
     .score-board { grid-template-columns: 1fr; }
     .week-grid { grid-template-columns: repeat(4, 1fr); }
+    .cards { grid-template-columns: 1fr; }
   }
 </style>
