@@ -24,8 +24,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://lucksajueun.com/og-image.png" />
 
-    <!-- Google AdSense - publisher ID (KYC 심사 진행 중이지만 사이트 코드 선삽입으로 심사 가속) -->
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Google AdSense - publisher ID (KYC 심사 진행 중, 코드 선삽입으로 심사 가속) -->
     <script is:inline>
       const ADSENSE_ID = "ca-pub-3100951284055562";
       if (ADSENSE_ID && ADSENSE_ID.startsWith("ca-pub-")) {
@@ -37,8 +43,29 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       }
     </script>
 
+    <!-- JSON-LD 구조화 데이터 (Google rich snippets) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "오늘의 운세 - lucksajueun.com",
+      "url": "https://lucksajueun.com",
+      "description": "만세력 기반 무료 운세·사주팔자·음력변환·로또번호 생성·연봉실수령액 계산",
+      "inLanguage": "ko-KR",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://lucksajueun.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "오늘의 운세",
+        "url": "https://lucksajueun.com",
+        "logo": "https://lucksajueun.com/favicon.svg",
+        "email": "contact@lucksajueun.com"
+      }
+    })} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
 
     <style is:global>
       *, *::before, *::after { box-sizing: border-box; }
