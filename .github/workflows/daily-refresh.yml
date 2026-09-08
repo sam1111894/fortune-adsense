@@ -23,34 +23,16 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PAGES_PROJECT: fortune-adsense
         run: |
-          cd dist
-          zip -r ../site.zip . > /dev/null
-          cd ..
-          ls -lh site.zip
-          echo "--- building manifest ---"
-          python3 scripts/build-manifest.py dist manifest.json
-          echo "--- deploying ---"
-          STATUS=$(curl -s -o /tmp/cf_resp.json -w "%{http_code}" \
-            -X POST \
-            -H "Authorization: Bearer ***" \
-            -F "file=@site.zip;type=application/zip" \
-            -F "manifest=@manifest.json;type=application/json" \
-            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/fortune-adsense/deployments")
-          echo "HTTP: $STATUS"
-          cat /tmp/cf_resp.json | head -20
-          if [ "$STATUS" != "200" ]; then
-            echo "Deploy failed"
-            exit 1
-          fi
-          echo "Deploy success"
+          python3 scripts/deploy.py dist
       - name: Notify Google
         env:
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
           GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
           GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
         run: |
-          ACCESS_TOKEN=*** -s -X POST https://oauth2.googleapis.com/token \
+          ACCESS_TOKEN=$(curl -s -X POST https://oauth2.googleapis.com/token \
             -d "client_id=$GOOGLE_OAUTH_CLIENT_ID" \
             -d "client_secret=$GOOGLE_OAUTH_CLIENT_SECRET" \
             -d "refresh_token=$GOOGLE_REFRESH_TOKEN" \
