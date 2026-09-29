@@ -1,0 +1,55 @@
+/* ============================================
+ * lucksajueun.com - 전역 공통 스타일
+ * KISS/DRY 원칙: 반복되는 박스/면책/관련도구 스타일을 한 곳에서 관리
+ * ============================================ */
+
+/* ----- 정보 카드 (페이지 본문 섹션 박스) ----- */
+.info-card {
+  background: #fafafa;
+  padding: 24px;
+  border-radius: 12px;
+  margin: 24px 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #333;
+}
+.info-card h2 { font-size: 22px; margin: 0 0 14px; color: #1a1a1a; }
+.info-card h3 { font-size: 17px; margin: 20px 0 8px; color: #1a1a1a; }
+.info-card h4 { font-size: 15px; margin: 16px 0 6px; color: #1a1a1a; }
+.info-card ul, .info-card ol { margin: 8px 0; padding-left: 22px; }
+.info-card li { margin: 4px 0; }
+.info-card p { margin: 8px 0; }
+.info-card a { color: #8b5cf6; text-decoration: underline; }
+.info-card code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+.info-card strong { color: #1a1a1a; }
+
+/* ----- 면책 박스 (모든 도구/콘텐츠 페이지 공통) ----- */
+.disclaimer-box {
+  background: #fff7e6;
+  border-left: 4px solid #f59e0b;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5a4a1f;
+}
+.disclaimer-box p { margin: 0; }
+
+/* ----- AdSense 광고 슬롯 ----- */
+.adsense-slot {
+  margin: 32px auto;
+  padding: 16px;
+  max-width: 728px;
+  text-align: center;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+}
+.adsense-slot .ad-label {
+  font-size: 11px;
+  color: #888;
+  text-align: left;
+  margin: 0 0 8px 0;
+  letter-spacing: 1px;
+}

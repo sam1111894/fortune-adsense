@@ -1,0 +1,18 @@
+---
+/**
+ * Disclaimer.astro - 페이지 본문 끝에 들어가는 면책 안내 박스
+ *
+ * KISS/DRY: 모든 도구·콘텐츠 페이지에서 동일한 면책 톤을 보장.
+ * 텍스트는 페이지마다 다르게 전달 가능 (prop).
+ */
+interface Props {
+  /** 면책 박스에 표시할 메시지. 기본값: 의료·법률·재정 면책 안내 */
+  text?: string;
+}
+
+const { text = "본 사이트의 콘텐츠와 도구는 흥미·교양·자기 이해를 위한 참고 자료이며, 의료·법률·재정·진로 결정의 근거가 될 수 없습니다. 중요한 인생 결정은 반드시 해당 분야 전문가와 상의하시기 바랍니다." } = Astro.props;
+---
+
+<div class="disclaimer-box" role="note" aria-label="면책 안내">
+  <p>{text} <a href="/about">이용 안내</a>도 참조해 주세요.</p>
+</div>

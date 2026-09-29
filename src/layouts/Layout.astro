@@ -6,6 +6,7 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -140,6 +141,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       <p>© 2026 오늘의 운세 · 만세력 데이터 기반 무료 운세 서비스</p>
       <p>
         <a href="/about">이용 안내</a> ·
+        <a href="/methodology">운세 방법론</a> ·
+        <a href="/sources">출처 및 참고 자료</a> ·
+        <a href="/editorial-policy">편집 정책</a> ·
         <a href="/privacy">개인정보처리방침</a> ·
         <a href="/terms">이용약관</a> ·
         <a href="/contact">문의하기</a>

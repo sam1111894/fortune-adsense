@@ -1,0 +1,33 @@
+---
+/**
+ * RelatedTools.astro - 페이지 하단 관련 도구 링크 섹션
+ *
+ * KISS/DRY: 모든 도구 페이지에서 같은 형식의 도구 링크 묶음을 보장.
+ * 표시할 도구는 prop으로 받음 (표시할 도구가 없으면 빈 배열).
+ */
+interface Tool {
+  href: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  /** 표시할 도구 목록 (3~5개 권장) */
+  tools: Tool[];
+  /** 섹션 제목. 기본값: "관련 도구" */
+  heading?: string;
+}
+
+const { tools, heading = "관련 도구" } = Astro.props;
+---
+
+{tools.length > 0 && (
+  <section class="info-card">
+    <h2>{heading}</h2>
+    <ul>
+      {tools.map((t) => (
+        <li><a href={t.href}>{t.title}</a> — {t.description}</li>
+      ))}
+    </ul>
+  </section>
+)}

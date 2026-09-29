@@ -1,0 +1,28 @@
+---
+/**
+ * AdSenseAd.astro - Google AdSense 광고 슬롯 컴포넌트
+ *
+ * 정책 준수 사항:
+ *  - 본문 콘텐츠와 명확히 분리 (AdSense 정책: 광고 비율이 콘텐츠의 50% 이하)
+ *  - 광고 위치를 명확하게 표시 ("광고" 라벨)
+ *  - 페이지당 최대 1개로 제한 (정책 위반 방지)
+ *  - 도구 페이지(본문 > 1,000자)에서만 사용 권장
+ *  - pub-ID는 Layout.astro head에 이미 로드됨
+ *  - 스타일은 global.css의 .adsense-slot 사용 (KISS/DRY)
+ */
+---
+
+<aside class="adsense-slot" aria-label="광고 영역">
+  <p class="ad-label">광고</p>
+  <ins
+    class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3100951284055562"
+    data-ad-slot="1234567890"
+    data-ad-format="auto"
+    data-full-width-responsive="true"
+  ></ins>
+  <script is:inline>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</aside>
