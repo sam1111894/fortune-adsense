@@ -1,0 +1,6 @@
+# ads.txt for lucksajueun.com
+# AdSense 승인 후 pub-ID를 발급받아 첫 번째 라인의 pub-XXXXXXXXXXXXXXXX을
+# 실제 게시자 ID로 교체하세요. 자세한 안내:
+# https://support.google.com/adsense/answer/7533385
+
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
