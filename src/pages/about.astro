@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import AdSenseAd from "../components/AdSenseAd.astro";
 ---
 
 <Layout
@@ -11,7 +12,7 @@ import Layout from "../layouts/Layout.astro";
       <h1>서비스 소개</h1>
     </header>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>무엇을 제공하나요?</h2>
       <p>이 사이트는 한국 전통 음력(1900~2050)을 기반으로 한 무료 운세·사주 서비스입니다.</p>
       <ul>
@@ -22,7 +23,7 @@ import Layout from "../layouts/Layout.astro";
       </ul>
     </section>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>계산 방식</h2>
       <p>모든 계산은 오픈소스 한국 음력 라이브러리 <code>@fullstackfamily/manseryeok</code>을 사용합니다. 이 라이브러리는 1900년~2050년의 한국 음력 데이터를 DB 없이 순수 JavaScript로 계산하며, 24절기·천간지지·오행 정보를 제공합니다.</p>
       <p>점수와 메시지는 일간(日干)과 오행에 기반해 결정론적으로 산출됩니다(같은 날짜면 같은 결과).</p>
@@ -39,12 +40,12 @@ import Layout from "../layouts/Layout.astro";
       <p>중요한 결정은 반드시 해당 분야 전문가와 상의하시기 바랍니다.</p>
     </section>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>광고·수익 운영</h2>
       <p>이 사이트는 Google AdSense를 통해 운영되며, 페이지에 노출되는 광고 수익으로 호스팅 비용과 운영 시간을 충당합니다. 사용자에게 별도의 비용은 발생하지 않습니다.</p>
     </section>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>기술 스택</h2>
       <ul>
         <li>정적 사이트: <strong>Astro 7</strong></li>
@@ -53,17 +54,76 @@ import Layout from "../layouts/Layout.astro";
         <li>광고: <strong>Google AdSense</strong></li>
       </ul>
     </section>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <h2>왜 무료로 제공되나요?</h2>
+      <p>본 서비스는 Google AdSense 광고 수익으로 운영됩니다. 사용자가 페이지의 광고를 보는 것으로 호스팅·데이터·개발 비용이 충당되며, 별도의 구독료·유료 콘텐츠는 없습니다. 전통 명리학 콘텐츠는 접근성이 중요한 교양·문화 자산이라는 관점에서 무료 제공을 원칙으로 합니다.</p>
+
+      <h3>운영 원칙</h3>
+      <ul>
+        <li><strong>결정론적 계산</strong> — 동일 입력에 대해 동일 결과를 보장합니다.</li>
+        <li><strong>투명한 출처 공개</strong> — 음력 데이터·라이브러리·문화 자료 출처를 <a href="/sources">출처 페이지</a>에 모두 공개합니다.</li>
+        <li><strong>면책 강조</strong> — 의료·법률·재정·진로 결정의 근거가 아님을 모든 페이지에 명시합니다.</li>
+        <li><strong>개인정보 최소화</strong> — 사주·음력 계산은 클라이언트 사이드에서 처리되며 입력 데이터는 서버로 전송되지 않습니다.</li>
+      </ul>
+
+      <h3>업데이트 정책</h3>
+      <ul>
+        <li>오늘의 운세 — 매일 자정(KST) 자동 갱신</li>
+        <li>이번 주 운세 — 매주 월요일 자정 자동 갱신</li>
+        <li>12띠 가이드 — 매년 1월 1일 자동 갱신</li>
+        <li>라이브러리·데이터 — 한국 천문연구원 발표 시 즉시 반영</li>
+      </ul>
+
+      <h3>개발 배경</h3>
+      <p>본 사이트는 한국·중국 전통 명리학을 교양적 관점에서 누구나 쉽게 접할 수 있도록 하기 위해 만들어졌습니다. 음력·사주·12띠 정보는 수천 년 된 동아시아 문화 자산이지만, 기존 사이트들은 유료이거나 광고가 과도하거나 일부는 사기성 정보를 포함하기도 했습니다. 본 사이트는 다음과 같은 차별점을 둡니다.</p>
+      <ul>
+        <li><strong>완전 무료</strong> — 모든 도구·콘텐츠에 가입·결제 없이 접근 가능</li>
+        <li><strong>투명한 계산</strong> — 사용된 라이브러리·데이터 출처를 모두 공개</li>
+        <li><strong>면책 강조</strong> — 의료·법률·재정 결정의 근거가 아님을 모든 페이지에 명시</li>
+        <li><strong>모던 UX</strong> — 모바일·태블릿·데스크탑 어디서나 빠르게 동작</li>
+        <li><strong>접근성</strong> — WAI-ARIA 표준 준수, 스크린 리더 호환</li>
+      </ul>
+
+      <h3>제공 도구 한눈에 보기</h3>
+      <p>현재 본 사이트에서 제공하는 무료 도구는 다음과 같습니다.</p>
+      <ul>
+        <li><strong>오늘의 운세</strong> — 매일 갱신되는 일진·오행 운세, 행운의 색·숫자</li>
+        <li><strong>사주팔자 계산기</strong> — 4주(년주·월주·일주·시주)와 한자 표기, 음력 자동 변환</li>
+        <li><strong>음력 ↔ 양력 변환기</strong> — 양력↔음력 양방향 변환, 윤달 지원</li>
+        <li><strong>12띠 운세 가이드</strong> — 12개 동물별 성향·오행·잘 맞는 활동·궁합·2026년 운세</li>
+        <li><strong>로또 번호 생성기</strong> — 완전 랜덤·AI 추천 두 가지 모드</li>
+        <li><strong>연봉 실수령액 계산기</strong> — 2026년 한국 4대보험·소득세·지방소득세 자동 환산</li>
+      </ul>
+
+      <h3>기술 스택 상세</h3>
+      <ul>
+        <li><strong>Astro 7</strong> — 정적 사이트 생성 (SSG) 프레임워크. JS 번들 크기가 작아 모바일에서 빠르게 로드됩니다.</li>
+        <li><strong>TypeScript</strong> — 타입 안정성으로 런타임 에러 최소화</li>
+        <li><strong>Cloudflare Pages</strong> — 전 세계 CDN으로 한국·일본·중국 어디서나 빠른 응답</li>
+        <li><strong>@fullstackfamily/manseryeok</strong> — MIT 라이선스 한국 음력 라이브러리 (1900~2050)</li>
+        <li><strong>Google AdSense</strong> — 광고 수익으로 운영비 충당</li>
+      </ul>
+
+      <h3>함께 보면 좋은 페이지</h3>
+      <ul>
+        <li><a href="/methodology">운세 산출 방법론</a> — 점수 계산, 음력 변환, 라이브러리 설명</li>
+        <li><a href="/sources">출처 및 참고 자료</a> — 음력 데이터, 사주 문헌, 문화 자료 출처</li>
+        <li><a href="/editorial-policy">편집 정책</a> — 콘텐츠 검수, 업데이트 일정, 정확성 보장</li>
+        <li><a href="/privacy">개인정보처리방침</a> — 데이터 수집·보관 정책</li>
+        <li><a href="/terms">이용약관</a> — 서비스 이용 약관</li>
+      </ul>
+
+      <h3>문의</h3>
+      <p>오류 신고·개선 제안·제휴 문의는 <a href="/contact">문의 페이지</a>를 통해 보내 주세요. 가능한 한 빠르게 답변 드리겠습니다.</p>
+    </section>
   </main>
 </Layout>
 
 <style>
   main.container { max-width: 760px; margin: 0 auto; padding: 32px 16px 80px; }
   .page-header h1 { font-size: 32px; margin: 0 0 24px; text-align: center; }
-
-  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 0 0 16px; font-size: 14px; line-height: 1.7; color: #444; }
-  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
-  .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
-  .info-block ul { padding-left: 20px; margin: 8px 0; }
-  .info-block li { margin-bottom: 4px; }
   .info-block.warning { background: #fff7e6; border-left: 4px solid #f59e0b; }
 </style>

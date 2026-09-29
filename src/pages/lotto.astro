@@ -5,6 +5,8 @@
  * - 통계/패턴은 재미 요소 (재방문 유도)
  */
 import Layout from "../layouts/Layout.astro";
+import AdSenseAd from "../components/AdSenseAd.astro";
+import Disclaimer from "../components/Disclaimer.astro";
 
 // 가장 자주 등장한 번호 통계 (시뮬레이션 — 재미 요소)
 const HOT_NUMS = [12, 17, 18, 33, 34, 40, 45]; // 자주 나오는 번호
@@ -51,7 +53,7 @@ const COLD_NUMS = [2, 5, 21, 23, 30, 38];     // 잘 안 나오는 번호
       </aside>
     </section>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>로또 6/45 당첨 확률</h2>
       <table class="odds-table">
         <thead>
@@ -67,7 +69,7 @@ const COLD_NUMS = [2, 5, 21, 23, 30, 38];     // 잘 안 나오는 번호
       </table>
     </section>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>번호 생성 방법</h2>
       <p>본 생성기는 브라우저 내장 <code>crypto.getRandomValues()</code> API로 진정한 난수를 생성합니다. 서버나 외부 API를 거치지 않으며, 결과는 즉시 화면에 표시됩니다.</p>
       <p><strong>AI 추천 모드</strong>는 자주 등장한 번호에 미세한 가중치를 부여해 통계적으로 유리한 조합을 만들지만, 어떤 조합도 당첨 확률은 동일합니다.</p>
@@ -76,6 +78,49 @@ const COLD_NUMS = [2, 5, 21, 23, 30, 38];     // 잘 안 나오는 번호
     <section class="info-block warning">
       <h2>⚠️ 도박 중독 예방 안내</h2>
       <p>로도 구매는 재미·여가의 목적으로만 하시며, <strong>본 사이트는 당첨을 보장하지 않습니다.</strong> 도박 중독이 의심되시면 한국도박문제관리센터(📞 1336) 또는 Gambling Therapy(https://www.gamblingtherapy.org/kr/)에서 도움을 받으실 수 있습니다.</p>
+    </section>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <h2>로또 번호 생성, 어떻게 작동하나요?</h2>
+      <p>본 도구는 두 가지 모드를 제공합니다. <strong>완전 랜덤 모드</strong>는 1~45 사이에서 6개 번호를 균일한 확률로 추첨하고, <strong>AI 추천 모드</strong>는 자주 등장한 번호(과거 통계 기반 핫 넘버)에 2배 가중치를 부여해 통계적으로 유리해 보이는 조합을 만듭니다.</p>
+
+      <h3>랜덤 모드 vs AI 추천 모드</h3>
+      <p>완전 랜덤 모드는 수학적 의미의 균등 분포를 따르므로 각 번호의 등장 확률이 정확히 6/45입니다. AI 추천 모드는 과거 회차 통계를 반영해 자주 등장한 번호의 선택 확률을 약 17.5%(2배 가중치)로 높이지만, 어느 조합이든 1등 당첨 확률은 동일하게 <strong>1/8,145,060</strong>입니다.</p>
+
+      <h3>번호 생성의 진정한 무작위성</h3>
+      <p>본 생성기는 브라우저 내장 <code>crypto.getRandomValues()</code> API를 사용해 암호학적으로 안전한 난수(CSPRNG)를 생성합니다. JavaScript의 일반 <code>Math.random()</code>은 예측 가능한 의사 난수이지만, crypto API는 OS 단의 엔트로피(마우스 움직임, 키보드 타이밍 등)를 사용해 진정한 무작위성을 보장합니다.</p>
+
+      <h3>한국 로또 당첨 확률</h3>
+      <p>한국 로또 6/45의 1등 당첨 확률은 8,145,060분의 1로 매우 낮습니다. 이는 매 회차 6개 번호 + 보너스 번호 1개를 맞혀야 하기 때문입니다. 5등(3개 일치)조차 45분의 1 확률입니다. 재미·여가의 목적으로 소액 구매하시되, 당첨에 과도한 기대를 걸지 않는 것이 권장됩니다.</p>
+
+      <h3>로또 FAQ</h3>
+
+      <h4>Q1. AI 추천 모드가 정말 당첨 확률을 높이나요?</h4>
+      <p>아닙니다. 통계적 가중치는 "과거에 자주 등장한 번호"를 우선 추첨할 뿐, 미래 회차의 당첨 확률을 바꾸지는 않습니다. 모든 회차는 독립 시행이며, 어떤 조합이든 1등 확률은 정확히 1/8,145,060입니다.</p>
+
+      <h4>Q2. 동일한 번호 조합이 다시 나오나요?</h4>
+      <p>완전 랜덤 모드에서는 확률적으로 가능하지만 거의 일어나지 않습니다. 6/45 조합의 총 가짓수는 814만 개이므로, 한 사용자가 같은 조합을 두 번 뽑을 확률은 매우 낮습니다.</p>
+
+      <h4>Q3. 로또 구매는 어떤 경로로 하나요?</h4>
+      <p>동행복권(dhlottery.co.kr) 공식 사이트 또는 전국 로또 판매점에서 구매하실 수 있습니다. 본 사이트는 번호 생성 도구만 제공하며, 로또 구매·판매는 하지 않습니다.</p>
+
+      <h4>Q4. 번호는 매번 새로 생성되나요?</h4>
+      <p>네, "번호 생성" 버튼을 누를 때마다 새로운 난수가 생성됩니다. 이전에 생성된 번호는 저장되지 않으며, 외부 서버로 전송되지도 않습니다(클라이언트 사이드 처리).</p>
+
+      <h4>Q5. 로또와 운세의 관계는?</h4>
+      <p>전통적으로 사주·띠·음력 기반의 길일 선택과 함께 로또 구매일을 정하는 문화가 있으나, 본 사이트는 이를 권장하지 않습니다. 로또는 어디까지나 재미·여가의 소품이며, 사주·운세 결과가 당첨을 보장하지 않습니다.</p>
+
+      <h3>관련 도구</h3>
+      <ul>
+        <li><a href="/">오늘의 운세</a> — 일진·오행 운세</li>
+        <li><a href="/saju">사주팔자 계산기</a> — 4주와 음력 자동 변환</li>
+        <li><a href="/zodiac">12띠 운세</a> — 띠별 성격·궁합·2026년 운세</li>
+        <li><a href="/lunar-calendar">음력 ↔ 양력 변환기</a> — 한국 음력 즉시 변환</li>
+      </ul>
+
+      <Disclaimer text="본 사이트의 로또 번호 생성기는 재미·여가를 위한 도구이며, 당첨을 보장하지 않습니다. 로또는 과도한 구매를 피하고, 본인 부담 가능한 범위 내에서만 구매하시기 바랍니다. 사주·운세·통계 등 어떤 방법으로도 당첨 확률이 높아지지 않습니다." />
     </section>
   </main>
 </Layout>
@@ -219,10 +264,6 @@ const COLD_NUMS = [2, 5, 21, 23, 30, 38];     // 잘 안 나오는 번호
   .ball.hot { background: #ff7272; }
   .ball.cold { background: #69c8f2; }
   .stats-note { font-size: 12px; color: #888; margin-top: 12px; }
-
-  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 0 0 16px; font-size: 14px; line-height: 1.7; color: #444; }
-  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
-  .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
   .odds-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
   .odds-table th, .odds-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e5e5e5; }
   .odds-table th { background: #fff; font-weight: 600; color: #1a1a1a; }

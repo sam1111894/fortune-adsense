@@ -1,0 +1,136 @@
+---
+/**
+ * 12띠 개별 페이지 동적 라우트
+ * 빌드 시 12개 HTML 자동 생성 (/zodiac/rat, /zodiac/ox, ...)
+ */
+import Layout from "../../layouts/Layout.astro";
+import AdSenseAd from "../../components/AdSenseAd.astro";
+import Disclaimer from "../../components/Disclaimer.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+import { ZODIACS } from "../../data/zodiacs";
+
+export async function getStaticPaths() {
+  return ZODIACS.map((z) => ({
+    params: { slug: z.slug },
+    props: { zodiac: z, all: ZODIACS },
+  }));
+}
+
+const { zodiac, all } = Astro.props;
+const currentYear = new Date().getFullYear();
+
+const pageTitle = `${zodiac.name}띠 ${currentYear}년 운세 - 성격, 궁합, 행운의 색까지`;
+const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성격 특징·강점·약점, 잘 맞는 궁합·안 맞는 궁합, 행운의 색·숫자·길일까지 정리했습니다. ${currentYear}년 운세 조언도 포함. 다른 11개 띠 정보도 함께 확인하세요.`;
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">12띠 운세 가이드</p>
+      <h1>{zodiac.name}띠 - 성격, 궁합, {currentYear}년 운세</h1>
+      <p class="subtitle">{zodiac.element} · {zodiac.direction} · {zodiac.month} · {zodiac.directionTime}</p>
+    </header>
+
+    <!-- 섹션 1: 한자·오행·방위 기본 정보 -->
+    <section class="info-card">
+      <h2>{zodiac.name}띠 기본 정보</h2>
+      <p>한국·중국 전통 천간지지(天干地支)에서 {zodiac.name}띠는 <strong>{zodiac.hanja}</strong>(지지)로 표기하며, 한자 한 글자로 표현됩니다. {zodiac.month} 출생자가 해당되며, 전통 시간 구분에서 <strong>{zodiac.directionTime}</strong> 사이에 태어난 아이가 {zodiac.name}시(時)에 해당합니다.</p>
+      <p>오행은 <strong>{zodiac.element}</strong>에 속합니다. {zodiac.element === "수(水)" ? "물(水)은 유동성·지혜·의지를 상징하며, 북방을 상징합니다." : ""}{zodiac.element === "토(土)" ? "흙(土)은 안정성·신뢰·중심을 상징하며, 중앙을 상징합니다." : ""}{zodiac.element === "목(木)" ? "나무(木)은 성장·인자함·봄을 상징하며, 동방을 상징합니다." : ""}{zodiac.element === "화(火)" ? "불(火)은 열정·활기·여름을 상징하며, 남방을 상징합니다." : ""}{zodiac.element === "금(金)" ? "쇠(金)은 결단력·정의·가을을 상징하며, 서방을 상징합니다." : ""} 전통 명리학에서는 같은 속성의 오행끼리는 서로 강화하고, 다른 오행끼리는 보완 관계가 된다고 봅니다.</p>
+    </section>
+
+    <!-- 섹션 2: 역사·문화적 배경 -->
+    <section class="info-card">
+      <h2>{zodiac.name}띠의 유래와 문화</h2>
+      <p>12띠(十二支)는 동아시아 전통 천간지지 체계에서 유래한 12년 주기 동물 기호입니다. 전국 시대(BC 5~3세기) 중국에서 이미 시간·방위를 12지지로 표기하던 기록이 있고, 한漢 시대(BC 2~AD 2세기)에 이르러 해(年) 단위 순환으로 확장되어 생년·띠 개념이 정착됐습니다. 고려 시대에는 도교·풍수지리와 함께 한반도에 전파돼, 궁중·민간 모두에서 출생 시각·방위의 길일(吉日)을 정하는 기준으로 사용됐습니다.</p>
+      <p>{zodiac.name}띠는 동아시아 민속에서 오랜 역사를 가진 동물 기호입니다. 문화마다 약간의 차이는 있지만, {zodiac.element} 오행과 {zodiac.direction} 방위를 연결 짓는 전통은 한국·중국·일본·베트남에서 공유됩니다.</p>
+    </section>
+
+    <!-- 섹션 3: 성격 (강점·약점) -->
+    <section class="info-card">
+      <h2>{zodiac.name}띠 성격 - 강점과 약점</h2>
+      <p>{zodiac.personality}</p>
+      <h3>강점</h3>
+      <ul>{zodiac.strengths.map((s) => <li>{s}</li>)}</ul>
+      <h3>약점</h3>
+      <ul>{zodiac.weaknesses.map((w) => <li>{w}</li>)}</ul>
+    </section>
+
+    <!-- 섹션 4: 궁합 -->
+    <section class="info-card">
+      <h2>{zodiac.name}띠 궁합 - 잘 맞는 띠, 안 맞는 띠</h2>
+      <h3>잘 맞는 띠</h3>
+      <ul>{zodiac.bestMatch.map((b) => <li><strong>{b.name}띠</strong> - {b.reason}</li>)}</ul>
+      <h3>안 맞는 띠</h3>
+      <ul>{zodiac.worstMatch.map((w) => <li><strong>{w.name}띠</strong> - {w.reason}</li>)}</ul>
+      <p class="related-note">다른 11개 띠의 자세한 성향은 <a href="/zodiac">12띠 전체 가이드</a>에서 확인해 보세요.</p>
+    </section>
+
+    <!-- 섹션 5: 행운의 요소 (연도 자동화) -->
+    <section class="info-card">
+      <h2>{zodiac.name}띠 행운의 요소</h2>
+      <p>전통 명리학에서 {zodiac.name}띠에게 길(吉)한 요소는 — <strong>행운의 색 {zodiac.lucky.color}</strong>, <strong>행운의 숫자 {zodiac.lucky.number}</strong>, <strong>길일 {zodiac.lucky.day}</strong>. 색은 일상 소품·옷차림·인테리어에 활용하면 심리적 안정감을 주고, 숫자는 중요한 결정의 날짜·시간에 참고하면 좋습니다.</p>
+      <p>길일(吉日)에 중요한 일정을 잡으면 심리적 자신감과 집중력이 높아진다고 봅니다. 단, 길일은 행운의 한 요소일 뿐 절대적인 기준은 아니므로, 실제 결정은 현실적 조건을 종합해 판단하시기 바랍니다.</p>
+    </section>
+
+    <!-- 섹션 6: 올해 운세 조언 + 면책 (연도 자동화) -->
+    <section class="info-block advice-block">
+      <h2>{zodiac.name}띠 {currentYear}년 운세 조언</h2>
+      <p>{zodiac.advice}</p>
+      <p class="disclaimer-line"><strong>면책 안내:</strong> 본 내용은 전통 명리학의 일반적 해석을 정리한 것이며, 의료·법률·재정·진로 결정의 근거가 될 수 없습니다. {currentYear}년 중요한 결정은 반드시 해당 분야 전문가와 상의하시기 바랍니다.</p>
+    </section>
+
+    <!-- 다른 띠 둘러보기 (내부 링크 허브) -->
+    <section class="info-card">
+      <h2>다른 11개 띠 둘러보기</h2>
+      <div class="hub-grid">
+        {all.filter((z) => z.slug !== zodiac.slug).map((z) => (
+          <a href={`/zodiac/${z.slug}`} class="hub-card" style={`--accent:${z.elementColor}`}>
+            <span class="hanja">{z.hanja}</span>
+            <span class="name">{z.name}띠</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <RelatedTools
+      tools={[
+        { href: "/zodiac", title: "12띠 전체 보기", description: "모든 띠 성격·궁합" },
+        { href: "/saju", title: "사주 계산기", description: "생년월일시 4주" },
+        { href: "/", title: "오늘의 운세", description: "매일 갱신" }
+      ]}
+    />
+
+      <Disclaimer text="본 {zodiac.name}띠 페이지는 동아시아 전통 명리학의 참고용 콘텐츠이며, 인생 결정의 근거가 될 수 없습니다. 자세한 면책 안내는 <a href=&quot;/about&quot;>이용 안내</a>를 참조해 주세요." />
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main.container { max-width: 900px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header { text-align: center; margin-bottom: 32px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0; font-size: 15px; }
+
+  .advice-block { background: #fff7e6; border-left: 4px solid #f59e0b; }
+  .related-note { margin-top: 12px; font-size: 14px; }
+  .hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+  .hub-card {
+    display: flex; align-items: center; gap: 10px;
+    background: #fff; padding: 12px 14px; border-radius: 10px;
+    border-left: 3px solid var(--accent, #8b5cf6);
+    text-decoration: none; color: #1a1a1a;
+    transition: transform 0.15s;
+  }
+  .hub-card:hover { transform: translateY(-2px); }
+  .hub-card .hanja {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--accent, #8b5cf6); color: #fff;
+    font-size: 16px; font-weight: 700;
+  }
+  .hub-card .name { font-size: 14px; font-weight: 600; }
+</style>

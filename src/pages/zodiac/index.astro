@@ -1,0 +1,124 @@
+---
+/**
+ * 12띠별 운세 - 12개 띠의 고정 성향 + 매년 업데이트 가이드
+ * 정적 빌드 (SSG)로 12개 페이지 생성
+ */
+import Layout from "../../layouts/Layout.astro";
+import AdSenseAd from "../../components/AdSenseAd.astro";
+import Disclaimer from "../../components/Disclaimer.astro";
+
+const ZODIACS = [
+  { name: "쥐", hanja: "子", element: "물", traits: "영리하고 민첩하며 사교적. 새로운 환경에 빠르게 적응합니다.", color: "#3b82f6", pages: ["창의적 아이디어", "비즈니스 시작", "학업", "여행"] },
+  { name: "소", hanja: "丑", element: "흙", traits: "성실하고 끈기 있으며 인내심이 강합니다. 한 번 시작한 일은 끝까지 갑니다.", color: "#a16207", pages: ["근면한 노력", "재물 축적", "농작물", "신뢰 구축"] },
+  { name: "호랑이", hanja: "寅", element: "나무", traits: "용감하고 리더십이 강합니다. 도전을 두려워하지 않습니다.", color: "#16a34a", pages: ["리더십 발휘", "경쟁", "모험", "새로운 시작"] },
+  { name: "토끼", hanja: "卯", element: "나무", traits: "온화하고 부드러우며 예술적 감각이 뛰어납니다.", color: "#65a30d", pages: ["예술 활동", "부드러운 설득", "인테리어", "힐링"] },
+  { name: "용", hanja: "辰", element: "흙", traits: "카리스마가 강하고 야심이 큽니다. 큰 일을 성취합니다.", color: "#9333ea", pages: ["큰 계획", "권위", "성과", "명예"] },
+  { name: "뱀", hanja: "巳", element: "불", traits: "지혜롭고 직관이 뛰어납니다. 신중하게 판단합니다.", color: "#dc2626", pages: ["직업", "연구", "철학적 사고", "전략"] },
+  { name: "말", hanja: "午", element: "불", traits: "활기차고 자유를 사랑합니다. 사람들과 어울리기를 좋아합니다.", color: "#ea580c", pages: ["여행", "사교", "운동", "재미"] },
+  { name: "양", hanja: "未", element: "흙", traits: "다정하고 예술적이며 공감 능력이 뛰어납니다.", color: "#ca8a04", pages: ["예술", "봉사", "가족", "치유"] },
+  { name: "원숭이", hanja: "申", element: "쇠", traits: "영리하고 재치있으며 문제 해결 능력이 뛰어납니다.", color: "#94a3b8", pages: ["기술", "문제 해결", "변화 적응", "기술 혁신"] },
+  { name: "닭", hanja: "酉", element: "쇠", traits: "정확하고 시간 관념이 강하며 꼼꼼합니다.", color: "#eab308", pages: ["정리정돈", "시간 관리", "세부사항", "신뢰"] },
+  { name: "개", hanja: "戌", element: "흙", traits: "충직하고 정직하며 의리가 있습니다.", color: "#854d0e", pages: ["충성", "보호", "봉사", "우정"] },
+  { name: "돼지", hanja: "亥", element: "물", traits: "순수하고 솔직하며 낙천적입니다.", color: "#0891b2", pages: ["여유", "학문", "예술", "휴식"] },
+];
+---
+
+<Layout
+  title="12띠별 성향과 특징 - 자축인묘진사오미신유술해"
+  description="12띠(쥐소호랑이토끼용뱀말양원숭이닭개돼지)별 성향, 오행, 잘 맞는 활동까지 한 페이지에서 확인하세요."
+>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">12띠 운세 가이드</p>
+      <h1>12띠별 성향과 특징</h1>
+      <p class="subtitle">태어난 해의 띠에 따라 달라지는 성향과 오행, 잘 맞는 활동을 정리했습니다.</p>
+    </header>
+
+    <section class="zodiac-grid">
+      {ZODIACS.map((z) => (
+        <article class="zodiac-card" style={`--accent:${z.color}`}>
+          <header>
+            <span class="hanja">{z.hanja}</span>
+            <h2>{z.name}띠</h2>
+          </header>
+          <p class="element">오행: <strong>{z.element}</strong></p>
+          <p class="traits">{z.traits}</p>
+          <div class="good-for">
+            <span class="good-label">잘 맞는 활동</span>
+            <ul>
+              {z.pages.map((p) => <li>{p}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </section>
+
+    <section class="info-card">
+      <h2>12띠(十二支)란?</h2>
+      <p>12띠는 동아시아 전통 천간지지(天干地支)에서 유래한 12년 주기 동물 기호입니다. 쥐(子)·소(丑)·호랑이(寅)·토끼(卯)·용(辰)·뱀(巳)·말(午)·양(未)·원숭이(申)·닭(酉)·개(戌)·돼지(亥)가 12년마다 순환합니다.</p>
+      <p>각 띠는 <strong>오행(五行)</strong>의 속성을 가지며, 목(木)·화(火)·토(土)·금(金)·수(水)의 다섯 가지로 분류됩니다. 같은 오행끼리는 서로 강화하고, 다른 오행끼리는 보완 관계가 된다고 봅니다.</p>
+      <p><a href="/saju">사주팔자 계산기</a>에서 본인 띠와 일주를 정확히 확인해 보세요.</p>
+    </section>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <h2>12띠 운세, 어떻게 봐야 할까요?</h2>
+      <p>12띠별 성향은 동아시아 전통 명리학의 세운(歲運, 연간 기운) 해석에서 유래합니다. 같은 띠라도 태어난 월·일·시에 따라 사주 전체가 다르고, 같은 해에도 일진(日辰)이 매일 바뀌므로 실제 운세는 띠보다 일간(日干)과 오행 관계에 더 큰 영향을 받습니다.</p>
+
+      <h3>띠와 사주의 관계</h3>
+      <p>12띠는 사주 4주 중 <strong>년주(年柱)</strong>의 지지(地支)에 해당합니다. 즉 "쥐띠"는 년지가 子(자)라는 의미이며, 같은 해에 태어난 모든 사람은 같은 년주를 공유합니다. 더 세밀한 운세 분석을 위해서는 사주 전체(년주·월주·일주·시주)를 함께 살펴봐야 합니다.</p>
+
+      <h3>띠 궁합 참고</h3>
+      <p>전통적으로는 상극(相剋) 관계인 띠끼리는 갈등이, 상생(相生) 관계인 띠끼리는 조화가 잘 된다고 봅니다. 다만 이는 참고용 통계이며, 실제 인간관계는 띠보다 개인의 성격·환경·노력에 따라 결정됩니다. 띠 궁합으로 중요한 결정을 내리지 마세요.</p>
+
+      <h3>2026년 운세 업데이트</h3>
+      <p>각 띠별 2026년 운세·조언·행운의 색·숫자는 매년 1월 1일(양력)에 자동 갱신됩니다. 자세한 내용은 각 띠 페이지를 참조해 주세요.</p>
+
+      <h3>관련 도구</h3>
+      <ul>
+        <li><a href="/">오늘의 운세</a> — 매일 갱신되는 일진·오행 운세</li>
+        <li><a href="/saju">사주팔자 계산기</a> — 4주와 음력 자동 변환</li>
+        <li><a href="/lunar-calendar">음력 ↔ 양력 변환기</a> — 한국 음력 즉시 변환</li>
+        <li><a href="/lotto">로또 번호 생성기</a> — 재미·여가용</li>
+        <li><a href="/salary">연봉 실수령액 계산기</a> — 4대보험·소득세 환산</li>
+      </ul>
+
+      <Disclaimer text="12띠 정보는 동아시아 전통 명리학의 참고용 콘텐츠이며, 인간관계·결혼·진로·재정 결정의 근거가 될 수 없습니다. 자세한 면책 안내는 <a href=&quot;/about&quot;>이용 안내</a>를 참조해 주세요." />
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main.container { max-width: 1000px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header { text-align: center; margin-bottom: 28px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0; }
+
+  .zodiac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .zodiac-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    border-left: 4px solid var(--accent, #8b5cf6);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    transition: transform 0.15s;
+  }
+  .zodiac-card:hover { transform: translateY(-2px); }
+  .zodiac-card header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .hanja {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent, #8b5cf6); color: #fff;
+    font-size: 24px; font-weight: 800;
+  }
+  .zodiac-card h2 { margin: 0; font-size: 18px; color: #1a1a1a; }
+  .element { font-size: 13px; color: #555; margin: 8px 0; }
+  .element strong { color: var(--accent, #1a1a1a); }
+  .traits { font-size: 14px; color: #444; line-height: 1.6; margin: 0 0 12px; }
+  .good-for { border-top: 1px dashed #e5e5e5; padding-top: 10px; }
+  .good-label { font-size: 12px; color: #888; display: block; margin-bottom: 4px; }
+  .good-for ul { margin: 0; padding: 0 0 0 16px; font-size: 13px; color: #555; }
+  .good-for li { margin-bottom: 2px; }
+</style>

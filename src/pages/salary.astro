@@ -9,6 +9,8 @@
  * 계산 로직은 클라이언트 사이드에서 즉시 처리 (서버 부담 0)
  */
 import Layout from "../layouts/Layout.astro";
+import AdSenseAd from "../components/AdSenseAd.astro";
+import Disclaimer from "../components/Disclaimer.astro";
 ---
 
 <Layout
@@ -78,10 +80,10 @@ import Layout from "../layouts/Layout.astro";
         </table>
       </div>
 
-      <p class="disclaimer">* 본 계산은 부양가족·자녀 세액공제 등 세부 공제 없이 <strong>간이 환산</strong>한 값입니다. 실제 급여명세서와는 부양가족 수·비과세 수당 등에 따라 차이가 있을 수 있습니다.</p>
+      <Disclaimer text="* 본 계산은 부양가족·자녀 세액공제 등 세부 공제 없이 <strong>간이 환산</strong>한 값입니다. 실제 급여명세서와는 부양가족 수·비과세 수당 등에 따라 차이가 있을 수 있습니다." />
     </section>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>2026년 4대보험 요율</h2>
       <table class="rates-table">
         <thead><tr><th>항목</th><th>근로자 부담률</th><th>비고</th></tr></thead>
@@ -95,9 +97,53 @@ import Layout from "../layouts/Layout.astro";
       <p class="src">출처: 2026년 기준 건강보험공단·국민연금공단·고용보험 요율. 정확한 금액은 회사 급여명세서를 확인하세요.</p>
     </section>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>계산 방식</h2>
       <p>월급여 = 연봉 ÷ 12. 각 보험료는 <strong>소득월액</strong>(월급여 - 일부 비과세)을 기준으로 산정합니다. 소득세는 2026년 <strong>간이세액표</strong>를 부양가족 수별로 환산하여 적용하며, 지방소득세는 소득세의 10%입니다.</p>
+    </section>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <h2>2026년 연봉 실수령액, 어떻게 계산되나요?</h2>
+      <p>연봉(年俸)은 1년간 회사가 근로자에게 지급하기로 약속한 총 급여이며, 여기에서 4대 보험료와 소득세가 공제된 금액이 실제 손에 들어오는 <strong>실수령액</strong>입니다. 본 계산기는 2026년 한국 4대보험 요율과 간이세액표를 기반으로 빠르게 환산합니다.</p>
+
+      <h3>공제 항목 설명</h3>
+      <ul>
+        <li><strong>국민연금</strong> — 퇴직 후 연금 지급을 위한 보험. 2026년 근로자 부담률은 4.5%, 소득월액 상한 637만 원.</li>
+        <li><strong>건강보험</strong> — 질병·상해 시 진료를 보장하는 보험. 2026년 근로자 부담률은 3.545%, 소득월액 상한 약 849만 원.</li>
+        <li><strong>장기요양보험</strong> — 노후·질병으로 돌봄이 필요할 때 지원. 건강보험료의 12.95%로 자동 부과.</li>
+        <li><strong>고용보험</strong> — 실업 시 구직 급여를 지원. 2026년 근로자 부담률 0.9%, 상한 없음.</li>
+        <li><strong>소득세</strong> — 국가 세금. 부양가족 수·자녀 세액공제에 따라 차감.</li>
+        <li><strong>지방소득세</strong> — 소득세의 10%.</li>
+      </ul>
+
+      <h3>실수령액을 늘리는 방법</h3>
+      <p>정식 근로소득 외 비과세 수당(식대·교통비·자녀보육수당 등)을 활용하면 4대보험 산정 기준이 낮아져 실수령액이 약간 올라갑니다. 다만 회사의 복리후생 정책에 따라 다르므로 인사팀과 상담하시기 바랍니다. 본인 부담 가능한 한도 내에서 연금저축·IRP·연금보험 등 세액공제 상품을 활용하면 연말 정산 시 환급을 받을 수 있습니다.</p>
+
+      <h3>연봉 vs 월급 vs 시급</h3>
+      <p><strong>연봉</strong>을 <strong>월급</strong>으로 환산하면 연봉 ÷ 12입니다. <strong>주 40시간(法定 근로시간)</strong> 기준으로 시급을 계산하면 월급 ÷ 209시간입니다. 본 계산기는 월급여 기준으로 4대보험과 소득세를 계산합니다.</p>
+
+      <h3>연봉 FAQ</h3>
+
+      <h4>Q1. 본 계산 결과와 회사 급여명세서가 다른 이유는?</h4>
+      <p>본 계산은 부양가족·자녀 세액공제, 비과세 수당, 국민연금 가입 유형(직장·지역·임의) 등을 단순화한 <strong>간이 환산</strong>입니다. 실제 급여명세서와는 회사 복리후생 정책, 비과세 항목, 부양가족 수 등에 따라 차이가 발생할 수 있습니다.</p>
+
+      <h4>Q4. 연봉 협상 시 도움말은?</h4>
+      <p>연봉은 단순히 숫자 비교보다 4대보험·소득세 공제 후 실수령액, 복리후생(식대·교통비·자녀수당), 퇴직금·성과급·스톡옵션 등을 종합적으로 비교하는 것이 중요합니다. 본 계산기로 협상 전후 실수령액 차이를 미리 확인해 보세요.</p>
+
+      <h4>Q5. 프리랜서·사업자는 어떻게 계산하나요?</h4>
+      <p>본 계산기는 직장인(4대보험 가입)을 기준으로 작성되었습니다. 프리랜서·사업자는 3.3% 원천세, 종합소득세, 4대보험 지역가입자 요율 등이 다르게 적용되므로 세무사·회계사와 상담하시기 바랍니다.</p>
+
+      <h3>관련 도구</h3>
+      <ul>
+        <li><a href="/">오늘의 운세</a> — 일진·오행 운세</li>
+        <li><a href="/saju">사주팔자 계산기</a> — 4주와 음력 자동 변환</li>
+        <li><a href="/zodiac">12띠 운세</a> — 띠별 성격·궁합·2026년 운세</li>
+        <li><a href="/lunar-calendar">음력 ↔ 양력 변환기</a> — 한국 음력 즉시 변환</li>
+      </ul>
+
+      <Disclaimer text="본 계산기는 2026년 한국 4대보험 요율과 간이세액표를 기반으로 한 참고용 환산 도구이며, 법적·재정적 조언이 아닙니다. 정확한 급여·세무·보험 상담은 회사 인사팀·세무사·회계사와 상의하시기 바랍니다." />
     </section>
   </main>
 </Layout>
@@ -275,11 +321,6 @@ import Layout from "../layouts/Layout.astro";
   .breakdown-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
   .breakdown-table td:last-child { text-align: right; font-weight: 600; color: #1a1a1a; }
   .breakdown-table tr.total td { background: #fafafa; font-weight: 700; color: #d00; border-top: 2px solid #1a1a1a; }
-
-  .disclaimer { font-size: 12px; color: #888; margin-top: 16px; padding: 12px; background: #fafafa; border-radius: 8px; }
-
-  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 0 0 16px; font-size: 14px; line-height: 1.7; color: #444; }
-  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
   .rates-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
   .rates-table th, .rates-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e5e5e5; }
   .rates-table th { background: #fff; font-weight: 600; color: #1a1a1a; }

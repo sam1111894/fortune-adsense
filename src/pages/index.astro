@@ -4,6 +4,8 @@
  * 빌드 타임에 7일치 운세를 미리 계산해 SSG로 렌더 (정적 페이지 = Cloudflare Pages 무료 호스팅 최적)
  */
 import Layout from "../layouts/Layout.astro";
+import AdSenseAd from "../components/AdSenseAd.astro";
+import Disclaimer from "../components/Disclaimer.astro";
 import { generateDailyFortune } from "../lib/fortune.ts";
 
 // 빌드 타임 기준 오늘 날짜 (UTC 기준, 한국 시간 = UTC+9)
@@ -158,10 +160,37 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
       </div>
     </section>
 
-    <section class="info-block">
+    <section class="info-card">
       <h2>오늘의 운세는 어떻게 계산되나요?</h2>
       <p>이 사이트는 <strong>만세력(한국 음력 1900~2050)</strong> 데이터베이스를 기반으로, 태어난 날의 <strong>사주팔자(四柱八字)</strong>와 오늘의 <strong>일진(日辰)</strong>을 비교하여 운세를 산출합니다. 천간·지지·오행·24절기 데이터를 한국 음력 변환 라이브러리(<code>@fullstackfamily/manseryeok</code>)로 계산하며, 결과는 매일 업데이트됩니다.</p>
       <p>점수는 일진과 일간의 관계에서 파생된 결정론적 해시값을 기반으로 산정되며, 실제 상담이나 의료·법률 조언이 아닙니다.</p>
+    </section>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <h2>오늘의 운세, 어떻게 활용하나요?</h2>
+      <p>매일 갱신되는 오늘의 운세는 한국 음력 데이터와 일진(日辰)에 기반한 흥미·교양 콘텐츠입니다. 한국·중국 전통 명리학의 시간·공간적 기운 흐름을 이해하는 참고 자료로 활용해 보세요.</p>
+
+      <h3>운세 점수 구성</h3>
+      <p>오늘의 운세는 <strong>총운·금전·연애·건강·일·학업</strong> 다섯 항목으로 구성됩니다. 각 항목은 일진과 일간의 관계, 오행의 상생·상극, 24절기 변화에 따라 결정론적으로 산출되며 같은 날에는 같은 점수가 나옵니다.</p>
+
+      <h3>행운의 색·숫자</h3>
+      <p>매일 갱신되는 행운의 색(예: 카키·남색·연두)과 행운의 숫자(예: 33·7·14)는 일진의 오행 속성을 반영해 추천됩니다. 색상·숫자 자체에 특별한 의미가 있는 것은 아니며, 참고용으로 활용해 주세요.</p>
+
+      <h3>일진(日辰)이란?</h3>
+      <p>일진은 특정 날짜에 부여되는 천간지지 한 쌍(예: 乙酉·丙戌·丁亥)입니다. 60갑자가 60일마다 순환하며, 매일 다른 일진이 부여됩니다. 사주·명리학에서는 일진과 본인의 사주를 비교해 길흉을 판단합니다.</p>
+
+      <h3>관련 도구</h3>
+      <ul>
+        <li><a href="/saju">사주팔자 계산기</a> — 4주(년·월·일·시)와 음력 자동 변환</li>
+        <li><a href="/lunar-calendar">음력 ↔ 양력 변환기</a> — 한국 음력 즉시 변환</li>
+        <li><a href="/zodiac">12띠 운세</a> — 띠별 성격·궁합·2026년 운세</li>
+        <li><a href="/lotto">로또 번호 생성기</a> — 재미·여가용</li>
+        <li><a href="/salary">연봉 실수령액 계산기</a> — 4대보험·소득세 환산</li>
+      </ul>
+
+      <Disclaimer text="본 서비스는 흥미·교양·자기 이해를 위한 참고용 콘텐츠이며, 의료·법률·재정·진로 결정의 근거가 될 수 없습니다. 자세한 면책 안내는 <a href=&quot;/about&quot;>이용 안내</a>를 참조해 주세요." />
     </section>
   </main>
 </Layout>
@@ -206,10 +235,6 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   .week-score { font-size: 22px; font-weight: 800; color: #1a1a1a; margin: 4px 0; }
   .week-pillar { font-size: 11px; color: #555; margin: 0; }
   .week-zodiac { font-size: 11px; color: #888; margin: 0; }
-
-  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 32px 0; font-size: 14px; line-height: 1.7; color: #444; }
-  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
-  .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
 
   /* === Tools grid (전체 도구 둘러보기) === */
   .tools-grid { margin: 40px 0 8px; }

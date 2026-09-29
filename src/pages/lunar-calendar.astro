@@ -1,9 +1,8 @@
 ---
-/**
- * 음력 ↔ 양력 변환기 (1900~2050)
- * 양력→음력 / 음력→양력 양방향 모두 지원
- */
 import Layout from "../layouts/Layout.astro";
+import AdSenseAd from "../components/AdSenseAd.astro";
+import Disclaimer from "../components/Disclaimer.astro";
+import RelatedTools from "../components/RelatedTools.astro";
 import { convertSolarToLunar, convertLunarToSolar } from "../lib/fortune.ts";
 
 // 기본값: 오늘 양력 → 음력 미리 계산
@@ -78,8 +77,56 @@ const defaultLunar = convertSolarToLunar(today.year, today.month, today.day);
     <section class="info-block">
       <h2>음력 / 양력이란?</h2>
       <p><strong>양력(陽曆)</strong>은 태양의 움직임을 기준으로 한 달력(그레고리력)이고, <strong>음력(陰曆)</strong>은 달의 위상을 기준으로 한 달력입니다. 한국은 전통 명절(설·추석)을 음력으로 정하기 때문에 일상에서는 양력, 전통 행사에서는 음력을 사용합니다.</p>
-      <p>음력은 태양의 움직임도 보정하기 위해 <strong>윤달(閏月)</strong>을 넣는데, 같은 달이 두 번 나오는 해가 있습니다(예: 2020년 4월이 두 번). 이 변환기는 윤달 여부까지 정확하게 처리합니다.</p>
+      <p class="disclaimer-line">본 변환 결과는 한국 천문연구원 표준 음력 데이터에 기반한 참고용 정보이며, 공식 문서·관보·법적 증명에는 해당 기관의 확인을 권장합니다.</p>
     </section>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <h2>음력·양력 변환, 어떻게 작동하나요?</h2>
+      <p>음력(陰曆)은 달의 공전 주기(약 29.53일)를 기준으로 만든 달력이고, 양력(陽曆)은 태양의 공전 주기(약 365.24일)를 기준으로 만든 달력입니다. 이 두 주기는 정확히 나누어 떨어지지 않기 때문에, 동아시아 전통 문화에서는 <strong>태음태양력(陰陽曆)</strong>을 사용해 두 주기 모두를 고려했습니다.</p>
+
+      <h3>한국 음력의 특징</h3>
+      <ul>
+        <li><strong>태음태양력</strong> — 달의 phase(朔·望)와 태양의 절기(節氣)를 모두 반영합니다.</li>
+        <li><strong>24절기(二十四節氣)</strong> — 태양 황경을 15도씩 나눈 24개 시점입니다. 입춘·청명·곡우·하지·대서·추분·한로·대설 등 사주·농사·전통 풍습에 광범위하게 사용됩니다.</li>
+        <li><strong>윤달(閏月)</strong> — 19년에 7번 정도 삽입되어 양력과 음력의 오차를 보정합니다. 같은 달이 두 번 나오면 뒤쪽이 윤달입니다.</li>
+        <li><strong>간지(干支)</strong> — 갑·을·병·정·무·기·경·신·임·계(十干)와 자·축·인·묘·진·사·오·미·신·유·술·해(十二支)의 60가지 조합으로 일자를 표기합니다.</li>
+      </ul>
+
+      <h3>음력·양력 변환기 사용 예시</h3>
+      <p>한국에서는 설·추석 등 전통 명절이 음력 기준입니다. "음력 1월 1일 = 설날", "음력 8월 15일 = 추석", "음력 4월 8일 = 석가탄신일" 등으로, 일상에서 음력→양력 변환이 자주 필요합니다. 또한 결혼·이사·장례 등 길일 선택에서도 음력 날짜가 기준이 됩니다.</p>
+
+      <h3>변환기 정확도</h3>
+      <p>본 변환기는 MIT 라이선스 오픈소스 라이브러리 <code>@fullstackfamily/manseryeok</code>을 사용하며, 1900년~2050년 범위에서 한국 천문연구원(KASI) 표준 음력과 100% 일치하는 결과를 제공합니다. 자세한 검증 내역은 <a href="/sources">출처 및 참고 자료 페이지</a>에서 확인하실 수 있습니다.</p>
+
+      <h3>음력 변환 FAQ</h3>
+
+      <h4>Q1. 1900년 이전이나 2050년 이후도 변환되나요?</h4>
+      <p>아니요. 본 변환기는 한국 음력 데이터가 안정적으로 보장되는 1900~2050 범위에서만 동작합니다. 그 이전·이후는 정확도가 떨어지거나 데이터가 없을 수 있어 입력을 제한합니다.</p>
+
+      <h4>Q2. 윤달은 어떻게 입력하나요?</h4>
+      <p>음력→양력 변환 시 "윤달" 체크박스를 선택하시면 됩니다. 윤달인 경우 "음력 4월 1일 (윤)" 식으로 같은 달이 두 번 나타나는 해에는 윤 표시가 필요합니다.</p>
+
+      <h4>Q3. 시간대 기준은 무엇인가요?</h4>
+      <p>본 변환기는 KST(한국 표준시, UTC+9) 자정 기준으로 동작합니다. 시간은 입력하지 않으며, 사주 계산과 달리 일 단위 변환에는 영향이 없습니다.</p>
+
+      <h4>Q4. 음력 데이터 출처는 무엇인가요?</h4>
+      <p>한국 천문연구원(KASI)에서 매년 발표하는 표준 음력 데이터와 1900~2050년 검증된 음력표를 사용합니다. 자세한 자료는 <a href="/sources">출처 페이지</a>를 참조해 주세요.</p>
+
+      <h4>Q5. 사주 계산도 함께 가능한가요?</h4>
+      <p>네. <a href="/saju">사주팔자 계산기</a>에서는 생년월일시를 입력하면 4주(년주·월주·일주·시주)와 천간지지 한자 표기를 즉시 확인할 수 있습니다.</p>
+    </section>
+
+    <RelatedTools
+      tools={[
+        { href: "/saju", title: "사주팔자 계산기", description: "4주와 음력 자동 변환" },
+        { href: "/zodiac", title: "12띠 운세", description: "띠별 성격·궁합·2026년 운세" },
+        { href: "/", title: "오늘의 운세", description: "매일 갱신되는 일진·오행 운세" }
+      ]}
+    />
+
+    <Disclaimer text="본 변환 결과는 한국 천문연구원 표준 음력 데이터에 기반한 참고용 정보이며, 공식 문서·관보·법적 증명에는 해당 기관의 확인을 권장합니다." />
   </main>
 </Layout>
 
@@ -165,9 +212,6 @@ const defaultLunar = convertSolarToLunar(today.year, today.month, today.day);
   .gapja-info { color: #555 !important; font-size: 13px; }
   .hint { color: #888; font-style: italic; }
   .error-msg { background: #fee; border-left: 4px solid #c00; padding: 12px 16px; border-radius: 6px; color: #c00; }
-
-  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 32px 0; font-size: 14px; line-height: 1.7; color: #444; }
-  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
 
   @media (max-width: 640px) {
     .page-header h1 { font-size: 24px; }

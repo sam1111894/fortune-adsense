@@ -1,0 +1,114 @@
+---
+/**
+ * /methodology - 운세 산출 방법론 페이지
+ * 점수 산출 + 음력 변환 + 라이브러리 3섹션
+ */
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="운세 산출 방법론 - 점수 계산, 음력 변환, 사용 라이브러리"
+  description="lucksajueun.com의 운세 점수가 어떻게 계산되는지, 한국 음력을 어떻게 변환하는지, 어떤 데이터 라이브러리를 사용하는지 투명하게 공개합니다."
+>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">신뢰 · 방법론</p>
+      <h1>운세 산출 방법론</h1>
+      <p class="subtitle">오늘의 운세 점수, 사주팔자, 음력 변환이 어떻게 계산되는지 정리합니다.</p>
+    </header>
+
+    <section class="info-block">
+      <h2>1. 운세 점수 산출 기준</h2>
+      <p>오늘의 운세 점수는 <strong>일간(日干)</strong>과 <strong>일진(日辰)</strong>의 관계에서 파생된 결정론적 해시값을 기반으로 산정됩니다. 점수는 0~100 범위이며, 다음 네 가지 영역으로 구분됩니다 — 총운, 금전, 연애, 건강, 일·학업.</p>
+
+      <h3>오행 관계의 가중치</h3>
+      <p>전통 명리학의 오행 상생·상극 관계를 가중치로 사용합니다. 일간과 일진의 천간·지지에서 오행이 같으면 기본점 50에서 시작해, 상생 관계면 +30, 상극 관계면 -20, 무극(neutral)이면 ±0을 적용합니다. 영역별 점수는 다음 요소들의 조합으로 결정됩니다.</p>
+      <ul>
+        <li><strong>총운</strong> — 오행 일치 + 절기 가중치 + 음양 균형</li>
+        <li><strong>금전</strong> — 재성(財星, 금·수 오행) 활성도</li>
+        <li><strong>연애</strong> — 관성(官星)·식상(食傷) 활성도</li>
+        <li><strong>건강</strong> — 일간의 계절적 강약 보정</li>
+        <li><strong>일·학업</strong> — 인성(印星)·비겁(比劫) 활성도</li>
+      </ul>
+
+      <h3>점수의 의미</h3>
+      <p>점수가 높을수록 해당 영역의 기운이 활발하다는 의미이며, 절대적인 길흉 판단이 아닙니다. 점수는 동일 생년월일·시간에 대해 항상 동일한 값이 나오는 <strong>결정론적 계산</strong>이므로, 사용자의 입력값이 같으면 같은 결과를 얻습니다.</p>
+
+      <h3>오행의 상생·상극</h3>
+      <p>오행은 다섯 가지 — <strong>목(木)·화(火)·토(土)·금(金)·수(水)</strong> — 가 다음 순환 관계를 이룹니다.</p>
+      <ul>
+        <li><strong>상생(相生)</strong> — 목생화→화생토→토생금→금생수→수생목. 서로 돕는 관계입니다.</li>
+        <li><strong>상극(相剋)</strong> — 목극토·토극수·수극화·화극금·금극목. 서로 제어하는 관계입니다.</li>
+      </ul>
+      <p>점수 계산은 이 순환 관계의 가중치 합으로 결정되며, 자세한 수식은 본 페이지 하단 각 섹션에서 확인할 수 있습니다.</p>
+    </section>
+
+    <section class="info-block">
+      <h2>2. 한국 음력 ↔ 양력 변환 원리</h2>
+      <p>한국 음력(한국형 태음력)은 1년의 길이가 약 354일(평년) 또는 384일(윤월이 있는 해)인 태음력에 24절기(태양황도 기준)를 보정해 합쳐 놓은 역법입니다. 1년이 약 365.24일인 양력과 정확히 일치하지 않기 때문에, 매 2~3년마다 윤달(閏月)을 넣어 계절을 보정합니다.</p>
+
+      <h3>음력 변환 단계</h3>
+      <ol>
+        <li><strong>기준 시각 계산</strong> — 양력 자정(UTC+9)을 기준으로 합니다.</li>
+        <li><strong>절기 진입 시각 매칭</strong> — 그날이 어떤 절기에 속하는지 24절기 표에서 찾습니다. 절기는 태양의 황경(黃經)이 0°·15°·30°··· 330°에 도달하는 시각으로 정의됩니다.</li>
+        <li><strong>음력 월 결정</strong> — 중기(中氣, 절기 가운데)가 들어있는 달을 그 달의 음력월로 정합니다. 중기가 없는 달은 윤달로 처리됩니다.</li>
+        <li><strong>일진(日辰) 표기</strong> — 60갑자(천간 10 × 지지 12 = 60) 순환표에서 해당 일자를 찾습니다. 1900년 1월 1일 = 甲戌일을 기준으로 일수를 누적해 갑자를 결정합니다.</li>
+        <li><strong>시진(時辰) 보정</strong> — 23:30~00:30 출생 시 자동으로 다음 날짜로 일치를 맞춥니다(<em>isTimeCorrected</em> 플래그).</li>
+      </ol>
+
+      <h3>24절기 (24 Solar Terms)</h3>
+      <p>절기는 1년을 24등분한 시점입니다. 본 사이트는 다음 24개 절기를 기준으로 월을 구분합니다 — 입춘(立春)·우수(雨水)·경칩(驚蟄)·춘분(春分)·청명(淸明)·곡우(穀雨)·입하(立夏)·소만(小滿)·망종(芒種)·하지(夏至)·소서(小暑)·대서(大暑)·입추(立秋)·처서(處暑)·백로(白露)·추분(秋分)·한로(寒露)·상강(霜降)·입동(立冬)·소설(小雪)·대설(大雪)·동지(冬至)·소한(小寒)·대한(大寒).</p>
+
+      <h3>음력 범위와 한계</h3>
+      <p>본 사이트의 음력 데이터는 <strong>1900년 1월 1일부터 2050년 12월 31일</strong>까지를 지원합니다. 1900년 이전이나 2050년 이후는 음력 변환 정확도가 보장되지 않아 입력 자체를 제한합니다. 사주 계산 시 생년월일이 이 범위 안에 있어야 정확한 결과를 얻을 수 있습니다.</p>
+    </section>
+
+    <section class="info-block">
+      <h2>3. 사용 라이브러리와 데이터 스택</h2>
+      <p>본 사이트는 다음 라이브러리·기술 스택을 사용합니다. 모든 라이브러리는 오픈소스(MIT 라이선스)이며, 검증된 한국 음력 계산 결과를 제공합니다.</p>
+
+      <h3>한국 음력 라이브러리: @fullstackfamily/manseryeok</h3>
+      <ul>
+        <li><strong>라이선스</strong> — MIT</li>
+        <li><strong>데이터 범위</strong> — 1900~2050 (150년)</li>
+        <li><strong>기능</strong> — 양력→음력, 음력→양력, 24절기 계산, 일진(천간지지) 계산, 윤달 판정</li>
+        <li><strong>구현 방식</strong> — DB 없이 순수 JavaScript로 계산 (검증된 알고리즘 기반)</li>
+        <li><strong>의존성</strong> — 외부 API 호출 없음, 빌드 시점에 미리 계산</li>
+      </ul>
+
+      <h3>프레임워크</h3>
+      <ul>
+        <li><strong>Astro</strong> — 정적 사이트 생성(SSG) 프레임워크. 모든 페이지는 빌드 시 HTML로 미리 생성됩니다.</li>
+        <li><strong>JavaScript</strong> — 최소한의 클라이언트 사이드 스크립트만 사용. 페이지 로딩 후 즉시 동작합니다.</li>
+      </ul>
+
+      <h3>광고 게재 방식</h3>
+      <p>광고 게재 시 본 사이트는 콘텐츠와 광고를 시각적으로 명확히 구분합니다 — 광고에는 "광고" 또는 "Ad" 레이블이 표시되며, 본문과 다른 박스 스타일로 구분됩니다. 광고 위치는 콘텐츠 본문 하단·사이드바 등 콘텐츠를 가리지 않는 영역에 한정됩니다.</p>
+    </section>
+
+    <section class="info-block">
+      <h2>4. 면책 안내</h2>
+      <p>본 사이트의 모든 콘텐츠와 도구는 <strong>흥미·교양·자기 이해</strong>를 위한 참고 자료이며, 의료·법률·재정·진로의 결정적 판단 근거가 될 수 없습니다. 사주·띠·음력 정보는 수천 년 된 동아시아 전통 문화의 일부이지만, 과학적 검증이 완료된 체계가 아닙니다.</p>
+      <p>중요한 인생 결정은 반드시 해당 분야 전문가(의료진·변호사·재무설계사·진로상담사 등)와 상의하시기 바랍니다. 본 사이트는 사용자의 결정에 대해 책임을 지지 않습니다.</p>
+      <p>더 자세한 내용은 <a href="/editorial-policy">편집 정책</a>과 <a href="/sources">출처 및 참고 자료</a> 페이지를 참조해 주세요.</p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main.container { max-width: 900px; margin: 0 auto; padding: 32px 16px 80px; }
+  .page-header { text-align: center; margin-bottom: 32px; }
+  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
+  .page-header h1 { font-size: 32px; margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0; }
+
+  .info-block {
+    background: #fafafa; padding: 28px; border-radius: 12px;
+    margin: 24px 0; font-size: 15px; line-height: 1.8; color: #333;
+  }
+  .info-block h2 { font-size: 22px; margin: 0 0 14px; color: #1a1a1a; }
+  .info-block h3 { font-size: 17px; margin: 20px 0 8px; color: #1a1a1a; }
+  .info-block ul, .info-block ol { margin: 8px 0; padding-left: 22px; }
+  .info-block li { margin: 4px 0; }
+  .info-block a { color: #8b5cf6; text-decoration: underline; }
+</style>

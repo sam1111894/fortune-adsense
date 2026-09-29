@@ -4,6 +4,9 @@
  * (빌드 타임에는 기본값 1990-01-01 12시만 SSG, 사용자가 입력하면 클라이언트 계산)
  */
 import Layout from "../layouts/Layout.astro";
+import AdSenseAd from "../components/AdSenseAd.astro";
+import Disclaimer from "../components/Disclaimer.astro";
+import RelatedTools from "../components/RelatedTools.astro";
 import { calculateBirthSaju } from "../lib/fortune.ts";
 
 const defaultDate = "1990-01-01";
@@ -14,8 +17,8 @@ const defaultResult = calculateBirthSaju(1990, 1, 1, 12);
 ---
 
 <Layout
-  title="무료 사주팔자 계산기 - 생년월일시 입력하면 즉시 결과"
-  description="생년월일과 태어난 시간을 입력하면 사주팔자(년주·월주·일주·시주)와 한자 표기를 바로 확인할 수 있습니다. 만세력 기반 정확한 계산."
+  title="사주팔자 계산기 - 4주(년월일시) 한자 표기 즉시 확인"
+  description="생년월일시를 입력하면 사주팔자 4주(년주·월주·일주·시주)와 천간지지 한자 표기를 즉시 보여드립니다. 음력 자동 변환, 1900~2050년 지원, MIT 라이선스 만세력 라이브러리 사용."
 >
   <main class="container">
     <header class="page-header">
@@ -24,7 +27,30 @@ const defaultResult = calculateBirthSaju(1990, 1, 1, 12);
       <p class="subtitle">생년월일과 태어난 시간을 입력하면 사주 4주를 한자로 보여드립니다.</p>
     </header>
 
+    <!-- 도입부: 사주팔자가 무엇인지 (Jev 53% 확신 섹션) -->
+    <section class="intro-block">
+      <h2>사주팔자란?</h2>
+      <p>사주팔자(四柱八字)는 한국·중국 전통 명리학에서 사람의 운세를 분석하는 가장 오래된 체계 가운데 하나입니다. 태어난 <strong>년(年)·월(月)·일(日)·시(時)</strong> 네 시점을 각각 한 글자의 <strong>천간(天干)</strong>과 한 글자의 <strong>지지(地支)</strong>로 표기해, 네 기둥 = 사주(四柱), 각 기둥의 천간·지지 두 글자 = 팔자(八字)라 부릅니다.</p>
+      <p>사주의 역사는 <strong>전한(前漢) 시대 BC 2세기 경</strong>으로 올라갑니다. 《史记》·《汉书》에서 이미 시간·공간을 천간지지 60갑자로 표기하던 기록이 남아 있고, 후한 말 왕充(王充)의 《论衡》에서 사주명리학의 이론적 토대가 정리됐습니다. 고려 시대에는 도교·불교와 함께 한반도에 전파돼, 오늘날의 한국 전통 문화 깊숙이 자리 잡고 있습니다.</p>
+      <p>사주팔자는 의료·법률·재정적 결정을 내리는 도구가 아닙니다. <strong>흥미·교양·자기 이해</strong>를 위한 참고 자료이며, 중요한 인생 결정은 반드시 해당 분야 전문가와 상의하시기 바랍니다.</p>
+
+      <h3>네 기둥이 의미하는 것</h3>
+      <ul>
+        <li><strong>년주(年柱)</strong> — 조상·유년기·사회적 배경. 태어난 해의 세운(歲運)을 담습니다.</li>
+        <li><strong>월주(月柱)</strong> — 부모·형제·사회환경. 한 달 단위의 기운(절기 기준)을 반영합니다.</li>
+        <li><strong>일주(日柱)</strong> — 본인과 배우자. 일간(日干) = 나 자신, 일지(日支) = 배우자 자리로 봅니다.</li>
+        <li><strong>시주(時柱)</strong> — 자녀·말년·결과. 태어난 시각의 기운을 담습니다.</li>
+      </ul>
+
+      <h3>음양오행 기초</h3>
+      <p>천간 10개·지지 12개는 각각 <strong>목(木)·화(火)·토(土)·금(金)·수(水)</strong> 오행과 음·양으로 분류됩니다. 오행은 <strong>상생(相生, 木→火→土→金→水→木)</strong>과 <strong>상극(相剋, 木→土→水→火→金→木)</strong>의 순환 관계를 이루며, 사주 4주 안에서 어떤 오행이 강하고 어떤 오행이 약한지를 분석하는 것이 사주명리학의 출발점입니다.</p>
+      <p>천간 10개를 오행으로 분류하면 — 갑(甲)·을(乙)=목, 병(丙)·정(丁)=화, 무(戊)·기(己)=토, 경(庚)·신(辛)=금, 임(壬)·계(癸)=수. 지지 12개는 — 자(子)=수, 축(丑)=토, 인(寅)=목, 묘(卯)=목, 진(辰)=토, 사(巳)=화, 오(午)=화, 미(未)=토, 신(申)=금, 유(酉)=금, 술(戌)=토, 해(亥)=수.</p>
+    </section>
+
+    <!-- 계산기 (Jev 68% 확신: 인트로 후 중간 배치) -->
     <section class="calculator">
+      <h2>내 사주팔자 계산하기</h2>
+      <p class="calc-intro">아래에 생년월일과 태어난 시간을 입력하시면 사주 4주(년주·월주·일주·시주)를 한자로 계산해 드립니다. 결과는 음력 변환과 시간 보정까지 자동으로 처리됩니다.</p>
       <form id="saju-form">
         <div class="field">
           <label for="birthdate">생년월일</label>
@@ -70,10 +96,54 @@ const defaultResult = calculateBirthSaju(1990, 1, 1, 12);
       </div>
     </section>
 
-    <section class="info-block">
-      <h2>사주팔자란?</h2>
-      <p>사주팔자(四柱八字)는 태어난 연·월·일·시를 <strong>천간(天干) 10개</strong>와 <strong>지지(地支) 12개</strong>의 조합으로 나타낸 것입니다. 각 기둥은 한 글자의 천간과 한 글자의 지지로 이루어지며, 네 기둥이므로 "사주"라 부릅니다.</p>
-      <p>이 계산기는 한국 음력 데이터(<code>@fullstackfamily/manseryeok</code>)를 기반으로 1900~2050년생까지 정확하게 계산합니다. 시간 보정(<em>isTimeCorrected</em>)은 야간 시간대(23:30~00:30)에 자동 적용됩니다.</p>
+    <!-- 계산 방법 (methodology 페이지 역할) -->
+    <section class="methodology-block">
+      <h2>이 계산기는 어떻게 작동하나요?</h2>
+      <p>이 계산기는 오픈소스 한국 음력 라이브러리 <code>@fullstackfamily/manseryeok</code>(MIT 라이선스)을 사용합니다. 이 라이브러리는 1900~2050년의 한국 음력 데이터를 DB 없이 순수 JavaScript로 계산하며, 24절기·천간지지·오행 정보를 제공합니다.</p>
+      <p>계산은 다음 순서로 진행됩니다 — (1) 입력된 양력 생년월일을 한국 음력으로 변환, (2) 음력 연·월·일·시를 기준으로 60갑자에서 해당하는 천간지지 쌍을 추출, (3) 4주를 표기. 시간 보정은 자정 무렵(23:30~00:30) 출생 시 자동으로 다음 날로 일치를 맞춥니다(<em>isTimeCorrected</em> 플래그).</p>
+      <p>점수와 메시지는 일간(日干)과 오행의 관계에서 파생된 결정론적 해시값을 기반으로 산정됩니다. 같은 날짜·시간이면 같은 결과가 나오므로 누락·편향 없이 일관된 결과를 얻을 수 있습니다.</p>
+      <p class="disclaimer-line"><strong>면책 안내:</strong> 본 계산기는 일반적인 흥미·오락·교양 목적의 무료 도구입니다. 의료·법률·재정·진로의 결정적 판단 근거로 사용하실 수 없으며, 중요한 결정은 반드시 해당 분야 전문가와 상의하시기 바랍니다.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-block">
+      <h2>자주 묻는 질문</h2>
+
+      <h3>Q. 다른 사주 사이트와 결과가 달라요. 잘못된 건가요?</h3>
+      <p>한국 음력 계산은 라이브러리별로 24절기 처리 방식이나 윤달 보정 방식이 달라 동일 생년월일시에도 일부 결과(주·월운 등)가 다르게 나올 수 있습니다. 본 사이트는 MIT 라이선스의 오픈소스 한국 음력 라이브러리 <code>@fullstackfamily/manseryeok</code>를 사용하며, 1900~2050 범위를 지원합니다. 시간 미상 입력은 정오(12시) 기준으로 계산됩니다.</p>
+
+      <h3>Q. 태어난 시간을 정확히 모르는데 어떻게 하나요?</h3>
+      <p>"모름 (정오 기준)" 옵션을 선택하시면 정오(12시)로 계산합니다. 사주명리학에서 시주는 자녀·말년 등 비교적 덜 중요한 위치를 차지하므로, 시간을 모르더라도 일주와 월주까지는 정확하게 산출됩니다.</p>
+
+      <h3>Q. 음력 생일인데 어떻게 입력하나요?</h3>
+      <p>양력 생년월일(주민등록 기준)을 입력해 주세요. 이 계산기는 입력된 양력 날짜를 자동으로 한국 음력으로 변환해 사주를 계산합니다. 음력 생일 자체를 입력하시면 하루 어긋난 결과가 나옵니다.</p>
+
+      <h3>Q. 2050년 이후 생년월일도 계산되나요?</h3>
+      <p>아쉽게도 2050년 이후는 라이브러리 데이터 범위 밖이라 지원하지 않습니다. 1900년 이전도 마찬가지입니다. 본 사이트는 1900-01-01부터 2050-12-31까지의 입력을 받습니다.</p>
+
+      <h3>Q. 사주 결과를 어디까지 신뢰해야 하나요?</h3>
+      <p>본 서비스는 흥미·교양·자기 이해 목적의 무료 콘텐츠입니다. 결과는 만세력 데이터와 일간·오행 관계에서 파생된 결정론적 계산 결과일 뿐이며, 의료·법률·재정·진로 결정의 근거로 사용할 수 없습니다. 중요한 결정은 반드시 해당 분야 전문가와 상의하시기 바랍니다.</p>
+    </section>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <RelatedTools
+      tools={[
+        { href: "/", title: "오늘의 운세", description: "매일 갱신 일진·오행" },
+        { href: "/zodiac", title: "12띠 운세", description: "띠별 성격·2026년 운세" },
+        { href: "/lunar-calendar", title: "음력 변환기", description: "양력↔음력 1900~2050" }
+      ]}
+    />
+
+      <h3>더 알아보기</h3>
+      <ul>
+        <li><a href="/methodology">운세 산출 방법론</a> — 점수 계산, 음력 변환, 라이브러리 설명</li>
+        <li><a href="/sources">출처 및 참고 자료</a> — 음력 데이터, 사주 문헌, 문화 자료 출처</li>
+        <li><a href="/editorial-policy">편집 정책</a> — 콘텐츠 검수, 업데이트 일정, 정확성 보장</li>
+      </ul>
+
+      <Disclaimer text="본 사주팔자 계산기는 한국 음력 데이터에 기반한 참고용 도구이며, 의료·법률·재정·진로 결정의 근거가 될 수 없습니다. 자세한 면책 안내는 <a href=&quot;/about&quot;>이용 안내</a>를 참조해 주세요." />
     </section>
   </main>
 </Layout>
@@ -163,10 +233,6 @@ const defaultResult = calculateBirthSaju(1990, 1, 1, 12);
   .hangul { display: block; font-size: 14px; color: #666; }
   .lunar-info { text-align: center; color: #555; font-size: 14px; margin: 12px 0 0; }
   .error-msg { background: #fee; border-left: 4px solid #c00; padding: 12px 16px; border-radius: 6px; color: #c00; }
-
-  .info-block { background: #fafafa; padding: 20px; border-radius: 12px; margin: 32px 0; font-size: 14px; line-height: 1.7; color: #444; }
-  .info-block h2 { font-size: 17px; margin: 0 0 12px; color: #1a1a1a; }
-  .info-block code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
 
   @media (max-width: 640px) {
     .page-header h1 { font-size: 24px; }
