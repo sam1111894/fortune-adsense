@@ -59,10 +59,18 @@ const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성�
     <section class="info-card">
       <h2>{zodiac.name}띠 궁합 - 잘 맞는 띠, 안 맞는 띠</h2>
       <h3>잘 맞는 띠</h3>
-      <ul>{zodiac.bestMatch.map((b) => <li><strong>{b.name}띠</strong> - {b.reason}</li>)}</ul>
+      <ul>{zodiac.bestMatch.map((b) => {
+        const target = all.find((z) => z.name === b.name);
+        const slug = target?.slug;
+        return <li><strong>{slug ? <a href={`/zodiac/${slug}/`}>{b.name}띠</a> : `${b.name}띠`}</strong> - {b.reason}</li>;
+      })}</ul>
       <h3>안 맞는 띠</h3>
-      <ul>{zodiac.worstMatch.map((w) => <li><strong>{w.name}띠</strong> - {w.reason}</li>)}</ul>
-      <p class="related-note">다른 11개 띠의 자세한 성향은 <a href="/zodiac/">12띠 전체 가이드</a>에서 확인해 보세요.</p>
+      <ul>{zodiac.worstMatch.map((w) => {
+        const target = all.find((z) => z.name === w.name);
+        const slug = target?.slug;
+        return <li><strong>{slug ? <a href={`/zodiac/${slug}/`}>{w.name}띠</a> : `${w.name}띠`}</strong> - {w.reason}</li>;
+      })}</ul>
+      <p class="related-note">궁합 분석은 본 사이트의 <a href="/saju/">사주팔자 계산기</a>로 본인·상대의 사주를 함께 계산해 보면 더 정확한 해석이 가능합니다. 또한 다른 11개 띠의 자세한 성향은 <a href="/zodiac/">12띠 전체 가이드</a>에서 확인해 보세요.</p>
     </section>
 
     <!-- 섹션 5: 행운의 요소 (연도 자동화) -->
@@ -117,7 +125,7 @@ const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성�
     <!-- 섹션 11: 일상 풍습 (오행별) -->
     <section class="info-card">
       <h2>{zodiac.name}띠 일상 풍습과 생활 습관</h2>
-      <p>{zodiac.name}띠의 일상은 <strong>{zodiac.element}</strong> 속성을 반영합니다.</p>
+      <p>{zodiac.name}띠의 일상은 <strong>{zodiac.element}</strong> 속성을 반영합니다. 오늘의 일진(日辰)에 따른 오늘의 운세는 <a href="/">메인 페이지</a>에서 매일 자정(00:00 KST)에 자동 갱신되며, 본 {zodiac.name}띠 해석과 함께 참고하면 12년의 흐름과 1일의 흐름을 동시에 이해할 수 있습니다.</p>
       <p>{zodiac.element === "수(水)" ? "수(水) 속성 답게 물·비·차가운 환경에 민감하게 반응합니다. 습한 날보다 건조한 날에 컨디션이 좋고, 일과 후 따뜻한 족욕·반신욕으로 하루 피로를 풀면 회복이 빠릅니다. 색상은 짙은 남색·검정·흰색이 안정감을 주고, 너무 붉은 계열의 소품은 과한 자극을 줍니다. 음료수는 따뜻한 차(보리차·옥수수차·대추차) 위주로 마시는 것이 좋습니다." : ""}{zodiac.element === "토(土)" ? "토(土) 속성 답게 흙·산·정원·식물과 가까울 때 안정감을 느낍니다. 주말마다 근처 공원·산책로를 방문하거나, 베란다에서 작은 화분을 가꾸는 습관이 정신 건강에 큰 도움이 됩니다. 색상은 노란색·갈색·베이지가 편안하고, 지나치게 푸른 계열은 정서적 차분함을 잃게 할 수 있습니다. 곡물·뿌리채소·도토리묵 같은 흙에서 온 음식이 체질과 잘 맞습니다." : ""}{zodiac.element === "목(木)" ? "목(木) 속성 답게 숲·바람·햇볕이 닿는 환경에서 기운이 회복됩니다. 등산·낚시·캠핑처럼 자연 속에서의 활동이 스트레스 해소에 탁월하고, 도심 생활만 이어지면 우울감이 누적되기 쉽습니다. 색상은 초록·연두·하늘색이 좋아하고, 인테리어에 작은 화분을 놓아두면 좋습니다. 신선한 채소·과일·생선 위주의 식단이 체질과 잘 맞고, 매운 음식은 가끔만 즐기는 것이 좋습니다." : ""}{zodiac.element === "화(火)" ? "화(火) 속성 답게 햇볕·따뜻한 환경에서 활력이 나옵니다. 추운 겨울보다 따뜻한 봄·여름에 컨디션이 좋고, 일과 후 가벼운 스트레칭·요가로 몸의 열기를 식히는 것이 중요합니다. 색상은 빨강·주황·밝은 노랑이 좋아하고, 지나치게 어두운 환경은 무기력을 유발할 수 있습니다. 매콤한 음식·따뜻한 차가 체질과 잘 맞고, 카페인·음주는 줄이는 편이 좋습니다." : ""}{zodiac.element === "금(金)" ? "금(金) 속성 답게 건조하고 정돈된 환경에서 집중력이 올라갑니다. 깔끔하게 정돈된 책상·정리된 옷장처럼 공간이 정돈돼 있을 때 업무 효율이 극대화됩니다. 색상은 흰색·은색·연보라가 어울리고, 너무 어수선하거나 습한 환경은 컨디션을 저하시킵니다. 맑은 공기·바람 부는 산·바다에서 기운을 회복하고, 호흡기 건강을 위해 환기 습관을 들이는 것이 좋습니다." : ""}</p>
     </section>
 
@@ -144,6 +152,17 @@ const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성�
 
     <!-- 다른 띠 둘러보기 (내부 링크 허브) -->
     <section class="info-card">
+      <h2>관련 운세·계산 도구 (함께 보면 좋아요)</h2>
+      <p>{zodiac.name}띠의 12년 흐름을 이해했다면, 본 사이트에서 제공하는 다른 도구를 활용해 더 깊이 있는 분석을 해보세요.</p>
+      <ul>
+        <li><strong>사주팔자 계산기</strong>: <a href="/saju/">/saju/</a>에서 생년월일·태어난 시간으로 4주(년·월·일·시)의 천간·지지·오행을 계산할 수 있습니다. 본 {zodiac.name}띠 해석과 결합하면 12년 흐름 + 인생 전반 흐름을 동시에 이해할 수 있습니다.</li>
+        <li><strong>음력 ↔ 양력 변환기</strong>: <a href="/lunar-calendar/">/lunar-calendar/</a>에서 음력 생일의 양력 환산을 즉시 할 수 있습니다. {zodiac.name}띠는 {zodiac.month}이 기준이며, 윤달 출생자도 정확히 변환됩니다.</li>
+        <li><strong>로또 6/45 번호 생성기</strong>: <a href="/lotto/">/lotto/</a>에서 매주 새로운 번호 5세트를 생성합니다. 행운의 숫자 {zodiac.lucky.number}와 함께 활용하면 재미 요소로 활용할 수 있습니다.</li>
+        <li><strong>연봉 실수령액 계산기</strong>: <a href="/salary/">/salary/</a>에서 {currentYear}년 4대보험·소득세를 반영한 실수령액을 즉시 계산합니다. 재물·커리어 계획과 함께 활용하세요.</li>
+      </ul>
+    </section>
+
+    <!-- 다른 띠 둘러보기 (내부 링크 허브) -->
       <h2>다른 11개 띠 둘러보기</h2>
       <div class="hub-grid">
         {all.filter((z) => z.slug !== zodiac.slug).map((z) => (
