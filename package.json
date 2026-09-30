@@ -19,6 +19,6 @@
     "esbuild": true
   },
   "devDependencies": {
-    "wrangler": "^4.129.1"
+    "wrangler": "^4.144.0"
   }
 }

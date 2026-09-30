@@ -13,23 +13,69 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
+
       - run: npm ci
+
       - run: npm run build
-      - name: Deploy to Cloudflare Pages
+
+      - name: Cloudflare Pages (wrangler 공식 배포 + 전면 cache purge)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_PAGES_PROJECT: lucksajueun-blog
         run: |
-          python3 scripts/deploy.py dist
-      - name: Verify deployment
+          set -e
+
+          echo "=== 1) wrangler pages deploy (공식 배포) ==="
+          npx wrangler pages deploy dist \
+            --project-name=lucksajueun-blog \
+            --commit-dirty=true \
+            --branch=main \
+            --compatibility-date=2024-09-23
+
+          echo ""
+          echo "=== 2) Zone 캐시 전면 purge (purge_everything) ==="
+          ZONE_ID="92e2373222f2c988261d935679083f85"
+          HTTP_CODE=$(curl -sS -X POST \
+            -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{"purge_everything":true}' \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/purge_cache" \
+            -o /tmp/purge.json -w "%{http_code}")
+          echo "purge HTTP: ${HTTP_CODE}"
+          python3 -c "
+          import json
+          with open('/tmp/purge.json') as f:
+              d = json.load(f)
+          if d.get('success'):
+              print('purge_everything: OK')
+          else:
+              print('purge_everything FAIL:', d.get('errors'))
+              raise SystemExit(1)
+          "
+
+      - name: Verify deployment (전체 페이지 검증)
         run: |
-          sleep 10
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://lucksajueun.com/)
-          echo "Site status: $STATUS"
-          if [ "$STATUS" != "200" ]; then exit 1; fi
-          echo "Daily refresh complete"
+          sleep 20
+          ALL_OK=true
+          for path in \
+            "/" \
+            "/zodiac/rat/" "/zodiac/ox/" "/zodiac/tiger/" "/zodiac/rabbit/" "/zodiac/dragon/" "/zodiac/snake/" \
+            "/zodiac/horse/" "/zodiac/goat/" "/zodiac/monkey/" "/zodiac/rooster/" "/zodiac/dog/" "/zodiac/pig/" \
+            "/zodiac/" \
+            "/saju/" "/lunar-calendar/" "/lotto/" "/salary/" \
+            "/about/" "/privacy/" "/terms/" \
+            "/rss.xml" "/atom.xml" "/sitemap.xml" "/robots.txt"
+          do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://lucksajueun.com${path}")
+            echo "  ${path} -> ${STATUS}"
+            if [ "$STATUS" != "200" ]; then ALL_OK=false; fi
+          done
+          echo ""
+          echo "Final: $([ "$ALL_OK" = true ] && echo OK || echo FAIL)"
+          if [ "$ALL_OK" != "true" ]; then exit 1; fi
+          echo "Daily refresh complete (all pages verified)"

@@ -82,6 +82,7 @@ def deploy(account_id, api_token, project, src_dir, project_root='.'):
         headers={
             "Authorization": f"Bearer {api_token}",
             "Content-Type": f"multipart/form-data; boundary={boundary}",
+            "Content-Length": str(len(body)),
         },
     )
 
