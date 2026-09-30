@@ -4,7 +4,7 @@ import AdSenseAd from "../components/AdSenseAd.astro";
 ---
 
 <Layout
-  title="서비스 소개 - 무료 만세력 운세"
+  title="서비스 소개 - 오늘의 운세 (lucksajueun.com)"
   description="오늘의 운세(lucksajueun.com)는 무료 만세력 기반 사주팔자·음력변환·로또번호·연봉실수령액 계산기입니다. 데이터 출처, 계산 방식, 면책 사항, 업데이트 주기까지 안내합니다."
 >
   <main class="container">
@@ -118,6 +118,24 @@ import AdSenseAd from "../components/AdSenseAd.astro";
 
       <h3>문의</h3>
       <p>오류 신고·개선 제안·제휴 문의는 <a href="/contact">문의 페이지</a>를 통해 보내 주세요. 가능한 한 빠르게 답변 드리겠습니다.</p>
+
+      <h3>자주 묻는 질문 (FAQ)</h3>
+      <details>
+        <summary>Q. 정말 무료인가요? 유료 구독이 필요한 기능이 있나요?</summary>
+        <p>네, 모든 도구와 콘텐츠는 완전 무료이며 가입도 필요 없습니다. 유료 구독·결제 기능은 없으며, 페이지에 표시되는 Google AdSense 광고 수익으로만 운영됩니다. 광고를 비활성화해도 도구 사용에는 제한이 없습니다.</p>
+      </details>
+      <details>
+        <summary>Q. 사주 계산 결과를 다른 사이트와 비교해도 되나요?</summary>
+        <p>네, 한국 음력 라이브러리별로 24절기·윤달 처리 방식에 차이가 있어 동일 입력에 대해 일부 결과(주·월운 등)가 다르게 나올 수 있습니다. 본 사이트는 <code>@fullstackfamily/manseryeok</code> (MIT 라이선스) 라이브러리를 사용하며, 1900~2050 범위에서 한국 천문연구원 표준 역서와 일치하도록 검증했습니다.</p>
+      </details>
+      <details>
+        <summary>Q. 본 서비스의 결과를 믿고 인생 결정을 내려도 되나요?</summary>
+        <p>아닙니다. 본 서비스는 의료·법률·재정·진로 결정을 위한 도구가 아닙니다. 흥미·오락·교양 목적의 무료 콘텐츠이며, 중요한 결정은 반드시 해당 분야 전문가와 상의하시기 바랍니다.</p>
+      </details>
+      <details>
+        <summary>Q. 개인정보가 수집되나요?</summary>
+        <p>본 사이트는 회원가입을 받지 않으며, 사주·음력 계산 시 입력하는 생년월일·시간·성별은 브라우저 내에서만 처리되고 서버로 전송되지 않습니다. 자세한 내용은 <a href="/privacy">개인정보처리방침</a>에서 확인하실 수 있습니다.</p>
+      </details>
     </section>
   </main>
 </Layout>

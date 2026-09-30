@@ -7,8 +7,8 @@ const operatorEmail = "contact@lucksajueun.com";
 ---
 
 <Layout
-  title="이용약관 - 오늘의 운세"
-  description="오늘의 운세(fortune-adsense) 이용약관. 본 서비스는 무료 정보 제공 목적이며, 결과는 의료·법률·재정 조언이 아닙니다."
+  title="이용약관 - 무료 운세 서비스 | 오늘의 운세 lucksajueun.com"
+  description="오늘의 운세(lucksajueun.com) 이용약관. 본 서비스는 무료 정보 제공 목적이며 의료·법률·재정 조언이 아닙니다. 면책, 광고 정책, 저작권, 분쟁 해결 절차까지 10개 조항으로 안내합니다."
 >
   <main class="container">
     <header class="page-header">
@@ -98,7 +98,21 @@ const operatorEmail = "contact@lucksajueun.com";
         <li>기타 문의 사항은 <a href={`mailto:${operatorEmail}`}>{operatorEmail}</a>로 연락 주시면 7일 이내 회신드립니다.</li>
       </ol>
 
-      <p class="footer-note">© 2026 {serviceName} · 본 약관은 전자상거래법 제12조에 따라 사전 공지됩니다.</p>
+      <h2>제11조 (데이터 및 프라이버시)</h2>
+      <ol>
+        <li>본 서비스는 사주 계산·음력 변환 기능을 위해 사용자가 입력한 생년월일·출생시간·성별 정보를 브라우저 내에서만 처리하며, 어떠한 서버에도 전송·저장하지 않습니다.</li>
+        <li>광고 게재 및 트래픽 분석을 위해 Google AdSense·Google Analytics가 쿠키를 사용할 수 있으며, 자세한 내용은 <a href="/privacy/">개인정보처리방침</a>에서 확인하실 수 있습니다.</li>
+        <li>이용자는 브라우저 설정을 통해 쿠키 저장을 거부하거나, Google 광고 설정(<a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>)에서 맞춤 광고를 비활성화할 수 있습니다.</li>
+      </ol>
+
+      <h2>제12조 (콘텐츠의 정확성 및 업데이트)</h2>
+      <ol>
+        <li>서비스는 한국 음력 라이브러리(@fullstackfamily/manseryeok, MIT 라이선스)와 한국 천간지지 역사 자료를 바탕으로 콘텐츠를 제작합니다.</li>
+        <li>콘텐츠는 정성적으로 검수되며, 계산 로직의 정확성을 주기적으로 점검합니다(자세한 절차는 <a href="/methodology/">산출 방법론</a> 참고).</li>
+        <li>콘텐츠 오류·개선 제안은 <a href="/contact/">문의 페이지</a>를 통해 제보하실 수 있으며, 채택 후 7일 내 반영됩니다.</li>
+      </ol>
+
+      <p class="footer-note">© 2026 {serviceName} · 본 약관은 전자상거래법 제12조 및 정보통신망법 제15조에 따라 사전 공지됩니다.</p>
     </section>
   </main>
 </Layout>
