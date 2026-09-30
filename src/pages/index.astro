@@ -128,67 +128,106 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   }}
 >
   <main class="container">
-    <header class="hero">
-      <p class="eyebrow">무료 만세력 · 오늘의 운세</p>
+    <header class="hero editorial-rule">
+      <p class="eyebrow"><span class="editorial-dot" aria-hidden="true"></span> 무료 만세력 · 오늘의 운세</p>
       <h1>{todayDateLabel} ({todayWeekday}요일) 운세</h1>
       <p class="subtitle">음력 {todayFortune.lunarYear}년 {todayFortune.lunarMonth}월 {todayFortune.lunarDay}일{todayFortune.isLeapMonth ? " (윤달)" : ""} · 일간 {todayFortune.dayPillarHanja} · {todayFortune.zodiac}띠</p>
     </header>
 
-    <section class="score-board" aria-label="오늘 운세 점수">
-      <div class="score-card primary">
-        <span class="score-label">총운</span>
-        <span class="score-value">{todayFortune.totalScore}</span>
-        <span class="score-unit">/100</span>
+    <section class="today-meta" aria-label="오늘 일진 정보">
+      <div class="today-meta-row">
+        <span class="meta-item">🌾 절기: <strong>{todayFortune.solarTerm}</strong></span>
+        <span class="meta-item">⚖️ 일간 오행: <strong>{todayFortune.elementOfDay}</strong></span>
+        <span class="meta-item">🪧 일간: <strong>{todayFortune.dayPillarHanja}</strong></span>
       </div>
-      <div class="score-grid">
-        <div class="score-card"><span class="score-label">💰 금전</span><span class="score-value">{todayFortune.moneyScore}</span></div>
-        <div class="score-card"><span class="score-label">💕 연애</span><span class="score-value">{todayFortune.loveScore}</span></div>
-        <div class="score-card"><span class="score-label">💪 건강</span><span class="score-value">{todayFortune.healthScore}</span></div>
-        <div class="score-card"><span class="score-label">💼 일·학업</span><span class="score-value">{todayFortune.workScore}</span></div>
-      </div>
+      <p class="today-meta-hint">
+        아래에서 <strong>내 띠</strong>를 선택하면 오늘 일진에 맞는 <strong>맞춤 점수와 운세</strong>가 표시됩니다.
+      </p>
     </section>
 
-    <section class="fortune-detail">
-      <h2>오늘의 메시지</h2>
-      <blockquote class="message">{todayFortune.message}</blockquote>
-      <div class="lucky">
-        <span>🍀 행운의 색: <strong>{todayFortune.luckyColor}</strong></span>
-        <span>🔢 행운의 숫자: <strong>{todayFortune.luckyNumber}</strong></span>
-        <span>⚖️ 일간 오행: <strong>{todayFortune.elementOfDay}</strong></span>
-        <span>🌾 절기: <strong>{todayFortune.solarTerm}</strong></span>
+    <!-- 선택 결과 표시 영역: 처음엔 placeholder, 카드 클릭 시 채워짐 -->
+    <section
+      id="zodiac-result"
+      class="zodiac-result empty"
+      aria-live="polite"
+      aria-atomic="true"
+      data-state="empty"
+      aria-label="선택한 띠의 운세"
+    >
+      <div class="zodiac-result-placeholder">
+        <span class="placeholder-icon" aria-hidden="true">🍀</span>
+        <h2>내 띠를 먼저 선택해 주세요</h2>
+        <p>아래 12개 띠 카드 중 태어난 해의 띠를 누르면 여기에 점수와 운세가 나타납니다.</p>
       </div>
-    </section>
-
-    <section class="cta-buttons">
-          <a class="cta cta-primary" href="/saju/">내 사주팔자 계산하기 →</a>
-          <a class="cta cta-secondary" href="/lunar-calendar/">음력 ↔ 양력 변환기 →</a>
-          <a class="cta cta-secondary" href="/lotto/">🎲 로또 번호 생성기 →</a>
-          <a class="cta cta-secondary" href="/salary/">💰 연봉 실수령액 계산기 →</a>
-          <a class="cta cta-secondary" href="/zodiac/">띠별 운세 전체 보기 →</a>
+      <div class="zodiac-result-body" hidden>
+        <header class="zodiac-result-header">
+          <div class="zodiac-result-hanja" aria-hidden="true"></div>
+          <div class="zodiac-result-title">
+            <h2><span class="zodiac-result-name"></span>띠 오늘 운세</h2>
+            <p class="zodiac-result-sub"></p>
+          </div>
+        </header>
+        <div class="score-board">
+          <div class="score-card primary">
+            <span class="score-label">총운</span>
+            <span class="score-value js-total">—</span>
+            <span class="score-unit">/100</span>
+            <span class="score-level js-level">—</span>
+          </div>
+          <div class="score-grid">
+            <div class="score-card"><span class="score-label">💰 금전</span><span class="score-value js-money">—</span></div>
+            <div class="score-card"><span class="score-label">💕 연애</span><span class="score-value js-love">—</span></div>
+            <div class="score-card"><span class="score-label">💪 건강</span><span class="score-value js-health">—</span></div>
+            <div class="score-card"><span class="score-label">💼 일·학업</span><span class="score-value js-work">—</span></div>
+          </div>
+        </div>
+        <section class="fortune-detail">
+          <h2>오늘의 메시지</h2>
+          <blockquote class="message js-message">—</blockquote>
+          <div class="lucky">
+            <span>🍀 행운의 색: <strong class="js-lucky-color">—</strong></span>
+            <span>🔢 행운의 숫자: <strong class="js-lucky-number">—</strong></span>
+            <span>🌬️ 띠 오행: <strong class="js-lucky-element">—</strong></span>
+            <span>🧭 방위: <strong class="js-lucky-direction">—</strong></span>
+          </div>
         </section>
+      </div>
+    </section>
 
-        <!-- 12띠 선택: 내 띠에 맞는 오늘 운세 페이지로 이동 -->
-        <section class="zodiac-pick-section" aria-label="내 띠 선택">
+    <!-- (이전 zodiac-cta-band는 잘못된 설계로 제거됨) -->
+
+        <!-- 12띠 picker: 클릭으로 같은 자리에 맞춤 운세 표시 -->
+        <section id="zodiac-pick" class="zodiac-pick-section" aria-label="내 띠 선택">
           <header class="zodiac-pick-header">
             <h2>🍀 내 띠에 맞는 오늘 운세 보기</h2>
-            <p>태어난 해의 띠를 선택하면 오늘 일진에 맞는 맞춤 운세를 확인할 수 있습니다.</p>
+            <p>태어난 해의 띠를 선택하면 오늘 일진에 맞는 <strong>맞춤 점수와 운세</strong>가 표시됩니다.</p>
           </header>
           <div class="zodiac-pick-grid">
             {ZODIACS.map((z) => {
               const today = dailyFortune.zodiacs[z.slug];
               const score = today?.scores;
-              const levelClass = score?.level === "좋음" ? "good" : score?.level === "주의" ? "caution" : "normal";
-              const levelLabel = score?.level === "좋음" ? "길일" : score?.level === "주의" ? "주의" : "보통";
+              const levelClass = score?.total >= 75 ? "luck-good" : score?.total >= 55 ? "luck-ok" : "luck-warn";
+              const levelLabel = score?.level ?? "—";
               return (
-                <a class="zodiac-pick-card" href={`/zodiac/${z.slug}/`}>
+                <button
+                  type="button"
+                  class="zodiac-pick-card js-pick-card"
+                  data-slug={z.slug}
+                  data-name={z.name}
+                  aria-label={`${z.name}띠 선택 (오늘 ${score?.total ?? "—"}점)`}
+                  style={`--accent:${z.elementColor}`}
+                >
                   <div class="zodiac-pick-hanja">{z.hanja}</div>
                   <div class="zodiac-pick-name">{z.name}띠</div>
                   <div class="zodiac-pick-element">{z.element}</div>
                   <span class={`zodiac-pick-luck ${levelClass}`}>{score?.total ?? "—"}점 · {levelLabel}</span>
-                </a>
+                </button>
               );
             })}
           </div>
+          <p class="zodiac-pick-reset">
+            <button type="button" id="zodiac-reset" class="zodiac-pick-reset-btn" hidden>↺ 다른 띠 선택하기</button>
+          </p>
         </section>
 
         <section class="tools-grid" aria-label="전체 도구 둘러보기">
@@ -373,7 +412,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
         <p>운세 점수는 사이트마다 사용한 음력 라이브러리·오행 해석 방식에 따라 차이가 날 수 있습니다. 본 사이트는 MIT 라이선스의 한국 음력 라이브러리(<code>@fullstackfamily/manseryeok</code>)와 한국 천문연구원 표준 역서를 기준으로 산출합니다. 자세한 절차는 <a href="/methodology/">운세 산출 방법론</a>을 참조하세요.</p>
       </details>
 
-      <Disclaimer text="본 서비스는 흥미·교양·자기 이해를 위한 참고용 콘텐츠이며, 의료·법률·재정·진로 결정의 근거가 될 수 없습니다. 자세한 면책 안내는 <a href=&quot;/about/&quot;>이용 안내</a>를 참조해 주세요." />
+      <Disclaimer text="본 서비스는 흥미·교양·자기 이해를 위한 참고용 콘텐츠이며, 의료·법률·재정·진로 결정의 근거가 될 수 없습니다." />
     </section>
   </main>
 </Layout>
@@ -402,11 +441,116 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   .lucky { display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 14px; color: #333; }
   .lucky strong { color: #1a1a1a; }
 
-  .cta-buttons { display: grid; gap: 10px; margin: 28px 0; }
-  .cta { display: block; text-align: center; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: transform 0.1s; }
-  .cta:hover { transform: translateY(-1px); }
-  .cta-primary { background: #1a1a1a; color: #fff; }
-  .cta-secondary { background: #fff; color: #1a1a1a; border: 1px solid #d4d4d4; }
+  /* === 오늘 일진 공통 메타 (누구나 같은 정보, 작게 표시) === */
+  .today-meta {
+    background: #f8f7fc; border: 1px solid #e7e3f5; border-radius: 12px;
+    padding: 14px 18px; margin: 16px 0 8px; font-size: 14px;
+  }
+  .today-meta-row { display: flex; flex-wrap: wrap; gap: 8px 18px; color: #555; }
+  .today-meta-row strong { color: #1a1a1a; }
+  .today-meta-hint { margin: 8px 0 0; font-size: 13px; color: #555; line-height: 1.6; }
+  .today-meta-hint strong { color: #6b46c1; }
+
+  /* === Zodiac 결과 영역 (placeholder ↔ 채워짐 상태) === */
+  .zodiac-result {
+    margin: 16px 0 8px; padding: 0;
+    border-radius: 16px; transition: background 0.2s;
+  }
+  .zodiac-result.empty { background: transparent; }
+  .zodiac-result.filled {
+    background: linear-gradient(180deg, #faf7ff 0%, #ffffff 60%);
+    border: 1px solid #e7e3f5; padding: 18px;
+  }
+  .zodiac-result-placeholder {
+    border: 1.5px dashed #c4b5fd; border-radius: 16px;
+    padding: 32px 20px; text-align: center; color: #555;
+    background: linear-gradient(180deg, #faf7ff 0%, #fff 100%);
+  }
+  .zodiac-result-placeholder h2 { margin: 8px 0 6px; font-size: 18px; color: #1a1a1a; }
+  .zodiac-result-placeholder p { margin: 0; font-size: 14px; color: #555; }
+  .placeholder-icon { font-size: 36px; display: block; margin-bottom: 4px; }
+  .zodiac-result-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .zodiac-result-hanja {
+    width: 64px; height: 64px; border-radius: 14px;
+    background: linear-gradient(135deg, #5b6ee8, #8b5cf6);
+    color: #fff; font-size: 30px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .zodiac-result-title h2 { margin: 0; font-size: 22px; color: #1a1a1a; }
+  .zodiac-result-sub { margin: 2px 0 0; font-size: 13px; color: #666; }
+
+  /* score-card에 level 뱃지 추가 (좋음/보통/주의) */
+  .score-card.primary { position: relative; padding-bottom: 28px; }
+  .score-level {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    font-size: 11px; font-weight: 700; padding: 3px 10px;
+    border-radius: 999px; background: rgba(255,255,255,0.25); color: #fff;
+  }
+
+  /* === 12띠 picker === */
+  .zodiac-pick-section { margin: 32px 0 16px; }
+  .zodiac-pick-header { text-align: center; margin-bottom: 16px; }
+  .zodiac-pick-header h2 { margin: 0 0 6px; font-size: 22px; color: #1a1a1a; }
+  .zodiac-pick-header p { margin: 0; font-size: 14px; color: #555; }
+  .zodiac-pick-header strong { color: #6b46c1; }
+  .zodiac-pick-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+  }
+  .zodiac-pick-card {
+    --accent: #8b5cf6;
+    background: #fff; border: 1.5px solid #e5e5e5; border-radius: 14px;
+    padding: 14px 8px; cursor: pointer; text-align: center;
+    transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s, background 0.12s;
+    font: inherit; color: inherit;
+    position: relative; overflow: hidden;
+  }
+  .zodiac-pick-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 6px 18px rgba(139,92,246,0.18);
+  }
+  .zodiac-pick-card:focus-visible {
+    outline: 3px solid #8b5cf6; outline-offset: 2px;
+  }
+  .zodiac-pick-card.is-selected {
+    background: linear-gradient(180deg, #faf7ff 0%, #fff 100%);
+    border-color: var(--accent);
+    box-shadow: 0 6px 18px rgba(139,92,246,0.20);
+  }
+  .zodiac-pick-card.is-selected::after {
+    content: "✓"; position: absolute; top: 6px; right: 8px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .zodiac-pick-hanja {
+    font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .zodiac-pick-name { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+  .zodiac-pick-element { font-size: 11px; color: #888; margin: 2px 0 6px; }
+  .zodiac-pick-luck {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 3px 8px; border-radius: 999px;
+  }
+  .zodiac-pick-luck.luck-good { background: #ecfdf5; color: #047857; }
+  .zodiac-pick-luck.luck-ok { background: #fff7ed; color: #c2410c; }
+  .zodiac-pick-luck.luck-warn { background: #fef2f2; color: #b91c1c; }
+  .zodiac-pick-reset { text-align: center; margin: 16px 0 0; }
+  .zodiac-pick-reset-btn {
+    background: #fff; border: 1px solid #d4d4d4; border-radius: 999px;
+    padding: 8px 16px; font: inherit; cursor: pointer;
+    color: #555;
+  }
+  .zodiac-pick-reset-btn:hover { border-color: #8b5cf6; color: #1a1a1a; }
+  @media (prefers-reduced-motion: reduce) {
+    .zodiac-pick-card { transition: none; }
+    .zodiac-pick-card:hover { transform: none; }
+  }
+  /* sticky 헤더가 있을 때 anchor 타겟이 가려지지 않도록 */
+  #zodiac-pick { scroll-margin-top: 80px; }
 
   .week h2 { font-size: 20px; margin: 0 0 16px; }
   .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
@@ -453,5 +597,165 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
     .score-board { grid-template-columns: 1fr; }
     .week-grid { grid-template-columns: repeat(4, 1fr); }
     .cards { grid-template-columns: 1fr; }
+    .zodiac-pick-grid { grid-template-columns: repeat(4, 1fr); }
+    .zodiac-pick-hanja { font-size: 24px; }
+    .zodiac-result-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .zodiac-result-hanja { width: 56px; height: 56px; font-size: 26px; }
+  }
+  @media (max-width: 420px) {
+    .zodiac-pick-grid { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
+
+<script define:vars={{
+  // 12개 띠의 모든 데이터를 JSON으로 직렬화해 inline 임베드 (~10KB)
+  zodiacData: dailyFortune.zodiacs,
+  zodiacMeta: ZODIACS.reduce<Record<string, { name: string; hanja: string; direction: string; color: string; luckyColor: string; luckyNumber: number; luckyDay: string; }>>((acc, z) => {
+    acc[z.slug] = {
+      name: z.name,
+      hanja: z.hanja,
+      direction: z.direction,
+      color: z.elementColor,
+      luckyColor: z.lucky.color,
+      luckyNumber: z.lucky.number,
+      luckyDay: z.lucky.day,
+    };
+    return acc;
+  }, {}),
+  todayDate: dailyFortune.date,
+}}>
+  // === Zodiac Interactive Picker ===
+  // (a) 선택 띠를 localStorage에 저장, (b) 다음 방문 시 자동 복원
+  // (c) 클릭 시 같은 자리(zodiac-result)에 점수/메시지 DOM 갱신
+
+  const STORAGE_KEY = "fortune:selectedZodiac";
+
+  /** 타입 안전 DOM 헬퍼 */
+  function $(sel, root) {
+    return root.querySelector(sel);
+  }
+  function $$(sel, root) {
+    return Array.from(root.querySelectorAll(sel));
+  }
+
+  const resultEl = $("#zodiac-result");
+  if (!resultEl) {
+    console.warn("zodiac-result not found");
+  } else {
+    const placeholderEl = $(".zodiac-result-placeholder", resultEl);
+    const bodyEl = $(".zodiac-result-body", resultEl);
+    const cards = $$(".js-pick-card");
+    const resetBtn = $("#zodiac-reset");
+
+    function setEmpty() {
+      resultEl.classList.remove("filled");
+      resultEl.classList.add("empty");
+      resultEl.dataset.state = "empty";
+      if (placeholderEl) placeholderEl.hidden = false;
+      if (bodyEl) bodyEl.hidden = true;
+      if (resetBtn) resetBtn.hidden = true;
+      cards.forEach((c) => c.classList.remove("is-selected"));
+      try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    }
+
+    function setSelected(slug) {
+      const data = zodiacData[slug];
+      const meta = zodiacMeta[slug];
+      if (!data || !meta) {
+        console.warn("Unknown zodiac slug:", slug);
+        return;
+      }
+
+      // 데이터 채우기
+      const totalEl = $(".js-total", resultEl);
+      const levelEl = $(".js-level", resultEl);
+      const moneyEl = $(".js-money", resultEl);
+      const loveEl = $(".js-love", resultEl);
+      const healthEl = $(".js-health", resultEl);
+      const workEl = $(".js-work", resultEl);
+      const msgEl = $(".js-message", resultEl);
+      const lColorEl = $(".js-lucky-color", resultEl);
+      const lNumberEl = $(".js-lucky-number", resultEl);
+      const lElementEl = $(".js-lucky-element", resultEl);
+      const lDirectionEl = $(".js-lucky-direction", resultEl);
+
+      const hanjaEl = $(".zodiac-result-hanja", resultEl);
+      const nameEl = $(".zodiac-result-name", resultEl);
+      const subEl = $(".zodiac-result-sub", resultEl);
+
+      const scores = data.scores;
+      if (totalEl) totalEl.textContent = String(scores.total);
+      if (levelEl) levelEl.textContent = scores.level;
+      if (moneyEl) moneyEl.textContent = String(scores.money);
+      if (loveEl) loveEl.textContent = String(scores.love);
+      if (healthEl) healthEl.textContent = String(scores.health);
+      if (workEl) workEl.textContent = String(scores.work);
+      if (msgEl) msgEl.textContent = data.message;
+      if (lColorEl) lColorEl.textContent = meta.luckyColor;
+      if (lNumberEl) lNumberEl.textContent = String(meta.luckyNumber);
+      if (lElementEl) lElementEl.textContent = data.element;
+      if (lDirectionEl) lDirectionEl.textContent = meta.direction;
+      if (hanjaEl) hanjaEl.textContent = meta.hanja;
+      if (nameEl) nameEl.textContent = meta.name;
+      if (subEl) subEl.textContent = `${todayDate} 일진 · ${data.element} 오행`;
+
+      // 상태 전환
+      resultEl.classList.remove("empty");
+      resultEl.classList.add("filled");
+      resultEl.dataset.state = slug;
+      if (placeholderEl) placeholderEl.hidden = true;
+      if (bodyEl) bodyEl.hidden = false;
+      if (resetBtn) resetBtn.hidden = false;
+
+      // 카드 선택 표시
+      cards.forEach((c) => {
+        c.classList.toggle("is-selected", c.dataset.slug === slug);
+      });
+
+      // 저장
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ slug, ts: Date.now() })); } catch {}
+      // URL도 업데이트 (공유/북마크 가능)
+      try { history.replaceState(null, "", "?zodiac=" + encodeURIComponent(slug) + "#zodiac-result"); } catch {}
+    }
+
+    // 카드 클릭
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const slug = card.dataset.slug;
+        if (slug) setSelected(slug);
+      });
+    });
+
+    // 리셋
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        setEmpty();
+        // 결과 영역으로 스크롤하여 placeholder가 보이게 함
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        resultEl.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      });
+    }
+
+    // 초기 복원: URL ?zodiac= 우선 → localStorage → placeholder
+    function restoreInitial() {
+      let slug: string | null = null;
+      try {
+        const url = new URL(window.location.href);
+        const qSlug = url.searchParams.get("zodiac");
+        if (qSlug && zodiacData[qSlug]) slug = qSlug;
+        if (!slug) {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed.slug === "string" && zodiacData[parsed.slug]) {
+              // 같은 날이면 복원, 다른 날이면 무시
+              if (parsed.date === todayDate || !parsed.date) slug = parsed.slug;
+            }
+          }
+        }
+      } catch {}
+      if (slug) setSelected(slug);
+    }
+    restoreInitial();
+  }
+</script>

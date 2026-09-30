@@ -1,272 +1,470 @@
 /* ============================================
  * lucksajueun.com - 전역 공통 스타일
- * KISS/DRY 원칙: 반복되는 박스/면책/관련도구 스타일을 한 곳에서 관리
+ * ============================================
+ * 토큰 출처: design-system/tokens.css (extract-design-system init)
+ * 원칙: Bringhurst (typography), Müller-Brockmann (grid), Vignelli (restraint), Rams (long-lasting)
+ * 통합: 7대 명저 + strikingly.com starter 토큰
  * ============================================ */
 
-/* ----- 정보 카드 (페이지 본문 섹션 박스) ----- */
+/* ----- 정보 카드 — editorial, 왼쪽 보더 라인 + 직각 ----- */
 .info-card {
-  background: #fafafa;
-  padding: 24px;
-  border-radius: 12px;
-  margin: 24px 0;
-  font-size: 15px;
-  line-height: 1.8;
-  color: #333;
+  background: var(--color-background-soft);
+  border-left: 3px solid var(--color-primary);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
+  margin: var(--space-6) 0;
+  font-size: var(--fs-sm);
+  line-height: var(--leading-body);
+  color: var(--color-text);
 }
-.info-card h2 { font-size: 22px; margin: 0 0 14px; color: #1a1a1a; }
-.info-card h3 { font-size: 17px; margin: 20px 0 8px; color: #1a1a1a; }
-.info-card h4 { font-size: 15px; margin: 16px 0 6px; color: #1a1a1a; }
-.info-card ul, .info-card ol { margin: 8px 0; padding-left: 22px; }
-.info-card li { margin: 4px 0; }
-.info-card p { margin: 8px 0; }
-.info-card a { color: #8b5cf6; text-decoration: underline; }
-.info-card code { background: #fff; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
-.info-card strong { color: #1a1a1a; }
+.info-card h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-deep);
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+.info-card h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  margin: var(--space-4) 0 var(--space-2);
+  color: var(--color-text-deep);
+  font-weight: 600;
+}
+.info-card h4 {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  margin: var(--space-3) 0 var(--space-2);
+  color: var(--color-text-deep);
+  font-weight: 600;
+}
+.info-card ul, .info-card ol { margin: var(--space-2) 0; padding-left: var(--space-6); }
+.info-card li { margin: var(--space-1) 0; }
+.info-card p { margin: var(--space-2) 0; }
+.info-card a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 3px; }
+.info-card code {
+  font-family: var(--font-mono);
+  background: var(--color-background);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: 0.875em;
+}
+.info-card strong { color: var(--color-text-deep); }
 
-/* ----- 면책 박스 (모든 도구/콘텐츠 페이지 공통) ----- */
+/* ----- 면책 박스 ----- */
 .disclaimer-box {
-  background: #fff7e6;
-  border-left: 4px solid #f59e0b;
-  padding: 16px 20px;
-  border-radius: 8px;
-  margin: 16px 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #5a4a1f;
+  background: transparent;
+  border: 1px dashed var(--color-border);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-4) 0;
+  font-size: 0.875rem;
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+.disclaimer-box::before {
+  content: "면책 — Disclaimer";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
 }
 .disclaimer-box p { margin: 0; }
 
-/* ----- 오늘의 운세 카드 (12띠 페이지 일일 운섹) ----- */
+/* ----- 오늘의 운세 카드 ----- */
 .today-fortune-card {
-  background: linear-gradient(135deg, #fef3f9 0%, #f3f0ff 100%);
-  border: 2px solid #c4b5fd;
-  border-radius: 16px;
-  padding: 28px 24px;
-  margin: 28px 0;
-  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.12);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-text-deep);
+  padding: var(--space-5) var(--space-4);
+  margin: var(--space-5) 0;
 }
 .today-fortune-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  align-items: baseline;
+  margin-bottom: var(--space-4);
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
 }
 .today-label {
-  font-size: 20px;
-  font-weight: 700;
-  color: #6b21a8;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--color-text-deep);
+  letter-spacing: var(--tracking-tight);
 }
 .today-date {
-  font-size: 13px;
-  color: #6b21a8;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 4px 10px;
-  border-radius: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
 }
 .today-score-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 12px;
-  margin-bottom: 20px;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  align-items: end;
 }
-@media (min-width: 600px) {
-  .today-score-grid {
-    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-  }
+@media (max-width: 600px) {
+  .today-score-grid { grid-template-columns: 1fr 1fr; gap: var(--space-3); }
 }
 .score-box {
-  background: #fff;
-  border-radius: 12px;
-  padding: 14px 12px;
-  text-align: center;
-  border: 1px solid #e9d5ff;
+  background: transparent;
+  border-left: 2px solid var(--color-border-soft);
+  padding: var(--space-2) 0 var(--space-2) var(--space-3);
+  text-align: left;
+  border-top: none; border-right: none; border-bottom: none;
+  border-radius: 0;
 }
 .score-box.highlight {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
-  color: #fff;
-  border: none;
-  padding: 18px 16px;
+  background: transparent;
+  border-left: 3px solid var(--color-primary);
+  padding: var(--space-2) 0 var(--space-2) var(--space-3);
+  border-top: none; border-right: none; border-bottom: none;
+  border-radius: 0;
 }
 .score-label {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
   font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  display: block;
 }
-.score-box.highlight .score-label {
-  color: #fff;
-  font-size: 14px;
-}
+.score-box.highlight .score-label { color: var(--color-primary); }
 .score-value {
-  font-size: 42px;
-  font-weight: 800;
-  color: #fff;
-  line-height: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-tight);
 }
 .score-value-small {
-  font-size: 26px;
-  font-weight: 700;
-  color: #1f2937;
-  line-height: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--color-text-deep);
+  line-height: var(--leading-display);
 }
 .score-unit {
-  font-size: 12px;
-  opacity: 0.85;
-  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-left: 2px;
 }
 .score-level {
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
   font-weight: 600;
-  margin-top: 6px;
-  padding: 2px 10px;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 10px;
+  margin-top: var(--space-2);
+  padding: 2px var(--space-2);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
   display: inline-block;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
 }
 .today-messages {
-  background: #fff;
-  border-radius: 10px;
-  padding: 16px 18px;
-  margin-bottom: 16px;
+  background: transparent;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 0;
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 .today-main-message {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #1f2937;
-  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  line-height: var(--leading-body);
+  color: var(--color-text-deep);
+  margin: 0 0 var(--space-3);
   font-weight: 500;
 }
 .today-details summary {
   cursor: pointer;
-  font-size: 14px;
-  color: #8b5cf6;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-primary);
   font-weight: 600;
-  padding: 6px 0;
+  padding: var(--space-2) 0;
   user-select: none;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
 }
-.today-details summary:hover { color: #6b21a8; }
-.today-details ul {
-  margin: 10px 0 0;
-  padding-left: 18px;
-}
+.today-details summary:hover { color: var(--color-primary-hover); }
+.today-details ul { margin: var(--space-2) 0 0; padding-left: var(--space-4); }
 .today-details li {
-  font-size: 14px;
-  line-height: 1.7;
-  color: #374151;
-  margin: 6px 0;
+  font-size: 0.875rem;
+  line-height: var(--leading-body);
+  color: var(--color-text);
+  margin: var(--space-1) 0;
 }
-.today-details li strong { color: #1f2937; }
+.today-details li strong { color: var(--color-text-deep); }
 .today-disclaimer {
-  font-size: 12px;
-  color: #6b7280;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
   margin: 0;
-  padding-top: 12px;
-  border-top: 1px solid #e9d5ff;
-  line-height: 1.6;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-soft);
+  line-height: var(--leading-body);
+  letter-spacing: 0.02em;
 }
-.today-disclaimer a { color: #8b5cf6; text-decoration: underline; }
+.today-disclaimer a { color: var(--color-primary); text-decoration: underline; }
 
 /* ----- 메인페이지 12띠 선택 카드 그리드 ----- */
 .zodiac-pick-section {
-  background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
-  padding: 28px 24px;
-  border-radius: 16px;
-  margin: 32px 0;
+  background: transparent;
+  padding: var(--space-5) 0;
+  border-radius: 0;
+  border-top: 2px solid var(--color-text-deep);
+  border-bottom: 1px solid var(--color-border-soft);
+  margin: var(--space-5) 0;
 }
 .zodiac-pick-header {
-  text-align: center;
-  margin-bottom: 24px;
+  text-align: left;
+  margin-bottom: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 .zodiac-pick-header h2 {
-  font-size: 22px;
-  color: #1a1a1a;
-  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--color-text-deep);
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
 }
 .zodiac-pick-header p {
-  font-size: 14px;
-  color: #6b7280;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
   margin: 0;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
 }
 .zodiac-pick-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--color-border-soft);
+  border: 1px solid var(--color-border-soft);
 }
-@media (min-width: 600px) {
-  .zodiac-pick-grid { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) {
+  .zodiac-pick-grid { grid-template-columns: repeat(3, 1fr); }
 }
-@media (min-width: 900px) {
-  .zodiac-pick-grid { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 600px) {
+  .zodiac-pick-grid { grid-template-columns: repeat(2, 1fr); }
 }
 .zodiac-pick-card {
-  background: #fff;
-  border: 2px solid #e9d5ff;
-  border-radius: 12px;
-  padding: 16px 8px;
-  text-align: center;
+  background: var(--color-background);
+  border: none;
+  border-radius: 0;
+  padding: var(--space-4) var(--space-3);
+  text-align: left;
   text-decoration: none;
-  color: #1f2937;
-  transition: all 0.2s;
-  display: block;
+  color: var(--color-text);
+  transition: background 0.15s, color 0.15s;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  align-items: center;
 }
 .zodiac-pick-card:hover {
-  transform: translateY(-2px);
-  border-color: #8b5cf6;
-  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.18);
+  transform: none;
+  border: none;
+  box-shadow: none;
+  background: var(--color-text-deep);
+  color: var(--color-background);
 }
+.zodiac-pick-card:hover .zodiac-pick-hanja { color: var(--color-accent); }
+.zodiac-pick-card:hover .zodiac-pick-name { color: var(--color-background); }
+.zodiac-pick-card:hover .zodiac-pick-element { color: rgba(244,239,232,0.7); }
 .zodiac-pick-hanja {
-  font-size: 28px;
-  color: #8b5cf6;
-  font-weight: 700;
-  line-height: 1;
+  grid-row: 1 / 3;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--color-primary);
+  font-weight: 600;
+  line-height: var(--leading-display);
 }
 .zodiac-pick-name {
-  font-size: 14px;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
   font-weight: 600;
-  margin: 6px 0 4px;
+  margin: 0;
+  color: var(--color-text-deep);
 }
 .zodiac-pick-element {
-  font-size: 11px;
-  color: #6b7280;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  letter-spacing: var(--tracking-wide);
 }
 .zodiac-pick-luck {
   display: inline-block;
-  margin-top: 6px;
-  padding: 2px 8px;
-  font-size: 11px;
-  border-radius: 8px;
+  margin-top: 0;
+  padding: 2px var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  border-radius: var(--radius-sm);
   font-weight: 600;
+  letter-spacing: var(--tracking-wide);
 }
-.zodiac-pick-luck.good { background: #dcfce7; color: #15803d; }
-.zodiac-pick-luck.normal { background: #fef3c7; color: #b45309; }
-.zodiac-pick-luck.caution { background: #fee2e2; color: #b91c1c; }
+.zodiac-pick-luck.luck-good { background: transparent; color: var(--color-status-good); border: 1px solid var(--color-status-good); }
+.zodiac-pick-luck.luck-ok { background: transparent; color: var(--color-status-ok); border: 1px solid var(--color-status-ok); }
+.zodiac-pick-luck.luck-warn { background: transparent; color: var(--color-status-warn); border: 1px solid var(--color-status-warn); }
+.zodiac-pick-luck.good { background: transparent; color: var(--color-status-good); border: 1px solid var(--color-status-good); }
+.zodiac-pick-luck.normal { background: transparent; color: var(--color-status-ok); border: 1px solid var(--color-status-ok); }
+.zodiac-pick-luck.caution { background: transparent; color: var(--color-status-warn); border: 1px solid var(--color-status-warn); }
 
-/* ----- AdSense 광고 슬롯 ----- */
+/* ----- AdSense 광고 슬롯 (손대지 않음) ----- */
 .adsense-slot {
-  margin: 32px auto;
-  padding: 16px;
+  margin: var(--space-7) auto;
+  padding: var(--space-4);
   max-width: 728px;
   text-align: center;
-  background: #fafafa;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
+  background: var(--color-background-soft);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
 }
 .adsense-slot .ad-label {
   font-size: 11px;
-  color: #888;
+  color: var(--color-text-muted);
   text-align: left;
-  margin: 0 0 8px 0;
+  margin: 0 0 var(--space-2) 0;
   letter-spacing: 1px;
 }
 .adsense-slot .ad-disclaimer {
   font-size: 11px;
-  color: #999;
+  color: var(--color-text-muted);
   text-align: center;
-  margin: 8px 0 0 0;
+  margin: var(--space-2) 0 0 0;
   font-style: italic;
-  line-height: 1.5;
+  line-height: var(--leading-body);
+}
+
+/* ============================================
+ * Editorial system v3 (2026-09-30) — alias only
+ * 원칙: Vignelli restraint + Rams 1 geometric accent
+ * 기존 토큰 0건 수정/삭제. 신규는 alias + opt-in 유틸리티만.
+ * ============================================ */
+
+/* 1.333 modular scale (16px base, major-third)
+   기존 --fs-sm/-md/-lg는 보존. 새 토큰은 alias: 기존 값이 있으면 그쪽을 가리킴. */
+:root {
+  --fs-xs:  0.75rem;  /* 12px */
+  --fs-sm:  1rem;     /* 16px — base */
+  --fs-md:  1.333rem; /* 21px */
+  --fs-lg:  1.777rem; /* 28px */
+  --fs-xl:  2.369rem; /* 37px */
+  --fs-2xl: 3.157rem; /* 49px */
+  --fs-3xl: 4.209rem; /* 66px */
+  --fs-4xl: 5.61rem;  /* 88px */
+
+  /* Geometric primitives — Vignelli 2-color + Rams 1 accent */
+  --rule-hair:    1px;
+  --rule-strong:  2px;
+  --dot-size:     8px;
+  --numeral-size: 88px;
+
+  /* Letter-spacing scale */
+  --track-display: -0.02em; /* display headings */
+  --track-heading: -0.01em; /* h2/h3 */
+  --track-body:    0;       /* body default */
+  --track-mono:    0.04em;  /* mono labels */
+  --track-label:   0.12em;  /* eyebrow/uppercase */
+
+  /* Legacy alias — 기존 페이지 17곳 사용처 보존 */
+  --tracking-tight:  var(--track-display);
+  --tracking-normal: var(--track-body);
+  --tracking-wide:   var(--track-mono);
+}
+
+/* ----- Editorial utility classes (opt-in, 기존 페이지 강제 0건) ----- */
+
+/* 강한 상단/하단 룰 — Vignelli editorial signature */
+.editorial-rule {
+  border-top: var(--rule-strong) solid var(--color-text-deep);
+}
+.editorial-rule-hair {
+  border-top: var(--rule-hair) solid var(--color-border-soft);
+}
+
+/* 섹션 넘버 — 88px mono, 좌측 마커 */
+.editorial-numeral {
+  font-family: var(--font-mono);
+  font-size: var(--numeral-size);
+  line-height: 0.9;
+  letter-spacing: var(--track-mono);
+  color: var(--color-primary);
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* 액센트 도트 — Rams "1 accent geometric" */
+.editorial-dot {
+  display: inline-block;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  background: var(--color-primary);
+  vertical-align: middle;
+}
+
+/* 섹션 헤더 — 좌측 numeral + 중앙 제목 + 우측 meta */
+.editorial-section-head {
+  display: grid;
+  grid-template-columns: var(--numeral-size) 1fr auto;
+  gap: var(--space-4);
+  align-items: end;
+  border-bottom: 2px solid var(--color-text-deep);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+/* editorial page — section hairline divider between major sections */
+.editorial-section + .editorial-section {
+  border-top: var(--rule-hair) solid var(--color-border-soft);
+  padding-top: var(--space-7);
+  margin-top: var(--space-7);
+}
+
+/* editorial h1/h2/h3/h4 — 1.333 위계, 기존 컬러/weight 보존 */
+.editorial h1, .editorial h2, .editorial h3, .editorial h4 {
+  font-family: var(--font-display);
+  color: var(--color-text-deep);
+  font-weight: 600;
+  line-height: 1.15;
+}
+.editorial h1 { font-size: var(--fs-3xl); letter-spacing: var(--track-display); margin: 0 0 var(--space-5); }
+.editorial h2 { font-size: var(--fs-xl);  letter-spacing: var(--track-heading); margin: var(--space-7) 0 var(--space-3); }
+.editorial h3 { font-size: var(--fs-lg);  letter-spacing: var(--track-heading); margin: var(--space-5) 0 var(--space-2); }
+.editorial h4 { font-size: var(--fs-md);  letter-spacing: var(--track-heading); margin: var(--space-4) 0 var(--space-2); }
+
+@media (max-width: 600px) {
+  .editorial h1 { font-size: var(--fs-xl); }
+  .editorial h2 { font-size: var(--fs-lg); }
+  .editorial h3 { font-size: var(--fs-md); }
+  .editorial h4 { font-size: var(--fs-sm); }
+  .editorial-section-head {
+    grid-template-columns: var(--numeral-size) 1fr;
+  }
+  .editorial-section-head .meta { grid-column: 1 / -1; }
 }
