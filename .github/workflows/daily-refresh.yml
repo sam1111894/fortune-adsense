@@ -34,8 +34,7 @@ jobs:
           npx wrangler pages deploy dist \
             --project-name=lucksajueun-blog \
             --commit-dirty=true \
-            --branch=main \
-            --compatibility-date=2024-09-23
+            --branch=main
 
           echo ""
           echo "=== 2) Zone 캐시 전면 purge (purge_everything) ==="
