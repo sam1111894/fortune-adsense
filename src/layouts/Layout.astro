@@ -51,23 +51,46 @@ import "../styles/global.css";
     <!-- JSON-LD 구조화 데이터 (Google rich snippets) -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "오늘의 운세 - lucksajueun.com",
-      "url": "https://lucksajueun.com",
-      "description": "만세력 기반 무료 운세·사주팔자·음력변환·로또번호 생성·연봉실수령액 계산",
-      "inLanguage": "ko-KR",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://lucksajueun.com/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "오늘의 운세",
-        "url": "https://lucksajueun.com",
-        "logo": "https://lucksajueun.com/favicon.svg",
-        "email": "contact@lucksajueun.com"
-      }
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://lucksajueun.com/#website",
+          "name": "오늘의 운세 - lucksajueun.com",
+          "url": "https://lucksajueun.com",
+          "description": "만세력 기반 무료 운세·사주팔자·음력변환·로또번호 생성·연봉실수령액 계산",
+          "inLanguage": "ko-KR",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://lucksajueun.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://lucksajueun.com/#organization",
+          "name": "오늘의 운세",
+          "url": "https://lucksajueun.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://lucksajueun.com/favicon.svg"
+          },
+          "email": "contact@lucksajueun.com",
+          "sameAs": []
+        },
+        {
+          "@type": "WebApplication",
+          "name": "운세·사주 계산기",
+          "url": "https://lucksajueun.com",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW"
+          },
+          "inLanguage": "ko-KR"
+        }
+      ]
     })} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

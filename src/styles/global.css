@@ -53,3 +53,11 @@
   margin: 0 0 8px 0;
   letter-spacing: 1px;
 }
+.adsense-slot .ad-disclaimer {
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+  margin: 8px 0 0 0;
+  font-style: italic;
+  line-height: 1.5;
+}
