@@ -62,7 +62,7 @@ const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성�
       <ul>{zodiac.bestMatch.map((b) => <li><strong>{b.name}띠</strong> - {b.reason}</li>)}</ul>
       <h3>안 맞는 띠</h3>
       <ul>{zodiac.worstMatch.map((w) => <li><strong>{w.name}띠</strong> - {w.reason}</li>)}</ul>
-      <p class="related-note">다른 11개 띠의 자세한 성향은 <a href="/zodiac">12띠 전체 가이드</a>에서 확인해 보세요.</p>
+      <p class="related-note">다른 11개 띠의 자세한 성향은 <a href="/zodiac/">12띠 전체 가이드</a>에서 확인해 보세요.</p>
     </section>
 
     <!-- 섹션 5: 행운의 요소 (연도 자동화) -->
@@ -119,7 +119,7 @@ const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성�
       <h2>다른 11개 띠 둘러보기</h2>
       <div class="hub-grid">
         {all.filter((z) => z.slug !== zodiac.slug).map((z) => (
-          <a href={`/zodiac/${z.slug}`} class="hub-card" style={`--accent:${z.elementColor}`}>
+          <a href={`/zodiac/${z.slug}/`} class="hub-card" style={`--accent:${z.elementColor}`}>
             <span class="hanja">{z.hanja}</span>
             <span class="name">{z.name}띠</span>
           </a>
@@ -132,13 +132,13 @@ const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성�
     <section class="info-card">
       <RelatedTools
       tools={[
-        { href: "/zodiac", title: "12띠 전체 보기", description: "모든 띠 성격·궁합" },
-        { href: "/saju", title: "사주 계산기", description: "생년월일시 4주" },
+        { href: "/zodiac/", title: "12띠 전체 보기", description: "모든 띠 성격·궁합" },
+        { href: "/saju/", title: "사주 계산기", description: "생년월일시 4주" },
         { href: "/", title: "오늘의 운세", description: "매일 갱신" }
       ]}
     />
 
-      <Disclaimer text="본 {zodiac.name}띠 페이지는 동아시아 전통 명리학의 참고용 콘텐츠이며, 인생 결정의 근거가 될 수 없습니다. 자세한 면책 안내는 <a href=&quot;/about&quot;>이용 안내</a>를 참조해 주세요." />
+      <Disclaimer text="본 {zodiac.name}띠 페이지는 동아시아 전통 명리학의 참고용 콘텐츠이며, 인생 결정의 근거가 될 수 없습니다. 자세한 면책 안내는 <a href=&quot;/about/&quot;>이용 안내</a>를 참조해 주세요." />
     </section>
   </main>
 </Layout>
