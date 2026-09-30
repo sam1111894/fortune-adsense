@@ -2,9 +2,11 @@
 interface Props {
   title: string;
   description: string;
+  schemaJson?: object | object[];
+  keywords?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, schemaJson, keywords } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 import "../styles/global.css";
 ---
@@ -17,9 +19,13 @@ import "../styles/global.css";
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
 
     <!-- Naver Search Advisor 인증 (한국 SEO 필수) -->
     <meta name="naver-site-verification" content="84b01b1cd554d55c926c692f9549456aac58ea20" />
+
+    <!-- Google Search Console 인증 (검색 노출 최적화) -->
+    <meta name="google-site-verification" content="REPLACE_WITH_YOUR_VERIFICATION_CODE" />
 
     <link rel="canonical" href={canonical} />
 
@@ -144,6 +150,10 @@ import "../styles/global.css";
       }
       footer.site-footer a { color: #888; text-decoration: underline; }
     </style>
+
+    {schemaJson && (
+      <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} />
+    )}
   </head>
   <body>
     <nav class="site-nav">

@@ -54,6 +54,52 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
 <Layout
   title={`오늘의 운세 ${todayDateLabel} (${todayWeekday}요일) - 무료 사주팔자·만세력`}
   description={`${todayDateLabel} 오늘의 운세를 확인하세요. 사주팔자, 운세 점수, 행운의 색과 숫자까지 무료로 제공합니다. 매일 업데이트.`}
+  schemaJson={{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "매일 같은 시간에 운세가 바뀌나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네, 본 사이트의 오늘의 운세는 한국 표준시(KST) 기준 매일 자정(00:00)에 자동 갱신됩니다. 자정 직후에는 같은 일진(日辰) 안에서 운세 점수와 메시지가 동일하게 유지되며, 다음 날 자정에 새로운 일진으로 갱신됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "행운의 색·숫자는 어떻게 정해지나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "오늘의 일진(日辰)이 어떤 천간지지·오행에 해당하는지에 따라 결정론적으로 산출됩니다. 일진이 갑목(甲木)이면 초록·청록 계열, 병화(丙火)이면 빨강·주황 계열이 행운의 색으로 표시됩니다. 숫자도 오행 상생·상극 관계를 반영해 일간에 유리한 수를 선택합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "어제와 오늘 점수가 같은데, 계산이 잘못된 건가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아닙니다. 일진은 60갑자 순환(약 2개월)에 걸쳐 반복되므로 같은 일진이 다시 등장하는 날에는 점수가 동일하게 나옵니다. 점수는 일진의 오행 강약·계절·현재 절기와의 관계를 종합해 결정되며, 매일 바뀌는 것이 아니라 일진 단위로 갱신됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "점수가 낮은 날은 어떻게 활용하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "점수가 낮은 날은 큰 결정·도전보다 일상 루틴 유지·휴식·정리에 집중하는 것이 좋습니다. 한국 전통 명리학에서도 길일(吉日)이 아닌 날을 '흐르는 대로 두는 날'로 해석하며, 무리한 확장보다 안정적 유지에 초점을 맞추길 권합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "다른 사이트와 점수가 다른데, 어느 쪽이 맞나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "운세 점수는 사이트마다 사용한 음력 라이브러리·오행 해석 방식에 따라 차이가 날 수 있습니다. 본 사이트는 MIT 라이선스의 한국 음력 라이브러리(@fullstackfamily/manseryeok)와 한국 천문연구원 표준 역서를 기준으로 산출합니다."
+        }
+      }
+    ]
+  }}
 >
   <main class="container">
     <header class="hero">
