@@ -8,6 +8,7 @@ import AdSenseAd from "../../components/AdSenseAd.astro";
 import Disclaimer from "../../components/Disclaimer.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
 import { ZODIACS } from "../../data/zodiacs";
+import dailyFortune from "../../data/daily-fortune.json";
 
 export async function getStaticPaths() {
   return ZODIACS.map((z) => ({
@@ -18,6 +19,9 @@ export async function getStaticPaths() {
 
 const { zodiac, all } = Astro.props;
 const currentYear = new Date().getFullYear();
+const todayZodiac = dailyFortune.zodiacs[zodiac.slug];
+const todayScores = todayZodiac?.scores;
+const todayMessages = todayZodiac?.messages;
 
 const pageTitle = `${zodiac.name}띠 ${currentYear}년 운세 - 성격, 궁합, 행운의 색까지`;
 const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성격 특징·강점·약점, 잘 맞는 궁합·안 맞는 궁합, 행운의 색·숫자·길일까지 정리했습니다. ${currentYear}년 운세 조언도 포함. 다른 11개 띠 정보도 함께 확인하세요.`;
@@ -30,6 +34,55 @@ const pageDesc = `${zodiac.name}띠(${zodiac.hanja}, ${zodiac.element})의 성�
       <h1>{zodiac.name}띠 - 성격, 궁합, {currentYear}년 운세</h1>
       <p class="subtitle">{zodiac.element} · {zodiac.direction} · {zodiac.month} · {zodiac.directionTime}</p>
     </header>
+
+    <!-- 섹션 0: 오늘의 운세 (12띠 선택 시 1번째로 보이는 핵심 섹션) -->
+    {todayScores && (
+      <section class="today-fortune-card">
+        <div class="today-fortune-header">
+          <span class="today-label">🍀 오늘의 운세</span>
+          <span class="today-date">{dailyFortune.date} ({dailyFortune.dayPillar}일, {dailyFortune.dayZodiac}띠일)</span>
+        </div>
+        <div class="today-score-grid">
+          <div class="score-box highlight">
+            <div class="score-label">총운</div>
+            <div class="score-value">{todayScores.total}</div>
+            <div class="score-unit">/100</div>
+            <div class="score-level">{todayScores.level}</div>
+          </div>
+          <div class="score-box">
+            <div class="score-label">💰 금전</div>
+            <div class="score-value-small">{todayScores.money}</div>
+          </div>
+          <div class="score-box">
+            <div class="score-label">💕 연애</div>
+            <div class="score-value-small">{todayScores.love}</div>
+          </div>
+          <div class="score-box">
+            <div class="score-label">💪 건강</div>
+            <div class="score-value-small">{todayScores.health}</div>
+          </div>
+          <div class="score-box">
+            <div class="score-label">💼 일·학업</div>
+            <div class="score-value-small">{todayScores.work}</div>
+          </div>
+        </div>
+        {todayMessages && (
+          <div class="today-messages">
+            <p class="today-main-message">"{todayMessages.total}"</p>
+            <details class="today-details">
+              <summary>카테고리별 상세 운세 보기</summary>
+              <ul>
+                <li><strong>💰 금전:</strong> {todayMessages.money}</li>
+                <li><strong>💕 연애:</strong> {todayMessages.love}</li>
+                <li><strong>💪 건강:</strong> {todayMessages.health}</li>
+                <li><strong>💼 일·학업:</strong> {todayMessages.work}</li>
+              </ul>
+            </details>
+          </div>
+        )}
+        <p class="today-disclaimer">오늘 운세는 일진(일주)·오행 관계를 기반으로 매일 갱신됩니다. 본인 사주와 결합해 더 정확한 해석을 원하시면 <a href="/saju/">사주팔자 계산기</a>를 이용하세요.</p>
+      </section>
+    )}
 
     <!-- 섹션 1: 한자·오행·방위 기본 정보 -->
     <section class="info-card">

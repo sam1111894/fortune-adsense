@@ -36,6 +36,215 @@
 }
 .disclaimer-box p { margin: 0; }
 
+/* ----- 오늘의 운세 카드 (12띠 페이지 일일 운섹) ----- */
+.today-fortune-card {
+  background: linear-gradient(135deg, #fef3f9 0%, #f3f0ff 100%);
+  border: 2px solid #c4b5fd;
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin: 28px 0;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.12);
+}
+.today-fortune-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.today-label {
+  font-size: 20px;
+  font-weight: 700;
+  color: #6b21a8;
+}
+.today-date {
+  font-size: 13px;
+  color: #6b21a8;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+.today-score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (min-width: 600px) {
+  .today-score-grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+}
+.score-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 12px;
+  text-align: center;
+  border: 1px solid #e9d5ff;
+}
+.score-box.highlight {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  color: #fff;
+  border: none;
+  padding: 18px 16px;
+}
+.score-label {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.score-box.highlight .score-label {
+  color: #fff;
+  font-size: 14px;
+}
+.score-value {
+  font-size: 42px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+.score-value-small {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+.score-unit {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+.score-level {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 6px;
+  padding: 2px 10px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  display: inline-block;
+}
+.today-messages {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+.today-main-message {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #1f2937;
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+.today-details summary {
+  cursor: pointer;
+  font-size: 14px;
+  color: #8b5cf6;
+  font-weight: 600;
+  padding: 6px 0;
+  user-select: none;
+}
+.today-details summary:hover { color: #6b21a8; }
+.today-details ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+.today-details li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #374151;
+  margin: 6px 0;
+}
+.today-details li strong { color: #1f2937; }
+.today-disclaimer {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid #e9d5ff;
+  line-height: 1.6;
+}
+.today-disclaimer a { color: #8b5cf6; text-decoration: underline; }
+
+/* ----- 메인페이지 12띠 선택 카드 그리드 ----- */
+.zodiac-pick-section {
+  background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+  padding: 28px 24px;
+  border-radius: 16px;
+  margin: 32px 0;
+}
+.zodiac-pick-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.zodiac-pick-header h2 {
+  font-size: 22px;
+  color: #1a1a1a;
+  margin: 0 0 8px;
+}
+.zodiac-pick-header p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+.zodiac-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media (min-width: 600px) {
+  .zodiac-pick-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (min-width: 900px) {
+  .zodiac-pick-grid { grid-template-columns: repeat(6, 1fr); }
+}
+.zodiac-pick-card {
+  background: #fff;
+  border: 2px solid #e9d5ff;
+  border-radius: 12px;
+  padding: 16px 8px;
+  text-align: center;
+  text-decoration: none;
+  color: #1f2937;
+  transition: all 0.2s;
+  display: block;
+}
+.zodiac-pick-card:hover {
+  transform: translateY(-2px);
+  border-color: #8b5cf6;
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.18);
+}
+.zodiac-pick-hanja {
+  font-size: 28px;
+  color: #8b5cf6;
+  font-weight: 700;
+  line-height: 1;
+}
+.zodiac-pick-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 6px 0 4px;
+}
+.zodiac-pick-element {
+  font-size: 11px;
+  color: #6b7280;
+}
+.zodiac-pick-luck {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.zodiac-pick-luck.good { background: #dcfce7; color: #15803d; }
+.zodiac-pick-luck.normal { background: #fef3c7; color: #b45309; }
+.zodiac-pick-luck.caution { background: #fee2e2; color: #b91c1c; }
+
 /* ----- AdSense 광고 슬롯 ----- */
 .adsense-slot {
   margin: 32px auto;
