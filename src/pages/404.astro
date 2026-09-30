@@ -1,0 +1,92 @@
+---
+// 404 페이지 — 명시적 404 상태 코드 반환
+// Googlebot이 잘못된 URL을 크롤링할 때 200 OK 대신 404를 반환해야
+// "발견됨 - 색인이 생성되지 않음" 페이지에서 자연 소멸됨
+import Layout from "../layouts/Layout.astro";
+
+Astro.response.status = 404;
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+---
+
+<Layout
+  title="404 - 페이지를 찾을 수 없습니다 | 오늘의 운세"
+  description="요청하신 페이지를 찾을 수 없습니다. 만세력 기반 무료 운세 서비스의 메인 페이지로 이동해 주세요."
+>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">404 Error</p>
+      <h1>페이지를 찾을 수 없습니다</h1>
+      <p class="subtitle">요청하신 페이지가 존재하지 않거나 이동되었습니다.</p>
+    </header>
+
+    <section class="info-card">
+      <h2>이런 페이지는 어떠세요?</h2>
+      <ul class="related-list">
+        <li><a href="/">오늘의 운세</a> — 매일 자정 자동 갱신되는 일진·오행 운세</li>
+        <li><a href="/saju/">사주팔자 계산기</a> — 4주(년·월·일·시)와 음력 변환</li>
+        <li><a href="/lunar-calendar/">음력 ↔ 양력 변환기</a> — 1900~2050년 음력 데이터</li>
+        <li><a href="/zodiac/">12띠 운세</a> — 자축인묘진사오미신유술해</li>
+        <li><a href="/lotto/">로또 6/45 번호 생성기</a> — 매주 새로 뽑는 번호 5세트</li>
+        <li><a href="/salary/">연봉 실수령액 계산기</a> — 4대보험·소득세 자동 계산</li>
+      </ul>
+    </section>
+
+    <p class="back-link"><a href="/">← 메인 페이지로 돌아가기</a></p>
+  </main>
+</Layout>
+
+<style>
+  main.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 16px 80px;
+    text-align: center;
+  }
+  .page-header { margin-bottom: 32px; }
+  .eyebrow {
+    color: #888;
+    font-size: 13px;
+    letter-spacing: 4px;
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+  .page-header h1 {
+    font-size: 32px;
+    margin: 0 0 12px;
+    color: #1a1a1a;
+  }
+  .subtitle { color: #666; margin: 0; font-size: 16px; }
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    text-align: left;
+  }
+  .info-card h2 {
+    font-size: 18px;
+    margin: 0 0 16px;
+    color: #1a1a1a;
+  }
+  .related-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .related-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .related-list a:hover { text-decoration: underline; }
+  .back-link { margin-top: 24px; }
+  .back-link a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+</style>
