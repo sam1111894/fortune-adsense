@@ -1,0 +1,102 @@
+name: IndexNow Auto-Submit
+
+# daily-refresh.yml deploy 완료 후 sitemap.xml의 모든 URL을 IndexNow API에 자동 제출
+# - Yandex, Bing, Seznam이 색인 요청을 받아 즉시 크롤링 시도
+# - 일 1회 자동 실행 (daily-refresh와 동일 시간)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 15 * * *"  # daily-refresh 후 10분 뒤 실행
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download sitemap from live site
+        run: |
+          echo "=== Sitemap 다운로드 ==="
+          curl -fsS "https://lucksajueun.com/sitemap.xml" -o /tmp/sitemap.xml
+          echo "=== URL 개수 ==="
+          grep -c '<loc>' /tmp/sitemap.xml
+
+      - name: Extract URLs
+        id: urls
+        run: |
+          # sitemap.xml에서 <loc> 태그 내용 추출
+          grep -oE '<loc>[^<]+</loc>' /tmp/sitemap.xml \
+            | sed -E 's|<loc>([^<]+)</loc>|\1|' > /tmp/urls.txt
+          URL_COUNT=$(wc -l < /tmp/urls.txt)
+          echo "url_count=$URL_COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Submit to IndexNow (Yandex)
+        env:
+          INDEXNOW_KEY: lucksajueun-indexnow-2026
+        run: |
+          echo "=== IndexNow API 호출 (Yandex) ==="
+          URL_LIST=$(cat /tmp/urls.txt | python3 -c "
+          import json, sys
+          urls = [line.strip() for line in sys.stdin if line.strip()]
+          payload = {
+              'host': 'lucksajueun.com',
+              'key': 'lucksajueun-indexnow-2026',
+              'keyLocation': 'https://lucksajueun.com/lucksajueun-indexnow-2026.txt',
+              'urlList': urls
+          }
+          print(json.dumps(payload, ensure_ascii=False))
+          ")
+          echo "$URL_LIST" | python3 -c "
+          import json, sys, urllib.request
+          payload = json.load(sys.stdin)
+          req = urllib.request.Request(
+              'https://yandex.com/indexnow',
+              data=json.dumps(payload).encode('utf-8'),
+              headers={'Content-Type': 'application/json'},
+              method='POST'
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  print(f'Yandex response: {r.status} {r.reason}')
+                  print(r.read().decode('utf-8'))
+          except urllib.error.HTTPError as e:
+              print(f'Yandex HTTP error: {e.code}')
+              print(e.read().decode('utf-8'))
+              sys.exit(1)
+          "
+
+      - name: Submit to IndexNow (Seznam)
+        run: |
+          echo "=== IndexNow API 호출 (Seznam) ==="
+          cat /tmp/urls.txt | python3 -c "
+          import json, sys, urllib.request
+          urls = [line.strip() for line in sys.stdin if line.strip()]
+          payload = {
+              'host': 'lucksajueun.com',
+              'key': 'lucksajueun-indexnow-2026',
+              'keyLocation': 'https://lucksajueun.com/lucksajueun-indexnow-2026.txt',
+              'urlList': urls
+          }
+          req = urllib.request.Request(
+              'https://search.seznam.cz/indexnow',
+              data=json.dumps(payload).encode('utf-8'),
+              headers={'Content-Type': 'application/json'},
+              method='POST'
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  print(f'Seznam response: {r.status} {r.reason}')
+                  print(r.read().decode('utf-8'))
+          except urllib.error.HTTPError as e:
+              print(f'Seznam HTTP error: {e.code}')
+              print(e.read().decode('utf-8'))
+              sys.exit(1)
+          "
+
+      - name: Done
+        run: |
+          echo "=== IndexNow 자동 제출 완료 ==="
+          echo "전송된 URL: $(wc -l < /tmp/urls.txt)개"
+          echo "Google Search Console은 별도 수동 제출 불필요 (sitemap.xml 자동 인식)"
