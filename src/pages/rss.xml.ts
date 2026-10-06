@@ -1,7 +1,8 @@
 import type { APIRoute } from "astro";
 import { ZODIACS } from "../data/zodiacs";
+import { getCollection } from "astro:content";
 
-export const GET: APIRoute = ({ site }) => {
+export const GET: APIRoute = async ({ site }) => {
   const baseUrl = (site?.href || "https://lucksajueun.com").replace(/\/$/, "");
   const now = new Date().toUTCString();
 
@@ -59,6 +60,20 @@ export const GET: APIRoute = ({ site }) => {
       description: `${z.name}띠의 성격·궁합·2026년 운세를 상세히 확인하세요.`,
       pubDate: now,
       category: "띠별운세",
+    });
+  });
+
+  // Blog 칼럼 RSS 포함
+  const posts = (await getCollection("blog")).sort(
+    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+  );
+  posts.forEach((p) => {
+    items.push({
+      title: p.data.title,
+      link: `/blog/${p.id}/`,
+      description: p.data.description,
+      pubDate: p.data.pubDate.toUTCString(),
+      category: p.data.tags[0] || "칼럼",
     });
   });
 

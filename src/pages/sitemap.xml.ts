@@ -1,7 +1,8 @@
 import type { APIRoute } from "astro";
 import { ZODIACS } from "../data/zodiacs";
+import { getCollection } from "astro:content";
 
-export const GET: APIRoute = ({ site }) => {
+export const GET: APIRoute = async ({ site }) => {
   const baseUrl = (site?.href || "https://lucksajueun.com").replace(/\/$/, "");
   const today = new Date().toISOString().split("T")[0];
 
@@ -34,7 +35,18 @@ export const GET: APIRoute = ({ site }) => {
     priority: "0.8",
   }));
 
-  const allUrls = [...staticPages, ...zodiacUrls];
+  // Blog 칼럼 (/blog/) — content collection에서 동적 생성
+  const posts = await getCollection("blog");
+  const blogUrls = [
+    { loc: "/blog/", changefreq: "weekly", priority: "0.9" },
+    ...posts.map((p) => ({
+      loc: trailing(`/blog/${p.id}`),
+      changefreq: "monthly" as const,
+      priority: "0.7",
+    })),
+  ];
+
+  const allUrls = [...staticPages, ...zodiacUrls, ...blogUrls];
 
   const urls = allUrls
     .map(

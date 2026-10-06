@@ -1,0 +1,83 @@
+---
+/**
+ * 블로그 칼럼 상세 페이지 (/blog/[slug])
+ * 10개의 .md 컬렉션을 동적 라우트로 표시
+ */
+import Layout from "../../layouts/Layout.astro";
+import AdSenseAd from "../../components/AdSenseAd.astro";
+import Disclaimer from "../../components/Disclaimer.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, all: posts },
+  }));
+}
+
+const { post, all } = Astro.props;
+const { Content } = await render(post);
+
+const related = all
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+
+const pageTitle = `${post.data.title} - 오늘의 운세 블로그`;
+const pageDesc = post.data.description;
+const pageKeywords = post.data.tags.join(", ");
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={pageKeywords}>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">
+        <a href="/blog/">← 오늘의 운세 블로그</a>
+      </p>
+      <h1>{post.data.title}</h1>
+      <p class="subtitle">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {formatDate(post.data.pubDate)}
+        </time>
+        · {post.data.author}
+      </p>
+      <p class="blog-tag-row">
+        {post.data.tags.map((t) => (
+          <span class="blog-list-tag">#{t}</span>
+        ))}
+      </p>
+    </header>
+
+    <article class="info-card blog-article">
+      <Content />
+    </article>
+
+    <AdSenseAd />
+
+    <section class="info-card">
+      <h2>함께 읽으면 좋은 글</h2>
+      <ul class="blog-list">
+        {related.map((p) => (
+          <li class="blog-list-item">
+            <a href={`/blog/${p.id}/`} class="blog-list-link">
+              <h3 class="blog-list-title">{p.data.title}</h3>
+              <p class="blog-list-desc">{p.data.description}</p>
+              <p class="blog-list-meta">
+                <time datetime={p.data.pubDate.toISOString()}>
+                  {formatDate(p.data.pubDate)}
+                </time>
+              </p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <Disclaimer />
+
+    <AdSenseAd />
+  </main>
+</Layout>
