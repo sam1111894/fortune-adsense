@@ -447,7 +447,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   }
   .hero .eyebrow {
     color: var(--color-ink-muted);
-    font-size: var(--fs-xs, 13px);
+    font-size: 15px;
     letter-spacing: var(--track-label, 0.12em);
     margin: 0;
     text-transform: uppercase;
@@ -456,7 +456,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
     gap: var(--s-2, 8px);
   }
   .hero h1 {
-    font-size: var(--fs-2xl, 49px);
+    font-size: clamp(24px, 5vw, 32px);
     margin: 0;
     color: var(--color-ink-deep);
     font-weight: 700;
@@ -524,7 +524,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
     text-underline-offset: 3px;
   }
   .zodiac-result-placeholder p {
-    margin: 0; font-size: 13px; color: #777; width: 100%;
+    margin: 0; font-size: 15px; color: #555; width: 100%;
   }
   .placeholder-arrow {
     display: inline-flex; align-items: center; justify-content: center;
@@ -728,7 +728,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
       gap: var(--s-2, 8px) var(--s-3, 16px);
     }
     .hero .hero-numeral { font-size: 56px; }
-    .hero h1 { font-size: var(--fs-xl, 37px); }
+    .hero h1 { font-size: clamp(22px, 7vw, 28px); }
     .hero .subtitle { font-size: var(--fs-sm, 14px); }
     .score-board { grid-template-columns: 1fr; }
     .week-grid { grid-template-columns: repeat(4, 1fr); }
