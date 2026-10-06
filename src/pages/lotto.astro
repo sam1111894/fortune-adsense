@@ -263,37 +263,43 @@ const COLD_NUMS = [2, 5, 21, 23, 30, 38];     // 잘 안 나오는 번호
   .toggle input { margin-right: 4px; }
 
   .result-area { display: grid; gap: 16px; margin-bottom: 24px; }
-  .hint { text-align: center; color: #888; padding: 32px 0; }
-  .lotto-set { background: #fafafa; border-radius: 12px; padding: 16px; }
-  .lotto-set header { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
-  .set-label { font-weight: 700; color: #1a1a1a; font-size: 16px; }
-  .ai-badge { background: #8b5cf6; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-  .balls-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .plus { font-size: 20px; color: #888; font-weight: 700; }
-  .result-ball {
+
+  /* 동적으로 innerHTML로 만들어지는 요소 — Astro scoped CSS [data-astro-cid] 속성 없으면 미적용되므로 :global() 필수 */
+  :global(.hint) { text-align: center; color: #888; padding: 32px 0; }
+  :global(.lotto-set) { background: #fafafa; border-radius: 12px; padding: 16px; }
+  :global(.lotto-set header) { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+  :global(.set-label) { font-weight: 700; color: #1a1a1a; font-size: 16px; }
+  :global(.ai-badge) { background: #8b5cf6; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  :global(.balls-row) { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  :global(.plus) { font-size: 20px; color: #888; font-weight: 700; margin: 0 4px; }
+  :global(.result-ball) {
     display: inline-flex; align-items: center; justify-content: center;
     width: 44px; height: 44px; border-radius: 50%;
     color: #fff; font-weight: 700; font-size: 16px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
   }
-  .result-ball.yellow { background: #fbc400; }
-  .result-ball.blue { background: #69c8f2; }
-  .result-ball.red { background: #ff7272; }
-  .result-ball.gray { background: #aaa; }
-  .result-ball.green { background: #b0d840; }
-  .result-ball.bonus { background: #1a1a1a; width: 36px; height: 36px; font-size: 14px; }
+  :global(.result-ball.yellow) { background: #fbc400; }
+  :global(.result-ball.blue)   { background: #69c8f2; }
+  :global(.result-ball.red)    { background: #ff7272; }
+  :global(.result-ball.gray)   { background: #aaa; }
+  :global(.result-ball.green)  { background: #b0d840; }
+  :global(.result-ball.bonus)  { background: #1a1a1a; width: 36px; height: 36px; font-size: 14px; }
+  :global(.lotto-stat-note)    { color: #666; font-size: 13px; margin-top: 8px; font-style: italic; }
 
   .stats { border-top: 1px dashed #e5e5e5; padding-top: 20px; }
   .stats h2 { font-size: 16px; margin: 16px 0 10px; }
   .stats h2:first-child { margin-top: 0; }
-  .num-grid { display: flex; gap: 6px; flex-wrap: wrap; }
-  .ball {
+
+  /* 동적 .num-grid / .ball도 innerHTML로 만들어지므로 :global() */
+  :global(.num-grid) { display: flex; gap: 6px; flex-wrap: wrap; }
+  :global(.ball) {
     display: inline-flex; align-items: center; justify-content: center;
     width: 36px; height: 36px; border-radius: 50%;
     color: #fff; font-weight: 700; font-size: 14px;
   }
-  .ball.hot { background: #ff7272; }
-  .ball.cold { background: #69c8f2; }
+  :global(.ball.hot)  { background: #ff7272; }
+  :global(.ball.cold) { background: #69c8f2; }
+
   .stats-note { font-size: 12px; color: #888; margin-top: 12px; }
   .odds-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
   .odds-table th, .odds-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e5e5e5; }
