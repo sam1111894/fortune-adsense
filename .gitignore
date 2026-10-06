@@ -20,3 +20,11 @@ pnpm-debug.log*
 
 # astro
 .astro/
+
+# local dev / extraction caches (do not commit)
+.extract-design-system/
+.hermes/
+design-system/
+dogfood-output/
+references/
+sketches/

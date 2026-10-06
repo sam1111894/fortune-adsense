@@ -129,6 +129,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
 >
   <main class="container">
     <header class="hero editorial-rule">
+      <span class="hero-numeral" aria-hidden="true">{todayFortune.dayPillarHanja}</span>
       <p class="eyebrow"><span class="editorial-dot" aria-hidden="true"></span> 무료 만세력 · 오늘의 운세</p>
       <h1>{todayDateLabel} ({todayWeekday}요일) 운세</h1>
       <p class="subtitle">음력 {todayFortune.lunarYear}년 {todayFortune.lunarMonth}월 {todayFortune.lunarDay}일{todayFortune.isLeapMonth ? " (윤달)" : ""} · 일간 {todayFortune.dayPillarHanja} · {todayFortune.zodiac}띠</p>
@@ -155,9 +156,9 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
       aria-label="선택한 띠의 운세"
     >
       <div class="zodiac-result-placeholder">
-        <span class="placeholder-icon" aria-hidden="true">🍀</span>
-        <h2>내 띠를 먼저 선택해 주세요</h2>
-        <p>아래 12개 띠 카드 중 태어난 해의 띠를 누르면 여기에 점수와 운세가 나타납니다.</p>
+        <span class="placeholder-arrow" aria-hidden="true">↓</span>
+        <h2>아래 12개 카드에서 태어난 해의 <strong>띠를 선택</strong>해 주세요</h2>
+        <p>선택 즉시 여기에 오늘 일진의 점수와 메시지가 표시됩니다.</p>
       </div>
       <div class="zodiac-result-body" hidden>
         <header class="zodiac-result-header">
@@ -198,8 +199,10 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
 
         <!-- 12띠 picker: 클릭으로 같은 자리에 맞춤 운세 표시 -->
         <section id="zodiac-pick" class="zodiac-pick-section" aria-label="내 띠 선택">
-          <header class="zodiac-pick-header">
-            <h2>🍀 내 띠에 맞는 오늘 운세 보기</h2>
+          <header class="zodiac-pick-header editorial-section-head">
+            <span class="numeral" aria-hidden="true">01</span>
+            <h2>내 띠에 맞는 오늘 운세</h2>
+            <span class="meta">12간지 · {todayFortune.zodiac}띠 일진</span>
             <p>태어난 해의 띠를 선택하면 오늘 일진에 맞는 <strong>맞춤 점수와 운세</strong>가 표시됩니다.</p>
           </header>
           <div class="zodiac-pick-grid">
@@ -276,7 +279,11 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
         </section>
 
     <section class="week">
-      <h2>이번 주 운세 미리보기</h2>
+      <header class="editorial-section-head">
+        <span class="numeral" aria-hidden="true">02</span>
+        <h2>이번 주 운세 미리보기</h2>
+        <span class="meta">7일 일진</span>
+      </header>
       <div class="week-grid">
         {weekFortunes.map((f, i) => {
           const wd = weekdayKr[new Date(Date.UTC(f.solarYear, f.solarMonth - 1, f.solarDay)).getUTCDay()];
@@ -419,10 +426,50 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
 
 <style>
   main.container { max-width: 880px; margin: 0 auto; padding: 24px 16px 80px; }
-  .hero { text-align: center; padding: 32px 0 24px; }
-  .eyebrow { color: #888; font-size: 13px; letter-spacing: 2px; margin: 0 0 8px; }
-  .hero h1 { font-size: 36px; margin: 0 0 8px; color: #1a1a1a; }
-  .subtitle { color: #555; font-size: 15px; margin: 0; }
+
+  /* === HERO (Editorial v3) — Vignelli restraint + Rams 1 geometric accent === */
+  .hero {
+    text-align: left;
+    padding: var(--s-6, 48px) 0 var(--s-5, 32px);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--s-4, 24px) var(--s-5, 32px);
+    align-items: end;
+  }
+  .hero .hero-numeral {
+    font-family: var(--font-mono);
+    font-size: var(--numeral-size, 88px);
+    line-height: 0.85;
+    letter-spacing: var(--track-mono, 0.04em);
+    color: var(--color-wine);
+    font-weight: 500;
+    grid-row: span 2;
+  }
+  .hero .eyebrow {
+    color: var(--color-ink-muted);
+    font-size: var(--fs-xs, 13px);
+    letter-spacing: var(--track-label, 0.12em);
+    margin: 0;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2, 8px);
+  }
+  .hero h1 {
+    font-size: var(--fs-2xl, 49px);
+    margin: 0;
+    color: var(--color-ink-deep);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: var(--track-display, -0.02em);
+    font-family: var(--font-display, system-ui);
+  }
+  .hero .subtitle {
+    color: var(--color-ink-muted);
+    font-size: var(--fs-md, 16px);
+    margin: 0;
+    letter-spacing: var(--track-body, 0);
+  }
 
   .score-board { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin: 24px 0; }
   .score-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 14px; padding: 18px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
@@ -462,13 +509,36 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
     border: 1px solid #e7e3f5; padding: 18px;
   }
   .zodiac-result-placeholder {
-    border: 1.5px dashed #c4b5fd; border-radius: 16px;
-    padding: 32px 20px; text-align: center; color: #555;
+    border: 1px dashed #c4b5fd; border-radius: 12px;
+    padding: 14px 16px; text-align: center; color: #555;
     background: linear-gradient(180deg, #faf7ff 0%, #fff 100%);
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    flex-wrap: wrap;
   }
-  .zodiac-result-placeholder h2 { margin: 8px 0 6px; font-size: 18px; color: #1a1a1a; }
-  .zodiac-result-placeholder p { margin: 0; font-size: 14px; color: #555; }
-  .placeholder-icon { font-size: 36px; display: block; margin-bottom: 4px; }
+  .zodiac-result-placeholder h2 {
+    margin: 0; font-size: 15px; color: #1a1a1a; font-weight: 600;
+    letter-spacing: var(--track-heading, -0.01em);
+  }
+  .zodiac-result-placeholder h2 strong {
+    color: #6b46c1; font-weight: 700;
+    text-underline-offset: 3px;
+  }
+  .zodiac-result-placeholder p {
+    margin: 0; font-size: 13px; color: #777; width: 100%;
+  }
+  .placeholder-arrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #6b46c1; color: #fff; font-size: 14px; font-weight: 800;
+    animation: bounce-arrow 1.4s ease-in-out infinite;
+  }
+  @keyframes bounce-arrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .placeholder-arrow { animation: none; }
+  }
   .zodiac-result-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
   .zodiac-result-hanja {
     width: 64px; height: 64px; border-radius: 14px;
@@ -488,12 +558,42 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
     border-radius: 999px; background: rgba(255,255,255,0.25); color: #fff;
   }
 
-  /* === 12띠 picker === */
+  /* === 12띠 picker (Editorial v3) === */
   .zodiac-pick-section { margin: 32px 0 16px; }
-  .zodiac-pick-header { text-align: center; margin-bottom: 16px; }
-  .zodiac-pick-header h2 { margin: 0 0 6px; font-size: 22px; color: #1a1a1a; }
-  .zodiac-pick-header p { margin: 0; font-size: 14px; color: #555; }
-  .zodiac-pick-header strong { color: #6b46c1; }
+  .zodiac-pick-header.editorial-section-head {
+    margin-bottom: var(--s-4, 24px);
+    text-align: left;
+  }
+  .zodiac-pick-header.editorial-section-head .numeral {
+    font-family: var(--font-mono);
+    font-size: var(--numeral-size, 88px);
+    line-height: 0.85;
+    letter-spacing: var(--track-mono, 0.04em);
+    color: var(--color-wine);
+    font-weight: 500;
+  }
+  .zodiac-pick-header.editorial-section-head h2 {
+    margin: 0;
+    font-size: var(--fs-xl, 37px);
+    color: var(--color-ink-deep);
+    font-weight: 700;
+    letter-spacing: var(--track-heading, -0.01em);
+    line-height: 1.1;
+  }
+  .zodiac-pick-header.editorial-section-head p {
+    margin: 0;
+    font-size: var(--fs-md, 16px);
+    color: var(--color-ink-muted);
+    grid-column: 2 / -1;
+  }
+  .zodiac-pick-header.editorial-section-head .meta {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs, 12px);
+    color: var(--color-ink-muted);
+    letter-spacing: var(--track-mono, 0.04em);
+    text-transform: uppercase;
+    align-self: end;
+  }
   .zodiac-pick-grid {
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
   }
@@ -526,11 +626,17 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
     display: flex; align-items: center; justify-content: center;
   }
   .zodiac-pick-hanja {
-    font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1.1;
+    font-family: var(--font-display, system-ui);
+    font-size: var(--fs-lg, 28px); font-weight: 800; color: var(--accent); line-height: 1.1;
     margin-bottom: 2px;
+    letter-spacing: var(--track-display, -0.02em);
   }
-  .zodiac-pick-name { font-size: 14px; font-weight: 700; color: #1a1a1a; }
-  .zodiac-pick-element { font-size: 11px; color: #888; margin: 2px 0 6px; }
+  .zodiac-pick-name {
+    font-family: var(--font-display, system-ui);
+    font-size: var(--fs-sm, 14px); font-weight: 700; color: #1a1a1a;
+    letter-spacing: var(--track-heading, -0.01em);
+  }
+  .zodiac-pick-element { font-size: 11px; color: #888; margin: 2px 0 6px; letter-spacing: var(--track-mono, 0.04em); }
   .zodiac-pick-luck {
     display: inline-block; font-size: 11px; font-weight: 700;
     padding: 3px 8px; border-radius: 999px;
@@ -552,7 +658,31 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   /* sticky 헤더가 있을 때 anchor 타겟이 가려지지 않도록 */
   #zodiac-pick { scroll-margin-top: 80px; }
 
-  .week h2 { font-size: 20px; margin: 0 0 16px; }
+  .week.editorial-section-head {
+    margin-bottom: var(--s-4, 24px);
+    padding-bottom: var(--s-2, 8px);
+    border-bottom: 2px solid var(--color-ink-deep);
+    display: grid;
+    grid-template-columns: var(--numeral-size, 88px) 1fr auto;
+    gap: var(--s-3, 16px);
+    align-items: end;
+  }
+  .week.editorial-section-head .numeral {
+    font-family: var(--font-mono);
+    font-size: var(--numeral-size, 88px);
+    line-height: 0.85;
+    letter-spacing: var(--track-mono, 0.04em);
+    color: var(--color-wine);
+    font-weight: 500;
+  }
+  .week h2 {
+    font-size: var(--fs-xl, 37px);
+    margin: 0;
+    color: var(--color-ink-deep);
+    font-weight: 700;
+    letter-spacing: var(--track-heading, -0.01em);
+    line-height: 1.1;
+  }
   .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
   .week-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 10px 6px; text-align: center; }
   .week-card.today { border-color: #8b5cf6; background: #f9f7ff; }
@@ -593,7 +723,13 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   }
 
   @media (max-width: 640px) {
-    .hero h1 { font-size: 26px; }
+    .hero {
+      grid-template-columns: auto 1fr;
+      gap: var(--s-2, 8px) var(--s-3, 16px);
+    }
+    .hero .hero-numeral { font-size: 56px; }
+    .hero h1 { font-size: var(--fs-xl, 37px); }
+    .hero .subtitle { font-size: var(--fs-sm, 14px); }
     .score-board { grid-template-columns: 1fr; }
     .week-grid { grid-template-columns: repeat(4, 1fr); }
     .cards { grid-template-columns: 1fr; }
@@ -632,10 +768,10 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
 
   /** 타입 안전 DOM 헬퍼 */
   function $(sel, root) {
-    return root.querySelector(sel);
+    return (root || document).querySelector(sel);
   }
   function $$(sel, root) {
-    return Array.from(root.querySelectorAll(sel));
+    return Array.from((root || document).querySelectorAll(sel));
   }
 
   const resultEl = $("#zodiac-result");
@@ -738,7 +874,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
 
     // 초기 복원: URL ?zodiac= 우선 → localStorage → placeholder
     function restoreInitial() {
-      let slug: string | null = null;
+      let slug = null;
       try {
         const url = new URL(window.location.href);
         const qSlug = url.searchParams.get("zodiac");

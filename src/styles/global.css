@@ -6,235 +6,343 @@
  * 통합: 7대 명저 + strikingly.com starter 토큰
  * ============================================ */
 
+/* ===================================================================
+   Design tokens — Korean Editorial Luxury (2026-10-06 통합)
+   Source of truth: design-system/tokens.css
+   Aesop + Le Labo + MUJI 정신, 와인 3-레이어 / 잉크 4-레이어 / 페이퍼 4-레이어
+   =================================================================== */
+:root {
+  /* Color — 와인레드 3-레이어 (Aesop 약학적 럭셔리) */
+  --color-wine:        rgb(140, 31, 40);    /* 메인 와인레드, #8C1F28 */
+  --color-wine-deep:   rgb(94, 14, 24);     /* hover/pressed, #5E0E18 */
+  --color-wine-shadow: rgb(42, 10, 18);     /* Le Labo 깊이, #2A0A12 */
+  --color-wine-soft:   rgba(140, 31, 40, 0.08);
+  --color-wine-fog:    rgba(140, 31, 40, 0.04);
+
+  /* Gold — 럭셔리 액센트 (Aesop 골드, 18px+ large only) */
+  --color-rose-gold:   rgb(182, 139, 71);   /* Pantone 871, #B68B47 */
+  --color-rose-gold-deep: rgb(155, 115, 53);
+
+  /* Ink — Le Labo 정제 (deep + soft + fog + muted 4-레이어) */
+  --color-ink-deep:    rgb(14, 11, 10);     /* 타이틀, #0E0B0A */
+  --color-ink-soft:    rgb(31, 26, 24);     /* 본문, #1F1A18 */
+  --color-ink-fog:     rgb(107, 98, 92);    /* 미세 디테일, #6B625C */
+  --color-ink-muted:   rgb(112, 107, 98);   /* 메타/라벨, #706B62 WCAG 4.63 */
+
+  /* Paper — 따뜻한 한지 (MUJI 정직) */
+  --color-paper:       rgb(244, 239, 232);  /* 베이스, #F4EFE8 */
+  --color-paper-soft:  rgb(234, 226, 213);  /* 카드/인용, #EAE2D5 */
+  --color-paper-warm:  rgb(241, 233, 221);  /* 자연 결, #F1E9DD */
+  --color-paper-edge:  rgba(14, 11, 10, 0.06);
+
+  /* Line — Le Labo hairline */
+  --color-line:        rgb(42, 34, 32);     /* 강한 라인, #2A2220 */
+  --color-line-soft:   rgba(14, 11, 10, 0.12);
+  --color-line-hair:   rgba(14, 11, 10, 0.06);
+
+  /* Luck scores */
+  --color-luck-good:   rgb(59, 110, 71);
+  --color-luck-ok:     rgb(184, 122, 44);
+  --color-luck-warn:   rgb(162, 48, 48);
+
+  /* Typography — Vignelli two-font + Bringhurst + Le Labo 정제 */
+  --font-display: "Noto Serif KR", "Cormorant Garamond", Georgia, serif;
+  --font-body:    -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                  "Pretendard", "Helvetica Neue", "Segoe UI", sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Modular scale — Perfect Fourth 1.333 (Bringhurst) */
+  --fs-xs:   0.75rem;     /* 12px */
+  --fs-sm:   1rem;        /* 16px base */
+  --fs-md:   1.3125rem;   /* 21px */
+  --fs-lg:   1.75rem;     /* 28px */
+  --fs-xl:   2.3125rem;   /* 37px */
+  --fs-2xl:  3.0625rem;   /* 49px */
+  --fs-3xl:  4.125rem;    /* 66px */
+  --fs-4xl:  5.5rem;      /* 88px */
+
+  --lh-body:  1.65;
+  --lh-tight: 1.10;
+
+  /* Le Labo 정제 트래킹 */
+  --track-display: -0.04em;
+  --track-heading: -0.02em;
+  --track-body:    0;
+  --track-mono:    0.04em;
+  --track-label:   0.16em;
+
+  /* Spacing — 8px baseline (Müller-Brockmann) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 16px;
+  --s-4: 24px;
+  --s-5: 32px;
+  --s-6: 48px;
+  --s-7: 64px;
+  --s-8: 96px;
+  --s-9: 128px;
+
+  /* Radii — Le Labo 절제 */
+  --r-none: 0;
+  --r-sm:   1px;
+  --r-md:   2px;
+  --r-lg:   4px;
+  --r-pill: 999px;
+
+  /* Geometric primitives */
+  --rule-hair:    0.5px;
+  --rule-soft:    1px;
+  --rule-strong:  2px;
+  --dot-size:     6px;
+  --numeral-size: 88px;
+
+  /* Shadow — 와인 톤 다층 */
+  --shadow-luxury:
+    rgba(140, 31, 40, 0.08) 0px 30px 60px -30px,
+    rgba(0, 0, 0, 0.04) 0px 18px 36px -18px,
+    rgba(0, 0, 0, 0.02) 0px 1px 2px;
+  --shadow-card:
+    rgba(14, 11, 10, 0.04) 0px 0px 0px 0.5px,
+    rgba(14, 11, 10, 0.02) 0px 4px 12px;
+  --shadow-press:
+    rgba(140, 31, 40, 0.10) 0px 2px 4px;
+
+  /* Motion */
+  --ease-editorial: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --duration-fast:  150ms;
+  --duration-base:  280ms;
+  --duration-slow:  480ms;
+}
+
 /* ----- 정보 카드 — editorial, 왼쪽 보더 라인 + 직각 ----- */
 .info-card {
-  background: var(--color-background-soft);
-  border-left: 3px solid var(--color-primary);
-  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
-  margin: var(--space-6) 0;
+  background: var(--color-paper-soft);
+  border-left: 3px solid var(--color-wine);
+  padding: var(--s-2) var(--s-2) var(--s-2) var(--s-3);
+  margin: var(--s-3) 0;
   font-size: var(--fs-sm);
-  line-height: var(--leading-body);
-  color: var(--color-text);
+  line-height: var(--lh-body);
+  color: var(--color-ink-soft);
 }
 .info-card h2 {
   font-family: var(--font-display);
   font-size: var(--fs-lg);
-  margin: 0 0 var(--space-3);
-  color: var(--color-text-deep);
+  margin: 0 0 var(--s-1);
+  color: var(--color-ink-deep);
   font-weight: 600;
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-tight);
 }
 .info-card h3 {
   font-family: var(--font-display);
   font-size: var(--fs-md);
-  margin: var(--space-4) 0 var(--space-2);
-  color: var(--color-text-deep);
+  margin: var(--s-2) 0 var(--s-1);
+  color: var(--color-ink-deep);
   font-weight: 600;
 }
 .info-card h4 {
   font-family: var(--font-display);
   font-size: var(--fs-sm);
-  margin: var(--space-3) 0 var(--space-2);
-  color: var(--color-text-deep);
+  margin: var(--s-1) 0 var(--s-1);
+  color: var(--color-ink-deep);
   font-weight: 600;
 }
-.info-card ul, .info-card ol { margin: var(--space-2) 0; padding-left: var(--space-6); }
-.info-card li { margin: var(--space-1) 0; }
-.info-card p { margin: var(--space-2) 0; }
-.info-card a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 3px; }
+.info-card ul, .info-card ol { margin: var(--s-1) 0; padding-left: var(--s-3); }
+.info-card li { margin: var(--s-1) 0; }
+.info-card p { margin: var(--s-1) 0; }
+.info-card a { color: var(--color-wine); text-decoration: underline; text-underline-offset: 3px; }
 .info-card code {
   font-family: var(--font-mono);
-  background: var(--color-background);
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-sm);
+  background: var(--color-paper);
+  padding: 2px var(--s-1);
+  border-radius: var(--r-sm);
   font-size: 0.875em;
 }
-.info-card strong { color: var(--color-text-deep); }
+.info-card strong { color: var(--color-ink-deep); }
 
 /* ----- 면책 박스 ----- */
 .disclaimer-box {
   background: transparent;
-  border: 1px dashed var(--color-border);
-  padding: var(--space-3) var(--space-4);
-  margin: var(--space-4) 0;
+  border: 1px dashed var(--color-line);
+  padding: var(--s-1) var(--s-2);
+  margin: var(--s-2) 0;
   font-size: 0.875rem;
-  line-height: var(--leading-body);
-  color: var(--color-text-muted);
+  line-height: var(--lh-body);
+  color: var(--color-ink-muted);
 }
 .disclaimer-box::before {
   content: "면책 — Disclaimer";
   display: block;
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--track-mono);
   text-transform: uppercase;
-  color: var(--color-primary);
-  margin-bottom: var(--space-2);
+  color: var(--color-wine);
+  margin-bottom: var(--s-1);
 }
 .disclaimer-box p { margin: 0; }
 
 /* ----- 오늘의 운세 카드 ----- */
 .today-fortune-card {
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-top: 3px solid var(--color-text-deep);
-  padding: var(--space-5) var(--space-4);
-  margin: var(--space-5) 0;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-top: 3px solid var(--color-ink-deep);
+  padding: var(--s-2) var(--s-2);
+  margin: var(--s-2) 0;
 }
 .today-fortune-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--s-2);
   flex-wrap: wrap;
-  gap: var(--space-2);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-border-soft);
+  gap: var(--s-1);
+  padding-bottom: var(--s-1);
+  border-bottom: 1px solid var(--color-line-soft);
 }
 .today-label {
   font-family: var(--font-display);
   font-size: var(--fs-md);
   font-weight: 600;
-  color: var(--color-text-deep);
-  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink-deep);
+  letter-spacing: var(--track-display);
 }
 .today-date {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-  letter-spacing: var(--tracking-wide);
+  color: var(--color-ink-muted);
+  letter-spacing: var(--track-mono);
   text-transform: uppercase;
 }
 .today-score-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  gap: var(--space-4);
-  margin-bottom: var(--space-4);
+  gap: var(--s-2);
+  margin-bottom: var(--s-2);
   align-items: end;
 }
 @media (max-width: 600px) {
-  .today-score-grid { grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .today-score-grid { grid-template-columns: 1fr 1fr; gap: var(--s-1); }
 }
 .score-box {
   background: transparent;
-  border-left: 2px solid var(--color-border-soft);
-  padding: var(--space-2) 0 var(--space-2) var(--space-3);
+  border-left: 2px solid var(--color-line-soft);
+  padding: var(--s-1) 0 var(--s-1) var(--s-1);
   text-align: left;
   border-top: none; border-right: none; border-bottom: none;
   border-radius: 0;
 }
 .score-box.highlight {
   background: transparent;
-  border-left: 3px solid var(--color-primary);
-  padding: var(--space-2) 0 var(--space-2) var(--space-3);
+  border-left: 3px solid var(--color-wine);
+  padding: var(--s-1) 0 var(--s-1) var(--s-1);
   border-top: none; border-right: none; border-bottom: none;
   border-radius: 0;
 }
 .score-label {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-1);
+  color: var(--color-ink-muted);
+  margin-bottom: var(--s-1);
   font-weight: 600;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--track-mono);
   text-transform: uppercase;
   display: block;
 }
-.score-box.highlight .score-label { color: var(--color-primary); }
+.score-box.highlight .score-label { color: var(--color-wine); }
 .score-value {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
   font-weight: 700;
-  color: var(--color-primary);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-tight);
+  color: var(--color-wine);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-display);
 }
 .score-value-small {
   font-family: var(--font-display);
   font-size: var(--fs-lg);
   font-weight: 600;
-  color: var(--color-text-deep);
-  line-height: var(--leading-display);
+  color: var(--color-ink-deep);
+  line-height: var(--lh-tight);
 }
 .score-unit {
   font-family: var(--font-body);
   font-size: var(--fs-xs);
-  color: var(--color-text-muted);
+  color: var(--color-ink-muted);
   margin-left: 2px;
 }
 .score-level {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 600;
-  margin-top: var(--space-2);
-  padding: 2px var(--space-2);
+  margin-top: var(--s-1);
+  padding: 2px var(--s-1);
   background: transparent;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-sm);
   display: inline-block;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--track-mono);
   text-transform: uppercase;
 }
 .today-messages {
   background: transparent;
-  border: 1px solid var(--color-border-soft);
+  border: 1px solid var(--color-line-soft);
   border-radius: 0;
-  padding: var(--space-4);
-  margin-bottom: var(--space-3);
+  padding: var(--s-2);
+  margin-bottom: var(--s-1);
 }
 .today-main-message {
   font-family: var(--font-display);
   font-size: var(--fs-md);
-  line-height: var(--leading-body);
-  color: var(--color-text-deep);
-  margin: 0 0 var(--space-3);
+  line-height: var(--lh-body);
+  color: var(--color-ink-deep);
+  margin: 0 0 var(--s-1);
   font-weight: 500;
 }
 .today-details summary {
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--color-primary);
+  color: var(--color-wine);
   font-weight: 600;
-  padding: var(--space-2) 0;
+  padding: var(--s-1) 0;
   user-select: none;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--track-mono);
   text-transform: uppercase;
 }
-.today-details summary:hover { color: var(--color-primary-hover); }
-.today-details ul { margin: var(--space-2) 0 0; padding-left: var(--space-4); }
+.today-details summary:hover { color: var(--color-wine-deep); }
+.today-details ul { margin: var(--s-1) 0 0; padding-left: var(--s-2); }
 .today-details li {
   font-size: 0.875rem;
-  line-height: var(--leading-body);
-  color: var(--color-text);
-  margin: var(--space-1) 0;
+  line-height: var(--lh-body);
+  color: var(--color-ink-soft);
+  margin: var(--s-1) 0;
 }
-.today-details li strong { color: var(--color-text-deep); }
+.today-details li strong { color: var(--color-ink-deep); }
 .today-disclaimer {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--color-text-muted);
+  color: var(--color-ink-muted);
   margin: 0;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-border-soft);
-  line-height: var(--leading-body);
+  padding-top: var(--s-1);
+  border-top: 1px solid var(--color-line-soft);
+  line-height: var(--lh-body);
   letter-spacing: 0.02em;
 }
-.today-disclaimer a { color: var(--color-primary); text-decoration: underline; }
+.today-disclaimer a { color: var(--color-wine); text-decoration: underline; }
 
 /* ----- 메인페이지 12띠 선택 카드 그리드 ----- */
 .zodiac-pick-section {
   background: transparent;
-  padding: var(--space-5) 0;
+  padding: var(--s-2) 0;
   border-radius: 0;
-  border-top: 2px solid var(--color-text-deep);
-  border-bottom: 1px solid var(--color-border-soft);
-  margin: var(--space-5) 0;
+  border-top: 2px solid var(--color-ink-deep);
+  border-bottom: 1px solid var(--color-line-soft);
+  margin: var(--s-2) 0;
 }
 .zodiac-pick-header {
   text-align: left;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--s-2);
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -244,26 +352,26 @@
 .zodiac-pick-header h2 {
   font-family: var(--font-display);
   font-size: var(--fs-lg);
-  color: var(--color-text-deep);
+  color: var(--color-ink-deep);
   margin: 0;
   font-weight: 600;
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-tight);
 }
 .zodiac-pick-header p {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--color-text-muted);
+  color: var(--color-ink-muted);
   margin: 0;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--track-mono);
   text-transform: uppercase;
 }
 .zodiac-pick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: var(--color-border-soft);
-  border: 1px solid var(--color-border-soft);
+  background: var(--color-line-soft);
+  border: 1px solid var(--color-line-soft);
 }
 @media (max-width: 900px) {
   .zodiac-pick-grid { grid-template-columns: repeat(3, 1fr); }
@@ -272,93 +380,93 @@
   .zodiac-pick-grid { grid-template-columns: repeat(2, 1fr); }
 }
 .zodiac-pick-card {
-  background: var(--color-background);
+  background: var(--color-paper);
   border: none;
   border-radius: 0;
-  padding: var(--space-4) var(--space-3);
+  padding: var(--s-2) var(--s-1);
   text-align: left;
   text-decoration: none;
-  color: var(--color-text);
+  color: var(--color-ink-soft);
   transition: background 0.15s, color 0.15s;
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
-  column-gap: var(--space-3);
-  row-gap: var(--space-1);
+  column-gap: var(--s-1);
+  row-gap: var(--s-1);
   align-items: center;
 }
 .zodiac-pick-card:hover {
   transform: none;
   border: none;
   box-shadow: none;
-  background: var(--color-text-deep);
-  color: var(--color-background);
+  background: var(--color-ink-deep);
+  color: var(--color-paper);
 }
-.zodiac-pick-card:hover .zodiac-pick-hanja { color: var(--color-accent); }
-.zodiac-pick-card:hover .zodiac-pick-name { color: var(--color-background); }
+.zodiac-pick-card:hover .zodiac-pick-hanja { color: var(--color-rose-gold); }
+.zodiac-pick-card:hover .zodiac-pick-name { color: var(--color-paper); }
 .zodiac-pick-card:hover .zodiac-pick-element { color: rgba(244,239,232,0.7); }
 .zodiac-pick-hanja {
   grid-row: 1 / 3;
   font-family: var(--font-display);
   font-size: var(--fs-xl);
-  color: var(--color-primary);
+  color: var(--color-wine);
   font-weight: 600;
-  line-height: var(--leading-display);
+  line-height: var(--lh-tight);
 }
 .zodiac-pick-name {
   font-family: var(--font-display);
   font-size: var(--fs-sm);
   font-weight: 600;
   margin: 0;
-  color: var(--color-text-deep);
+  color: var(--color-ink-deep);
 }
 .zodiac-pick-element {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-  letter-spacing: var(--tracking-wide);
+  color: var(--color-ink-muted);
+  letter-spacing: var(--track-mono);
 }
 .zodiac-pick-luck {
   display: inline-block;
   margin-top: 0;
-  padding: 2px var(--space-2);
+  padding: 2px var(--s-1);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  border-radius: var(--radius-sm);
+  border-radius: var(--r-sm);
   font-weight: 600;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--track-mono);
 }
-.zodiac-pick-luck.luck-good { background: transparent; color: var(--color-status-good); border: 1px solid var(--color-status-good); }
-.zodiac-pick-luck.luck-ok { background: transparent; color: var(--color-status-ok); border: 1px solid var(--color-status-ok); }
-.zodiac-pick-luck.luck-warn { background: transparent; color: var(--color-status-warn); border: 1px solid var(--color-status-warn); }
-.zodiac-pick-luck.good { background: transparent; color: var(--color-status-good); border: 1px solid var(--color-status-good); }
-.zodiac-pick-luck.normal { background: transparent; color: var(--color-status-ok); border: 1px solid var(--color-status-ok); }
-.zodiac-pick-luck.caution { background: transparent; color: var(--color-status-warn); border: 1px solid var(--color-status-warn); }
+.zodiac-pick-luck.luck-good { background: transparent; color: var(--color-luck-good); border: 1px solid var(--color-luck-good); }
+.zodiac-pick-luck.luck-ok { background: transparent; color: var(--color-luck-ok); border: 1px solid var(--color-luck-ok); }
+.zodiac-pick-luck.luck-warn { background: transparent; color: var(--color-luck-warn); border: 1px solid var(--color-luck-warn); }
+.zodiac-pick-luck.good { background: transparent; color: var(--color-luck-good); border: 1px solid var(--color-luck-good); }
+.zodiac-pick-luck.normal { background: transparent; color: var(--color-luck-ok); border: 1px solid var(--color-luck-ok); }
+.zodiac-pick-luck.caution { background: transparent; color: var(--color-luck-warn); border: 1px solid var(--color-luck-warn); }
 
 /* ----- AdSense 광고 슬롯 (손대지 않음) ----- */
 .adsense-slot {
-  margin: var(--space-7) auto;
-  padding: var(--space-4);
+  margin: var(--s-3) auto;
+  padding: var(--s-2);
   max-width: 728px;
   text-align: center;
-  background: var(--color-background-soft);
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-md);
+  background: var(--color-paper-soft);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--r-md);
 }
 .adsense-slot .ad-label {
   font-size: 11px;
-  color: var(--color-text-muted);
+  color: var(--color-ink-muted);
   text-align: left;
-  margin: 0 0 var(--space-2) 0;
+  margin: 0 0 var(--s-1) 0;
   letter-spacing: 1px;
 }
 .adsense-slot .ad-disclaimer {
   font-size: 11px;
-  color: var(--color-text-muted);
+  color: var(--color-ink-muted);
   text-align: center;
-  margin: var(--space-2) 0 0 0;
+  margin: var(--s-1) 0 0 0;
   font-style: italic;
-  line-height: var(--leading-body);
+  line-height: var(--lh-body);
 }
 
 /* ============================================
@@ -368,44 +476,17 @@
  * ============================================ */
 
 /* 1.333 modular scale (16px base, major-third)
-   기존 --fs-sm/-md/-lg는 보존. 새 토큰은 alias: 기존 값이 있으면 그쪽을 가리킴. */
-:root {
-  --fs-xs:  0.75rem;  /* 12px */
-  --fs-sm:  1rem;     /* 16px — base */
-  --fs-md:  1.333rem; /* 21px */
-  --fs-lg:  1.777rem; /* 28px */
-  --fs-xl:  2.369rem; /* 37px */
-  --fs-2xl: 3.157rem; /* 49px */
-  --fs-3xl: 4.209rem; /* 66px */
-  --fs-4xl: 5.61rem;  /* 88px */
-
-  /* Geometric primitives — Vignelli 2-color + Rams 1 accent */
-  --rule-hair:    1px;
-  --rule-strong:  2px;
-  --dot-size:     8px;
-  --numeral-size: 88px;
-
-  /* Letter-spacing scale */
-  --track-display: -0.02em; /* display headings */
-  --track-heading: -0.01em; /* h2/h3 */
-  --track-body:    0;       /* body default */
-  --track-mono:    0.04em;  /* mono labels */
-  --track-label:   0.12em;  /* eyebrow/uppercase */
-
-  /* Legacy alias — 기존 페이지 17곳 사용처 보존 */
-  --tracking-tight:  var(--track-display);
-  --tracking-normal: var(--track-body);
-  --tracking-wide:   var(--track-mono);
-}
+   통합됨: 위의 통합 :root 블록에서 새 토큰(--fs-*, --rule-*, --track-*, --s-*, --r-*)
+   과 legacy alias를 함께 정의함. 이 영역은 의도적으로 비워둠. */
 
 /* ----- Editorial utility classes (opt-in, 기존 페이지 강제 0건) ----- */
 
 /* 강한 상단/하단 룰 — Vignelli editorial signature */
 .editorial-rule {
-  border-top: var(--rule-strong) solid var(--color-text-deep);
+  border-top: var(--rule-strong) solid var(--color-ink-deep);
 }
 .editorial-rule-hair {
-  border-top: var(--rule-hair) solid var(--color-border-soft);
+  border-top: var(--rule-hair) solid var(--color-line-soft);
 }
 
 /* 섹션 넘버 — 88px mono, 좌측 마커 */
@@ -414,7 +495,7 @@
   font-size: var(--numeral-size);
   line-height: 0.9;
   letter-spacing: var(--track-mono);
-  color: var(--color-primary);
+  color: var(--color-wine);
   font-weight: 500;
   display: inline-block;
 }
@@ -424,7 +505,7 @@
   display: inline-block;
   width: var(--dot-size);
   height: var(--dot-size);
-  background: var(--color-primary);
+  background: var(--color-wine);
   vertical-align: middle;
 }
 
@@ -432,31 +513,31 @@
 .editorial-section-head {
   display: grid;
   grid-template-columns: var(--numeral-size) 1fr auto;
-  gap: var(--space-4);
+  gap: var(--s-2);
   align-items: end;
-  border-bottom: 2px solid var(--color-text-deep);
-  padding-bottom: var(--space-3);
-  margin-bottom: var(--space-5);
+  border-bottom: 2px solid var(--color-ink-deep);
+  padding-bottom: var(--s-1);
+  margin-bottom: var(--s-2);
 }
 
 /* editorial page — section hairline divider between major sections */
 .editorial-section + .editorial-section {
-  border-top: var(--rule-hair) solid var(--color-border-soft);
-  padding-top: var(--space-7);
-  margin-top: var(--space-7);
+  border-top: var(--rule-hair) solid var(--color-line-soft);
+  padding-top: var(--s-3);
+  margin-top: var(--s-3);
 }
 
 /* editorial h1/h2/h3/h4 — 1.333 위계, 기존 컬러/weight 보존 */
 .editorial h1, .editorial h2, .editorial h3, .editorial h4 {
   font-family: var(--font-display);
-  color: var(--color-text-deep);
+  color: var(--color-ink-deep);
   font-weight: 600;
   line-height: 1.15;
 }
-.editorial h1 { font-size: var(--fs-3xl); letter-spacing: var(--track-display); margin: 0 0 var(--space-5); }
-.editorial h2 { font-size: var(--fs-xl);  letter-spacing: var(--track-heading); margin: var(--space-7) 0 var(--space-3); }
-.editorial h3 { font-size: var(--fs-lg);  letter-spacing: var(--track-heading); margin: var(--space-5) 0 var(--space-2); }
-.editorial h4 { font-size: var(--fs-md);  letter-spacing: var(--track-heading); margin: var(--space-4) 0 var(--space-2); }
+.editorial h1 { font-size: var(--fs-3xl); letter-spacing: var(--track-display); margin: 0 0 var(--s-2); }
+.editorial h2 { font-size: var(--fs-xl);  letter-spacing: var(--track-heading); margin: var(--s-3) 0 var(--s-1); }
+.editorial h3 { font-size: var(--fs-lg);  letter-spacing: var(--track-heading); margin: var(--s-2) 0 var(--s-1); }
+.editorial h4 { font-size: var(--fs-md);  letter-spacing: var(--track-heading); margin: var(--s-2) 0 var(--s-1); }
 
 @media (max-width: 600px) {
   .editorial h1 { font-size: var(--fs-xl); }
