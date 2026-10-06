@@ -200,7 +200,6 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
         <!-- 12띠 picker: 클릭으로 같은 자리에 맞춤 운세 표시 -->
         <section id="zodiac-pick" class="zodiac-pick-section" aria-label="내 띠 선택">
           <header class="zodiac-pick-header editorial-section-head">
-            <span class="numeral" aria-hidden="true">01</span>
             <h2>내 띠에 맞는 오늘 운세</h2>
             <span class="meta">12간지 · {todayFortune.zodiac}띠 일진</span>
             <p>태어난 해의 띠를 선택하면 오늘 일진에 맞는 <strong>맞춤 점수와 운세</strong>가 표시됩니다.</p>
@@ -563,6 +562,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   .zodiac-pick-header.editorial-section-head {
     margin-bottom: var(--s-4, 24px);
     text-align: left;
+    grid-template-columns: 1fr auto;
   }
   .zodiac-pick-header.editorial-section-head .numeral {
     font-family: var(--font-mono);
