@@ -562,8 +562,12 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
   .zodiac-pick-header.editorial-section-head {
     margin-bottom: var(--s-4, 24px);
     text-align: left;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 12px 16px;
   }
+  .zodiac-pick-header.editorial-section-head h2 { grid-column: auto; }
   .zodiac-pick-header.editorial-section-head .numeral {
     font-family: var(--font-mono);
     font-size: var(--numeral-size, 88px);
@@ -584,7 +588,7 @@ const todayWeekday = weekdayKr[new Date(Date.UTC(today.year, today.month - 1, to
     margin: 0;
     font-size: var(--fs-md, 16px);
     color: var(--color-ink-muted);
-    grid-column: 2 / -1;
+    flex: 1 0 100%;
   }
   .zodiac-pick-header.editorial-section-head .meta {
     font-family: var(--font-mono);
