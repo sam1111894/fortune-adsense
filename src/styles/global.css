@@ -548,4 +548,36 @@
     grid-template-columns: var(--numeral-size) 1fr;
   }
   .editorial-section-head .meta { grid-column: 1 / -1; }
+
+  /* Legal / static pages (about, privacy, terms, methodology, sources, editorial-policy, 404) */
+  main.page, main.legal, main.container {
+    padding: 16px 14px 64px;
+  }
+  main.page h1, main.legal h1 {
+    font-size: clamp(20px, 5.5vw, 26px);
+    line-height: 1.25;
+    word-break: keep-all;
+  }
+  main.page h2, main.legal h2 { font-size: var(--fs-md, 16px); }
+  main.page h3, main.legal h3 { font-size: var(--fs-sm, 14px); }
+  main.page p, main.legal p, main.page li, main.legal li {
+    font-size: 14px;
+    line-height: 1.7;
+    word-break: keep-all;
+  }
+  /* main.container (index 등 dynamic page)는 default word-break: normal — 한글 wrap 허용 */
+  main.container p, main.container li {
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+  main.page table, main.legal table { font-size: 13px; }
+  main.page table th, main.page table td,
+  main.legal table th, main.legal table td {
+    padding: 6px 8px;
+  }
+  /* horizontal table wrap (zodiac-info-table 같은 wide table) */
+  main.page .table-wrap, main.legal .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
