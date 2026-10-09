@@ -55,6 +55,20 @@ const formatDate = (d: Date) =>
       <Content />
     </article>
 
+    {post.data.syndication?.targets && (
+      <section class="info-card syndication-summary">
+        <h2>소셜 신디케이션</h2>
+        <p>
+          {post.data.syndication.targets.filter((t: any) => t.status === "published").length}
+          {" / "}
+          {post.data.syndication.targets.length}
+          {" 채널"}
+          {" · "}
+          <a href={`/syndication/${post.id}/`}>소셜 카드 보기 →</a>
+        </p>
+      </section>
+    )}
+
     <AdSenseAd />
 
     <section class="info-card">

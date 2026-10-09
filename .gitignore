@@ -28,3 +28,5 @@ design-system/
 dogfood-output/
 references/
 sketches/
+# cron/log output (do not commit)
+logs/

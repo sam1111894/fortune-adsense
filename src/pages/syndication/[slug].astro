@@ -1,0 +1,114 @@
+---
+/**
+ * 소셜 신디케이션 카드 — X(Twitter) / Threads / LinkedIn 영문·한국어 카드
+ *
+ * 블로그 글 1건에 대해 4개 SNS 채널 각각의 publish-ready 카드를 노출.
+ * 토큰이 비어 있어도 카드 자체는 정적으로 발행되어 OG/Twitter Card
+ * 메타로 외부에서 미리보기 가능.
+ */
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, tags, syndication } = post.data;
+
+const targets = syndication?.targets ?? [];
+const hasPublished = targets.some((t: any) => t.status === "published");
+const allSkipped = targets.length > 0 && targets.every((t: any) => t.status === "skipped");
+
+const pageTitle = `소셜 카드 — ${title}`;
+const pageDesc =
+  description ??
+  "lucksajueun.com 블로그 글의 X·Threads·LinkedIn·dev.to 소셜 카드";
+const siteUrl = "https://lucksajueun.com";
+const postUrl = `${siteUrl}/blog/${post.slug}/`;
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={tags.join(", ")}>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow"><a href="/blog/">← 오늘의 운세 블로그</a></p>
+      <h1>소셜 신디케이션 카드</h1>
+      <p class="subtitle">
+        <a href={postUrl}>{title}</a> ·
+        <time datetime={pubDate.toISOString()}>
+          {pubDate.toISOString().slice(0, 10)}
+        </time>
+      </p>
+    </header>
+
+    <section class="info-card">
+      <h2>발행 상태</h2>
+      {targets.length === 0 ? (
+        <p>이 글은 아직 신디케이션 시도가 없습니다.</p>
+      ) : (
+        <>
+          <p>
+            <strong>{hasPublished ? "발행됨" : allSkipped ? "대기 중 (토큰 미설정)" : "부분 발행"}</strong>
+            {" · "}
+            {targets.filter((t: any) => t.status === "published").length}
+            / {targets.length} 채널
+          </p>
+          {syndication?.attemptedAt && (
+            <p class="meta">
+              마지막 시도: <code>{syndication.attemptedAt}</code>
+              {syndication?.worker && <> · worker <code>{syndication.worker}</code></>}
+            </p>
+          )}
+        </>
+      )}
+    </section>
+
+    {targets.map((t: any) => {
+      const labelMap: Record<string, string> = {
+        x: "X (Twitter)",
+        threads: "Threads",
+        linkedin: "LinkedIn",
+        "dev.to": "dev.to",
+      };
+      return (
+        <section class="info-card social-card" data-platform={t.platform}>
+          <h2>{labelMap[t.platform] ?? t.platform}</h2>
+          <p class="meta">
+            상태:{" "}
+            <span class={t.status === "published" ? "ok" : "pending"}>
+              {t.status === "published" ? "발행됨" : "대기 중 (skip)"}
+            </span>
+            {t.reason && <> · 사유: {t.reason}</>}
+          </p>
+          {t.url && (
+            <p>
+              발행 URL:{" "}
+              <a href={t.url} rel="noopener" target="_blank">{t.url}</a>
+            </p>
+          )}
+          {t.draft && (
+            <p class="meta">
+              초안: <code>{t.draft}</code>
+              {t.draftChars && <> · {t.draftChars}자</>}
+              {t.draftBytes && <> · {t.draftBytes}B</>}
+            </p>
+          )}
+        </section>
+      );
+    })}
+
+    <section class="info-card">
+      <h2>공유 링크</h2>
+      <ul>
+        <li>원문: <a href={postUrl}>{postUrl}</a></li>
+        <li>카노니컬: <a href={postUrl} rel="canonical">{postUrl}</a></li>
+        <li>RSS: <a href="/rss.xml">/rss.xml</a></li>
+        <li>사이트맵: <a href="/sitemap.xml">/sitemap.xml</a></li>
+      </ul>
+    </section>
+  </main>
+</Layout>
