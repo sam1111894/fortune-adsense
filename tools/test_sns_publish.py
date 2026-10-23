@@ -7,6 +7,7 @@ request shape (method, URL, headers, body) can be asserted.
 Run: python3 tools/test_sns_publish.py
 """
 
+import ast
 import json
 import os
 import re
@@ -410,6 +411,83 @@ class TestSyndicationPageUrls(unittest.TestCase):
         self.assertEqual(
             offenders, [],
             "built pages still contain /blog/undefined/: %s" % offenders)
+
+
+class TestArgparseWiring(unittest.TestCase):
+    """Every args.<attr> a handler reads must have a matching parser dest.
+
+    A flag declared `--canonical-url` with `dest="devto_canonical"` while the
+    handler reads `args.canonical_url` raises AttributeError at runtime — and
+    only on the path that actually publishes. cmd_publish_all also forwards
+    args into each handler via argparse.Namespace(...), so a handler attr
+    missing from that Namespace breaks the same way.
+    """
+
+    SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sns_publish.py")
+
+    def _tree(self):
+        with open(self.SRC, encoding="utf-8") as fh:
+            return ast.parse(fh.read())
+
+    def test_handlers_read_only_attrs_the_parser_defines(self):
+        tree = self._tree()
+        funcs = {n.name: n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)}
+
+        dests: set[str] = set()
+        for node in ast.walk(funcs["main"]):
+            if not (isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "add_argument"):
+                continue
+            flags = [a.value for a in node.args
+                     if isinstance(a, ast.Constant) and isinstance(a.value, str)]
+            dest = next((kw.value.value for kw in node.keywords
+                         if kw.arg == "dest"
+                         and isinstance(kw.value, ast.Constant)
+                         and isinstance(kw.value.value, str)), None)
+            if dest is None and flags:
+                dest = flags[0].lstrip("-").replace("-", "_")
+            if dest:
+                dests.add(dest)
+
+        for name, fn in funcs.items():
+            if not name.startswith("cmd_publish_"):
+                continue
+            used = {n.attr for n in ast.walk(fn)
+                    if isinstance(n, ast.Attribute)
+                    and isinstance(n.value, ast.Name)
+                    and n.value.id == "args"}
+            self.assertEqual(
+                used - dests, set(),
+                "%s reads args.%s with no matching parser dest"
+                % (name, sorted(used - dests)))
+
+    def test_publish_all_forwards_every_handler_attr(self):
+        tree = self._tree()
+        funcs = {n.name: n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)}
+        publish_all = funcs["cmd_publish_all"]
+
+        for call in ast.walk(publish_all):
+            if not (isinstance(call, ast.Call)
+                    and isinstance(call.func, ast.Name)
+                    and call.func.id.startswith("cmd_publish_")):
+                continue
+            handler = funcs[call.func.id]
+            used = {n.attr for n in ast.walk(handler)
+                    if isinstance(n, ast.Attribute)
+                    and isinstance(n.value, ast.Name)
+                    and n.value.id == "args"}
+            ns = next((a for a in call.args
+                       if isinstance(a, ast.Call)
+                       and isinstance(a.func, ast.Attribute)
+                       and a.func.attr == "Namespace"), None)
+            self.assertIsNotNone(
+                ns, "%s is called without an argparse.Namespace" % call.func.id)
+            given = {kw.arg for kw in ns.keywords if kw.arg}  # type: ignore[union-attr]
+            self.assertEqual(
+                used - given, set(),
+                "cmd_publish_all calls %s with a Namespace missing %s"
+                % (call.func.id, sorted(used - given)))
 
 
 if __name__ == "__main__":
