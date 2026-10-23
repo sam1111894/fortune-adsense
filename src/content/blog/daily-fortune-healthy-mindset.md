@@ -2,52 +2,52 @@
 title: "오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세"
 description: "일진 운세·띠별 운세·사주·점술을 건강한 마음으로 활용하는 법, 운세 의존을 줄이는 방법, 일상의 작은 도구로 쓰는 요령을 정리합니다."
 slug: "daily-fortune-healthy-mindset"
-canonicalUrl: "https://fortune-adsense.example.com/blog/daily-fortune-healthy-mindset/"
+canonicalUrl: "https://lucksajueun.com/blog/daily-fortune-healthy-mindset/"
 pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: "2026-10-07T05:51:48Z"
+  attemptedAt: "2026-10-23T15:18:55Z"
   worker: "reviewer/minimax-M3"
-  cronExit: 0
-  exitCode: 0
-  stdout: "[SKIP] X token 없음\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음"
-  skipCount: 4
+  cronExit: 3
+  exitCode: 3
+  stdout: "[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n[BLOCKED] X publish blocked - HTTP 402 credits depleted (X API pay-per-use)"
+  skipCount: 3
   skipTotal: 4
-  outcome: "SKIPPED_ALL_TOKENS"
+  outcome: "PUBLISH_BLOCKED_PLATFORM_CREDIT"
   selfTriggerSuppressed: false
   lastMutatedBy: "reviewer/minimax-M3"
   setupTokenGuide: "bash tools/setup-sns-tokens.sh"
   setupTokenGuideCreated: "2026-10-07T05:56:30Z"
-  lastSelfTriggerNote: "fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) — flagged for next fire review"
+  lastSelfTriggerNote: "fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review"
   publishPayload: ".hermes/cron-drafts/2026-10-07T04-43-32Z/publish-payload.json"
   publishScript: ".hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh"
-  lastAttempt: "2026-10-07T05:51:48Z"
-  publishScriptTest:
-    command: "env -i bash publish.sh"
-    exitCode: 0
-    skippedPlatforms: [x, threads, linkedin, dev.to]
+  lastAttempt: "2026-10-23T15:18:55Z"
+  publishPending: true
+  blockedBy: "X API pay-per-use - HTTP 402 credits depleted (v1.1 write endpoint decommissioned: HTTP 404 empty body)"
+  blockedAction: "X Developer Console(console.x.com)에서 이 앱에 크레딧 충전 후 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD"
+  dupGuard: "account @SamJ868644 statuses_count=0, public timeline 0 entries (control accounts 101), ledger prior successful publishes=0"
   targets:
     - platform: x
-      status: skipped
-      reason: "X_API_KEY env unset/empty (printenv exit=1)"
-      draft: ".hermes/cron-drafts/2026-10-07T08-33-30Z/01-x-tweet.txt"
-      draftChars: "226"
+      status: pending
+      reason: "publish attempted via POST /2/tweets - HTTP 402 credits depleted (X pay-per-use). Auth OK (HTTP 200), draft publish-ready at weighted 214/280"
+      draft: ".hermes/cron-drafts/2026-10-23T15-18-55Z/01-x-tweet.txt"
+      draftChars: "178"
     - platform: threads
       status: skipped
-      reason: "THREADS_TOKEN env unset/empty (printenv exit=1)"
-      draft: ".hermes/cron-drafts/2026-10-07T08-33-30Z/02-threads.txt"
-      draftChars: "417"
+      reason: "THREADS_TOKEN absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
+      draft: ".hermes/cron-drafts/2026-10-23T15-18-55Z/02-threads.txt"
+      draftChars: "241"
     - platform: linkedin
       status: skipped
-      reason: "LINKEDIN_TOKEN env unset/empty (printenv exit=1)"
-      draft: ".hermes/cron-drafts/2026-10-07T08-33-30Z/03-linkedin.txt"
-      draftChars: "847"
+      reason: "LINKEDIN_TOKEN absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
+      draft: ".hermes/cron-drafts/2026-10-23T15-18-55Z/03-linkedin.txt"
+      draftChars: "599"
     - platform: dev.to
       status: skipped
-      reason: "DEVTO_API_KEY env unset/empty (printenv exit=1)"
-      draft: ".hermes/cron-drafts/2026-10-07T08-33-30Z/04-devto-en.md"
-      draftBytes: "2426"
+      reason: "DEVTO_API_KEY absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
+      draft: ".hermes/cron-drafts/2026-10-23T15-18-55Z/04-devto-en.md"
+      draftChars: "1969"
   history:
     - attemptedAt: "2026-10-06T16:50:35Z"
       worker: "reviewer/minimax-M3"
@@ -444,6 +444,23 @@ syndication:
       draftLimits: {x: 280, threads: 500, linkedin: 1000, devto-body: 2000}
       publishScriptTest: {command: "env -i bash publish.sh", exitCode: 0}
       note: "fire #15 re-fire on same blog, 4/4 SKIP, dry-run exit 0"
+    - attemptedAt: "2026-10-23T15:18:55Z"
+      worker: "reviewer/minimax-M3"
+      fire: 179
+      blog: "daily-fortune-healthy-mindset"
+      outcome: "PUBLISH_BLOCKED_PLATFORM_CREDIT"
+      skipCount: 3
+      skipTotal: 4
+      cronExit: 3
+      exitCode: 3
+      stdout: "[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n[BLOCKED] X publish blocked - HTTP 402 credits depleted"
+      draftsDir: ".hermes/cron-drafts/2026-10-23T15-18-55Z/"
+      draftChars: {x: 178, threads: 241, linkedin: 599, devto-body: 1969}
+      draftLimits: {x: 280, threads: 500, linkedin: 1000, devto-body: 2000}
+      publishPending: true
+      blockedBy: "X API pay-per-use - HTTP 402 credits depleted (v1.1 write endpoint decommissioned: HTTP 404 empty body)"
+      dupGuard: "account @SamJ868644 statuses_count=0, public timeline 0 entries (control accounts 101), ledger prior successful publishes=0"
+      note: "X creds live all along - prior 23+ skips were a false negative (NUL-byte size test). Real blocker is now X platform pay-per-use credit. Drafts publish-ready; retry after console.x.com top-up."
 ---
 
 # 오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세
