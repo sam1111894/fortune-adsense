@@ -100,8 +100,11 @@ def load_env() -> tuple[dict, list]:
             "keys_parsed": keys,
         })
     # Process environment overrides everything (highest precedence).
+    # Only NON-EMPTY process values override: an empty `export THREADS_TOKEN=`
+    # in a shell profile must not wipe a valid .env credential.
     for key, value in os.environ.items():
-        merged[key] = value
+        if value:
+            merged[key] = value
     return merged, provenance
 
 

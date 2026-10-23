@@ -38,7 +38,12 @@ const pageDesc =
   description ??
   "lucksajueun.com 블로그 글의 X·Threads·LinkedIn·dev.to 소셜 카드";
 const siteUrl = "https://lucksajueun.com";
-const postUrl = `${siteUrl}/blog/${post.slug}/`;
+// Astro 5 content collection (glob loader): the entry identifier is `post.id`
+// (filename without extension). `post.slug` does not exist, and `post.data.slug`
+// is stripped because the collection schema does not declare it -> rendering
+// `${siteUrl}/blog/undefined/`. `post.id` is the same value getStaticPaths()
+// uses for the route param, so it always matches the real /blog/<slug>/ URL.
+const postUrl = `${siteUrl}/blog/${post.id}/`;
 ---
 
 <Layout title={pageTitle} description={pageDesc} keywords={tags.join(", ")}>
@@ -118,7 +123,7 @@ const postUrl = `${siteUrl}/blog/${post.slug}/`;
       <h2>공유 링크</h2>
       <ul>
         <li>원문: <a href={postUrl}>{postUrl}</a></li>
-        <li>카노니컬: <a href={postUrl} rel="canonical">{postUrl}</a></li>
+        <li>카노니컬: <a href={postUrl}>{postUrl}</a></li>
         <li>RSS: <a href="/rss.xml">/rss.xml</a></li>
         <li>사이트맵: <a href="/sitemap.xml">/sitemap.xml</a></li>
       </ul>

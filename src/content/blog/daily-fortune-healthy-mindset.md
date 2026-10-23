@@ -7,11 +7,14 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: "2026-10-23T15:18:55Z"
+  attemptedAt: "2026-10-23T18:45:15Z"
   worker: "reviewer/minimax-M3"
   cronExit: 3
   exitCode: 3
-  stdout: "[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n[BLOCKED] X publish blocked - HTTP 402 credits depleted (X API pay-per-use)"
+  stdout: "PUBLISH BLOCKED - 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))
+[SKIP] Threads token 없음
+[SKIP] LinkedIn token 없음
+[SKIP] dev.to token 없음"
   skipCount: 3
   skipTotal: 4
   outcome: "PUBLISH_BLOCKED_PLATFORM_CREDIT"
@@ -22,31 +25,31 @@ syndication:
   lastSelfTriggerNote: "fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review"
   publishPayload: ".hermes/cron-drafts/2026-10-07T04-43-32Z/publish-payload.json"
   publishScript: ".hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh"
-  lastAttempt: "2026-10-23T15:18:55Z"
+  lastAttempt: "2026-10-23T18:45:15Z"
   publishPending: true
-  blockedBy: "X API pay-per-use - HTTP 402 credits depleted (v1.1 write endpoint decommissioned: HTTP 404 empty body)"
-  blockedAction: "X Developer Console(console.x.com)에서 이 앱에 크레딧 충전 후 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD"
-  dupGuard: "account @SamJ868644 statuses_count=0, public timeline 0 entries (control accounts 101), ledger prior successful publishes=0"
+  blockedBy: "X API pay-per-use credit balance exactly $0.000 (GET /2/usage/credits: total_balance=0.0, prepaid_balance=0.0, free_grants=0) - neither the $0.200 URL tier nor the $0.015 no-URL tier is affordable; billable POST /2/tweets pre-flight blocked"
+  blockedAction: "X Developer Console(console.x.com)에서 이 앱에 크레딧 충전 후 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD)"
+  dupGuard: "account @SamJ868644 statuses_count=0, ledger prior successful publishes=0"
   targets:
     - platform: x
       status: pending
-      reason: "publish attempted via POST /2/tweets - HTTP 402 credits depleted (X pay-per-use). Auth OK (HTTP 200), draft publish-ready at weighted 214/280"
-      draft: ".hermes/cron-drafts/2026-10-23T15-18-55Z/01-x-tweet.txt"
+      reason: "publish pre-flight blocked - X pay-per-use credit balance 0.000 USD < 0.200 USD URL tier. Auth OK (HTTP 200, id=1921849479613005824), draft publish-ready at weighted 214/280"
+      draft: ".hermes/cron-drafts/2026-10-23T18-34-44Z/01-x-tweet.txt"
       draftChars: "178"
     - platform: threads
       status: skipped
       reason: "THREADS_TOKEN absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
-      draft: ".hermes/cron-drafts/2026-10-23T15-18-55Z/02-threads.txt"
+      draft: ".hermes/cron-drafts/2026-10-23T18-34-44Z/02-threads.txt"
       draftChars: "241"
     - platform: linkedin
       status: skipped
       reason: "LINKEDIN_TOKEN absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
-      draft: ".hermes/cron-drafts/2026-10-23T15-18-55Z/03-linkedin.txt"
+      draft: ".hermes/cron-drafts/2026-10-23T18-34-44Z/03-linkedin.txt"
       draftChars: "599"
     - platform: dev.to
       status: skipped
       reason: "DEVTO_API_KEY absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
-      draft: ".hermes/cron-drafts/2026-10-23T15-18-55Z/04-devto-en.md"
+      draft: ".hermes/cron-drafts/2026-10-23T18-34-44Z/04-devto-en.md"
       draftChars: "1969"
   history:
     - attemptedAt: "2026-10-06T16:50:35Z"
@@ -461,6 +464,24 @@ syndication:
       blockedBy: "X API pay-per-use - HTTP 402 credits depleted (v1.1 write endpoint decommissioned: HTTP 404 empty body)"
       dupGuard: "account @SamJ868644 statuses_count=0, public timeline 0 entries (control accounts 101), ledger prior successful publishes=0"
       note: "X creds live all along - prior 23+ skips were a false negative (NUL-byte size test). Real blocker is now X platform pay-per-use credit. Drafts publish-ready; retry after console.x.com top-up."
+    - attemptedAt: "2026-10-23T18:45:15Z"
+      worker: "reviewer/minimax-M3"
+      fire: 181
+      blog: "daily-fortune-healthy-mindset"
+      outcome: "PUBLISH_BLOCKED_PLATFORM_CREDIT"
+      skipCount: 3
+      skipTotal: 4
+      cronExit: 3
+      exitCode: 3
+      stdout: "PUBLISH BLOCKED - 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음"
+      draftsDir: ".hermes/cron-drafts/2026-10-23T18-34-44Z/"
+      draftChars: {x: 178, threads: 241, linkedin: 599, devto-body: 1969}
+      draftLimits: {x: 280, threads: 500, linkedin: 1000, devto-body: 2000}
+      publishPending: true
+      blockedBy: "X API pay-per-use credit balance exactly $0.000 (total_balance=0.0, prepaid_balance=0.0, free_grants=0); no tier affordable, billable POST pre-flight blocked"
+      dupGuard: "account @SamJ868644 statuses_count=0, ledger prior successful publishes=0"
+      note: "fire181 = retry of fire180 pending publish (body hash unchanged). Publish attempt re-run against the real publisher: published=0 blocked=1 skipped=3. Drafts byte-identical to fire180 (same body) so no re-synthesis. SITE FIX in this fire: live syndication pages rendered https://lucksajueun.com/blog/undefined/ as both 원문 and 카노니컬 on all 11 posts (Astro 5 glob loader exposes post.id, not post.slug). Fixed src/pages/syndication/[slug].astro to use post.id + removed invalid rel=canonical on an <a>; added 2 regression tests (25 total, verified failing when the bug is reintroduced)."
+
 ---
 
 # 오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세
