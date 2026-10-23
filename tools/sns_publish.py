@@ -10,8 +10,12 @@ Design rules (learned the hard way):
   * "file exists" is not "file is non-empty" and "is not empty" is not
     "has the credential". A missing key must be distinguished from an empty
     value and from an unfilled template line.
-  * Env loading order: explicit process env wins, then the profile .env,
-    then the project .env, then the global ~/.hermes/.env.
+  * Env loading order: explicit process env wins, then the project .env,
+    then the reviewer profile .env, then the global ~/.hermes/.env.
+    A more specific scope wins: a value in the project .env overrides the
+    same key in the profile .env, so a token written by
+    tools/setup-sns-tokens.sh takes effect as advertised. An EMPTY value
+    never overrides a non-empty one in a lower scope.
 
 Usage:
   python3 tools/sns_publish.py verify
@@ -106,16 +110,36 @@ def _strip_quotes(value: str) -> str:
 
 
 def load_env_files(paths=None) -> tuple[dict, list]:
-    """Return (merged_env, provenance). Later files do not override earlier ones.
+    """Return (merged_env, provenance). See load_env_files_detailed."""
+    merged, provenance, _sources = load_env_files_detailed(paths)
+    return merged, provenance
 
-    The process environment is consulted as the LAST source and takes
-    precedence over .env files (matching sns_precheck.py), but only when the
-    process value is NON-EMPTY. Without this, a cron job that injects tokens
-    via the environment would silently report "[SKIP] {platform} token 없음"
-    for a token it actually has.
+
+def load_env_files_detailed(paths=None) -> tuple[dict, list, dict]:
+    """Return (merged_env, provenance, sources).
+
+    Precedence (highest first):
+      1. the process environment
+      2. the project .env
+      3. the reviewer profile .env
+      4. the global ~/.hermes/.env
+
+    Two rules keep a credential from being lost by accident:
+
+      * A NON-EMPTY value always wins over an empty one, no matter which
+        scope it came from. An unfilled template line such as `X_API_KEY=`
+        in the project .env must not shadow the working value in the
+        reviewer profile .env -- otherwise merely copying .env.example to
+        .env silently disables a live credential.
+      * An empty process value never wipes a valid file credential.
+
+    `sources` maps each key to the file (or "<process env>") that supplied
+    the value currently in `merged`, so tooling can report where a
+    credential comes from without ever printing the value.
     """
     merged: dict = {}
     provenance: list = []
+    sources: dict = {}
     for path in paths or ENV_CANDIDATES:
         if not os.path.isfile(path):
             provenance.append((path, "absent"))
@@ -137,6 +161,13 @@ def load_env_files(paths=None) -> tuple[dict, list]:
             key, value = match.group(1), _strip_quotes(match.group(2))
             if key not in merged:
                 merged[key] = value
+                sources[key] = path
+                found += 1
+            elif not merged[key].strip() and value.strip():
+                # An empty placeholder in a higher-precedence file must not
+                # shadow a usable value in a lower-precedence one.
+                merged[key] = value
+                sources[key] = path
                 found += 1
         provenance.append((path, "bytes=%d keys=%d" % (size, found)))
     # Process environment overrides .env files (highest precedence), matching
@@ -151,8 +182,9 @@ def load_env_files(paths=None) -> tuple[dict, list]:
             if merged.get(key) != value:
                 env_added += 1
             merged[key] = value
+            sources[key] = "<process env>"
     provenance.append(("<process env>", "overrides=%d" % env_added))
-    return merged, provenance
+    return merged, provenance, sources
 
 
 def credential_state(env: dict) -> dict:
@@ -371,9 +403,29 @@ def cmd_dupcheck(args):
     return 0 if not hits else 3
 
 
-def cmd_status(_args):
-    env, provenance = load_env_files()
+def cmd_status(args) -> int:
+    env, provenance, sources = load_env_files_detailed()
     state = credential_state(env)
+
+    if getattr(args, "json", False):
+        platforms = {}
+        for platform, info in state.items():
+            keys = []
+            for key, detail in info["keys"]:
+                # detail looks like "present(len=25)" / "missing" / "empty"
+                state_word = detail.split("(", 1)[0]
+                keys.append({
+                    "key": key,
+                    "state": state_word,
+                    "source": sources.get(key),
+                })
+            platforms[platform] = {"usable": info["usable"], "keys": keys}
+        print(json.dumps({
+            "platforms": platforms,
+            "envSources": [{"path": path, "note": note} for path, note in provenance],
+        }, ensure_ascii=False, indent=2))
+        return 0
+
     print("=== env sources ===")
     for path, note in provenance:
         print("  %s -> %s" % (path, note))
@@ -917,7 +969,8 @@ def cmd_publish_all(args):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="blog-sns-auto publisher")
     sub = parser.add_subparsers(dest="command")
-    sub.add_parser("status")
+    status = sub.add_parser("status")
+    status.add_argument("--json", dest="json", action="store_true")
     sub.add_parser("verify")
     sub.add_parser("timeline")
     dup = sub.add_parser("dupcheck")

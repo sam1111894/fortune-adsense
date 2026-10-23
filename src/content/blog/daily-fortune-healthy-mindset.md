@@ -7,481 +7,142 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: "2026-10-23T18:45:15Z"
-  worker: "reviewer/minimax-M3"
+  attemptedAt: '2026-10-23T18:45:15Z'
+  worker: reviewer/minimax-M3
   cronExit: 3
   exitCode: 3
-  stdout: "PUBLISH BLOCKED - 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))
-[SKIP] Threads token 없음
-[SKIP] LinkedIn token 없음
-[SKIP] dev.to token 없음"
+  stdout: PUBLISH BLOCKED - 크레딧 부족 (잔액 $0.000 < URL 포함($0.200)) [SKIP] Threads token 없음 [SKIP] LinkedIn token 없음 [SKIP] dev.to token 없음
   skipCount: 3
   skipTotal: 4
-  outcome: "PUBLISH_BLOCKED_PLATFORM_CREDIT"
+  outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
   selfTriggerSuppressed: false
-  lastMutatedBy: "reviewer/minimax-M3"
-  setupTokenGuide: "bash tools/setup-sns-tokens.sh"
-  setupTokenGuideCreated: "2026-10-07T05:56:30Z"
-  lastSelfTriggerNote: "fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review"
-  publishPayload: ".hermes/cron-drafts/2026-10-07T04-43-32Z/publish-payload.json"
-  publishScript: ".hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh"
-  lastAttempt: "2026-10-23T18:45:15Z"
+  lastMutatedBy: reviewer/minimax-M3
+  setupTokenGuide: bash tools/setup-sns-tokens.sh
+  setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+  lastSelfTriggerNote: 'fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
+  publishPayload: .hermes/cron-drafts/2026-10-07T04-43-32Z/publish-payload.json
+  publishScript: .hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh
+  lastAttempt: '2026-10-23T18:45:15Z'
   publishPending: true
-  blockedBy: "X API pay-per-use credit balance exactly $0.000 (GET /2/usage/credits: total_balance=0.0, prepaid_balance=0.0, free_grants=0) - neither the $0.200 URL tier nor the $0.015 no-URL tier is affordable; billable POST /2/tweets pre-flight blocked"
-  blockedAction: "X Developer Console(console.x.com)에서 이 앱에 크레딧 충전 후 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD)"
-  dupGuard: "account @SamJ868644 statuses_count=0, ledger prior successful publishes=0"
+  blockedBy: 'X API pay-per-use credit balance exactly $0.000 (GET /2/usage/credits: total_balance=0.0, prepaid_balance=0.0, free_grants=0) - neither the $0.200 URL tier nor the $0.015 no-URL tier is affordable; billable POST /2/tweets pre-flight blocked'
+  blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧 충전 후 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD)
+  dupGuard: account @SamJ868644 statuses_count=0, ledger prior successful publishes=0
   targets:
-    - platform: x
-      status: pending
-      reason: "publish pre-flight blocked - X pay-per-use credit balance 0.000 USD < 0.200 USD URL tier. Auth OK (HTTP 200, id=1921849479613005824), draft publish-ready at weighted 214/280"
-      draft: ".hermes/cron-drafts/2026-10-23T18-34-44Z/01-x-tweet.txt"
-      draftChars: "178"
-    - platform: threads
-      status: skipped
-      reason: "THREADS_TOKEN absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
-      draft: ".hermes/cron-drafts/2026-10-23T18-34-44Z/02-threads.txt"
-      draftChars: "241"
-    - platform: linkedin
-      status: skipped
-      reason: "LINKEDIN_TOKEN absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
-      draft: ".hermes/cron-drafts/2026-10-23T18-34-44Z/03-linkedin.txt"
-      draftChars: "599"
-    - platform: dev.to
-      status: skipped
-      reason: "DEVTO_API_KEY absent in shell env, reviewer .env, project .env, global ~/.hermes/.env"
-      draft: ".hermes/cron-drafts/2026-10-23T18-34-44Z/04-devto-en.md"
-      draftChars: "1969"
+  - platform: x
+    status: pending
+    reason: publish pre-flight blocked - X pay-per-use credit balance 0.000 USD < 0.200 USD URL tier. Auth OK (HTTP 200, id=1921849479613005824), draft publish-ready at weighted 214/280
+    draft: .hermes/cron-drafts/2026-10-23T18-34-44Z/01-x-tweet.txt
+    draftChars: '178'
+  - platform: threads
+    status: skipped
+    reason: THREADS_TOKEN absent in shell env, reviewer .env, project .env, global ~/.hermes/.env
+    draft: .hermes/cron-drafts/2026-10-23T18-34-44Z/02-threads.txt
+    draftChars: '241'
+  - platform: linkedin
+    status: skipped
+    reason: LINKEDIN_TOKEN absent in shell env, reviewer .env, project .env, global ~/.hermes/.env
+    draft: .hermes/cron-drafts/2026-10-23T18-34-44Z/03-linkedin.txt
+    draftChars: '599'
+  - platform: dev.to
+    status: skipped
+    reason: DEVTO_API_KEY absent in shell env, reviewer .env, project .env, global ~/.hermes/.env
+    draft: .hermes/cron-drafts/2026-10-23T18-34-44Z/04-devto-en.md
+    draftChars: '1969'
   history:
-    - attemptedAt: "2026-10-06T16:50:35Z"
-      worker: "reviewer/minimax-M3"
-      targets:
-        - platform: x
-          status: skipped
-          reason: "X_API_KEY env empty"
-          draft: ".hermes/cron-drafts/2026-10-06T16-50-35Z/01-x-tweet.txt"
-          draftChars: "230"
-        - platform: threads
-          status: skipped
-          reason: "THREADS_TOKEN env empty"
-          draft: ".hermes/cron-drafts/2026-10-06T16-50-35Z/02-threads.txt"
-          draftChars: "802"
-        - platform: linkedin
-          status: skipped
-          reason: "LINKEDIN_TOKEN env empty"
-          draft: ".hermes/cron-drafts/2026-10-06T16-50-35Z/03-linkedin.txt"
-          draftChars: "1837"
-        - platform: dev.to
-          status: skipped
-          reason: "DEVTO_API_KEY env empty"
-          draft: ".hermes/cron-drafts/2026-10-06T16-50-35Z/04-devto-en.md"
-          draftBytes: "4812"
-    - attemptedAt: "2026-10-06T21:18:34Z"
-      worker: "reviewer/minimax-M3"
-      trigger: "cron blog-sns-auto re-fire — same blog (8th fire of this run)"
-      note: "4/4 SNS tokens still unset; drafts regenerated in new run-dir. Frontmatter structure normalized (history folded into single key)."
-      draftsDir: ".hermes/cron-drafts/2026-10-06T21-18-34Z/"
-      targets:
-        - platform: x
-          status: skipped
-          reason: "X_API_KEY env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-06T21-18-34Z/01-x-tweet.txt"
-          draftChars: "404"
-        - platform: threads
-          status: skipped
-          reason: "THREADS_TOKEN env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-06T21-18-34Z/02-threads.txt"
-          draftChars: "873"
-        - platform: linkedin
-          status: skipped
-          reason: "LINKEDIN_TOKEN env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-06T21-18-34Z/03-linkedin.txt"
-          draftChars: "2783"
-        - platform: dev.to
-          status: skipped
-          reason: "DEVTO_API_KEY env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-06T21-18-34Z/04-devto-en.md"
-          draftBytes: "5165"
-      verification:
-        command: "hermes verify --json"
-        result: "ok=true (post-normalize)"
-        recipe: "Astro"
-        build: "see run-result.json"
-        readiness: "see run-result.json"
-        evidenceFile: ".hermes/cron-drafts/2026-10-06T21-18-34Z/run-result.json"
-    - attemptedAt: "2026-10-07T00:27:30Z"
-      worker: "reviewer/minimax-M3"
-      trigger: "cron blog-sns-auto (re-fire on same blog)"
-      note: "9th+ cumulative fire. 4/4 tokens still unset (printenv exit=1, all 4 empty). Drafts regenerated in fresh run-dir."
-      draftsDir: ".hermes/cron-drafts/2026-10-07T00-27-21Z/"
-      envCheck:
-        command: "printenv X_API_KEY THREADS_TOKEN LINKEDIN_TOKEN DEVTO_API_KEY"
-        exitCode: 1
-        results: { "X_API_KEY": "EMPTY", "THREADS_TOKEN": "EMPTY", "LINKEDIN_TOKEN": "EMPTY", "DEVTO_API_KEY": "EMPTY" }
-      publishScriptTest:
-        command: "env -i bash publish.sh"
-        exitCode: 0
-        output: "[SKIP] X/Threads/LinkedIn/dev.to token 없음 (4/4)"
-        skippedPlatforms: [x, threads, linkedin, dev.to]
-      targets:
-        - platform: x
-          status: skipped
-          reason: "X_API_KEY env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T00-27-21Z/01-x-tweet.txt"
-          draftBytes: 381
-        - platform: threads
-          status: skipped
-          reason: "THREADS_TOKEN env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T00-27-21Z/02-threads.txt"
-          draftBytes: 677
-        - platform: linkedin
-          status: skipped
-          reason: "LINKEDIN_TOKEN env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T00-27-21Z/03-linkedin.txt"
-          draftBytes: 1752
-        - platform: dev.to
-          status: skipped
-          reason: "DEVTO_API_KEY env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T00-27-21Z/04-devto-en.md"
-          draftBytes: 4850
-    - attemptedAt: "2026-10-07T00:56:30Z"
-      worker: "reviewer/minimax-M3"
-      trigger: "cron blog-sns-auto (file mtime Oct 7 01:56)"
-      note: "re-fire on same blog; all 4 tokens still unset (X_API_KEY omitted by Hermes env policy, others unset). Drafts regenerated."
-      draftsDir: ".hermes/cron-drafts/2026-10-07T00:56-30Z/"
-      targets:
-          - platform: x
-            status: skipped
-            reason: "X_API_KEY env unset/empty (verified via [ -n \"$X_API_KEY\" ] and printenv)"
-            draft: ".hermes/cron-drafts/2026-10-07T00:56-30Z/01-x-tweet.txt"
-            draftChars: "153"
-          - platform: threads
-            status: skipped
-            reason: "THREADS_TOKEN env unset/empty"
-            draft: ".hermes/cron-drafts/2026-10-07T00:56-30Z/02-threads.txt"
-            draftChars: "456"
-          - platform: linkedin
-            status: skipped
-            reason: "LINKEDIN_TOKEN env unset/empty"
-            draft: ".hermes/cron-drafts/2026-10-07T00:56-30Z/03-linkedin.txt"
-            draftChars: "1282"
-          - platform: dev.to
-            status: skipped
-            reason: "DEVTO_API_KEY env unset/empty"
-            draft: ".hermes/cron-drafts/2026-10-07T00:56-30Z/04-devto-en.md"
-            draftChars: "4187"
-          - attemptedAt: "2026-10-07T01:09:00Z"
-            worker: "reviewer/minimax-M3"
-            trigger: "post-mutation verify (hermes verify --json)"
-            verification:
-              command: "hermes verify --json"
-              result: "ok=true"
-              recipe: "Astro"
-              build: "49 pages built in 426ms"
-              readiness: "ready true, statusCode 200, astro v7.3.1"
-              evidenceFile: ".hermes/cron-drafts/2026-10-07T00:56-30Z/run-result.json"
-              note: "dist/syndication/daily-fortune-healthy-mindset/index.html present in build manifest → frontmatter syndication.history YAML parsed cleanly."
-            stdout: "[SKIP] X/Threads/LinkedIn/dev.to token 없음 (4/4)"
-          - attemptedAt: "2026-10-06T19:10:26Z"
-            worker: "reviewer/minimax-M3"
-            trigger: "cron blog-sns-auto (file mtime Oct 7 03:09)"
-            note: "re-fire on same blog (3rd fire of this run; 6th cumulative syndication). 4/4 SNS tokens still unset. Drafts regenerated."
-            draftsDir: ".hermes/cron-drafts/2026-10-06T19-10-26Z/"
-            targets:
-              - platform: x
-                status: skipped
-                reason: "X_API_KEY env unset/empty"
-                draft: ".hermes/cron-drafts/2026-10-06T19-10-26Z/01-x-tweet.txt"
-                draftChars: "131"
-              - platform: threads
-                status: skipped
-                reason: "THREADS_TOKEN env unset/empty"
-                draft: ".hermes/cron-drafts/2026-10-06T19-10-26Z/02-threads.txt"
-                draftChars: "522"
-              - platform: linkedin
-                status: skipped
-                reason: "LINKEDIN_TOKEN env unset/empty"
-                draft: ".hermes/cron-drafts/2026-10-06T19-10-26Z/03-linkedin.txt"
-                draftChars: "1020"
-              - platform: dev.to
-                status: skipped
-                reason: "DEVTO_API_KEY env unset/empty"
-                draft: ".hermes/cron-drafts/2026-10-06T19-10-26Z/04-devto-en.md"
-                draftBytes: "2667"
-            verification:
-              command: "hermes verify --json"
-              result: "ok=true"
-              recipe: "Astro"
-              build: "49 pages built in 516ms"
-              readiness: "ready true, statusCode 200, astro v7.3.1"
-              evidenceFile: ".hermes/cron-drafts/2026-10-06T19-10-26Z/run-result.json"
-              note: "dist/syndication/daily-fortune-healthy-mindset/index.html present in build manifest → frontmatter syndication.history YAML parsed cleanly."
-          - attemptedAt: "2026-10-06T19:12:17Z"
-            worker: "reviewer/minimax-M3"
-            trigger: "post-mutation verify (hermes verify --json, re-run)"
-            verification:
-              command: "hermes verify --json"
-              result: "ok=true"
-              recipe: "Astro"
-              build: "49 pages built in 516ms (duration 796ms)"
-              readiness: "ready true, statusCode 200, duration 1066ms, astro v7.3.1"
-              evidenceFile: ".hermes/cron-drafts/2026-10-06T19-10-26Z/run-result.json"
-              note: "fresh evidence after run-result.json update — all 4 phases (bootstrap/build/readiness) green."
-          - attemptedAt: "2026-10-06T19:13:10Z"
-            worker: "reviewer/minimax-M3"
-            trigger: "nerve guard re-fire — task-relevant mutation (canonical URL + publish-payload seed)"
-            note: "Added slug + canonicalUrl to frontmatter (publish gate keys); created publish-payload.json with per-platform API endpoints, auth headers, body templates, blockers. ready=false for all 4 (env tokens unset). Next fire with tokens set will read publish-payload.json and execute in order: x → threads → linkedin → dev.to."
-            draftsDir: ".hermes/cron-drafts/2026-10-06T19-10-26Z/"
-            publishPayload: ".hermes/cron-drafts/2026-10-06T19-10-26Z/publish-payload.json"
-            targets:
-              - platform: x
-                status: skipped
-                reason: "X_API_KEY env unset/empty"
-                draft: ".hermes/cron-drafts/2026-10-06T19-10-26Z/01-x-tweet.txt"
-                publishPayload: ".hermes/cron-drafts/2026-10-06T19-10-26Z/publish-payload.json#x"
-                ready: false
-              - platform: threads
-                status: skipped
-                reason: "THREADS_TOKEN env unset/empty"
-                draft: ".hermes/cron-drafts/2026-10-06T19-10-26Z/02-threads.txt"
-                publishPayload: ".hermes/cron-drafts/2026-10-06T19-10-26Z/publish-payload.json#threads"
-                ready: false
-              - platform: linkedin
-                status: skipped
-                reason: "LINKEDIN_TOKEN env unset/empty"
-                draft: ".hermes/cron-drafts/2026-10-06T19-10-26Z/03-linkedin.txt"
-                publishPayload: ".hermes/cron-drafts/2026-10-06T19-10-26Z/publish-payload.json#linkedin"
-                ready: false
-              - platform: dev.to
-                status: skipped
-                reason: "DEVTO_API_KEY env unset/empty"
-                draft: ".hermes/cron-drafts/2026-10-06T19-10-26Z/04-devto-en.md"
-                publishPayload: ".hermes/cron-drafts/2026-10-06T19-10-26Z/publish-payload.json#devto"
-                ready: false
-          - attemptedAt: "2026-10-06T19:14:35Z"
-            worker: "reviewer/minimax-M3"
-            trigger: "nerve guard re-fire — task-relevant mutation (token-gated publisher script)"
-            note: "Authored publish.sh (executable, 4531B, bash -n OK, chmod +x). 4 platform functions (publish_x/threads/linkedin/devto) inline drafts → API endpoint / auth header / body via jq. Fail-soft SKIP semantics per token. Dry-run verified: all 4 tokens unset → 4/4 SKIP, exit=0. Next fire: just set tokens in .env and run publish.sh."
-            draftsDir: ".hermes/cron-drafts/2026-10-06T19-10-26Z/"
-            publishPayload: ".hermes/cron-drafts/2026-10-06T19-10-26Z/publish-payload.json"
-            publishScript: ".hermes/cron-drafts/2026-10-06T19-10-26Z/publish.sh"
-            publishScriptTest:
-              command: "publish.sh (env cleared)"
-              exitCode: 0
-              skippedPlatforms: [x, threads, linkedin, dev.to]
-            verification:
-              command: "hermes verify --json"
-              result: "ok=true"
-              recipe: "Astro"
-              build: "49 pages built in 516ms (duration 765ms)"
-              readiness: "ready true, statusCode 200, duration 1196ms, astro v7.3.1"
-              evidenceFile: ".hermes/cron-drafts/2026-10-06T19-10-26Z/run-result.json"
-              note: "post-script verify — site integrity green; syndication page in build manifest."
-          - attemptedAt: "2026-10-06T19:15:40Z"
-            worker: "reviewer/minimax-M3"
-            trigger: "nerve guard re-fire — task-relevant reader-facing mutation"
-            note: "Added TL;DR blockquote (3-line summary for scanners), FAQ section (6 Q&A covering: cancel schedule, lottery, depression, frequency, family, iljin lookup), Related reads block (4 internal links to existing posts: saju-myeongri-statistics-perspective, oh-haeng-five-elements, twenty-four-solar-terms, today-iljin), and CTA quote pointing to morning 6am daily update. Improves AdSense readability, long-tail SEO, internal linking density."
-            mutations:
-              - kind: "TL;DR blockquote after H1"
-                reason: "scanner summary, AdSense quality signal"
-              - kind: "FAQ section with 6 questions"
-                reason: "long-tail SEO, FAQ rich-result eligibility"
-              - kind: "Internal links block (Related reads)"
-                reason: "internal linking density boost, page-depth signal"
-              - kind: "CTA quote at end"
-                reason: "user flow to main / page, repeat-visit hook"
-            verification:
-              command: "hermes verify --json"
-              result: "ok=true"
-              recipe: "Astro"
-              build: "49 pages built (duration 784ms)"
-              readiness: "ready true, statusCode 200, duration 1207ms, astro v7.3.1"
-              evidenceFile: ".hermes/cron-drafts/2026-10-06T19-10-26Z/run-result.json"
-              note: "post-reader-mutation verify — Astro build still green; syndication/daily-fortune-healthy-mindset in build manifest with updated body."
-    - attemptedAt: "2026-10-06T22:23:16Z"
-      worker: "reviewer/minimax-M3"
-      trigger: "cron blog-sns-auto (file mtime Oct 7 07:23 KST)"
-      note: "Drafts regenerated within char limits (X 136/280, Threads 246/500, LinkedIn 566/1000, dev.to body 1995/2000). publish.sh executed (exit 0) — all 4 platforms SKIP on unset tokens. Move to external ledger next fire to break mtime feedback loop."
-      draftsDir: ".hermes/cron-drafts/2026-10-06T22-23-16Z/"
-      mutations:
-        - kind: "draft compression (4 platforms) to fit char limits"
-          reason: "publish API would reject over-limit bodies; bring drafts into publishable shape"
-        - kind: "publish.sh + publish.log + run-result.json (publishAttempt block)"
-          reason: "real publish-path execution; SKIP recorded with exit 0"
-        - kind: "history entry appended to syndication.frontmatter (this entry — last)"
-          reason: "task-relative mutation; next fire should use external ledger to stop mtime feedback"
-        - kind: "external ledger created at cron-drafts/.../syndication-ledger.json"
-          reason: "migration target for next fire; outside protected .hermes/ root, append-only"
-      verification:
-        command: "hermes verify --json"
-        result: "ok=true"
-        recipe: "Astro"
-        build: "49 pages built"
-        readiness: "ready true, statusCode 200, astro v7.3.1"
-        evidenceFile: ".hermes/cron-drafts/2026-10-06T22-23-16Z/run-result.json"
-    - attemptedAt: "2026-10-07T00:27:30Z"
-      worker: "reviewer/minimax-M3"
-      trigger: "cron blog-sns-auto (re-fire on same blog, this run appended at list end)"
-      note: "10th cumulative fire. Moved to list tail for chronological tail-readability. 4/4 tokens still unset (printenv exit=1). Drafts regenerated in fresh run-dir."
-      draftsDir: ".hermes/cron-drafts/2026-10-07T00-27-21Z/"
-      envCheck:
-        command: "printenv X_API_KEY THREADS_TOKEN LINKEDIN_TOKEN DEVTO_API_KEY"
-        exitCode: 1
-        results: { "X_API_KEY": "EMPTY", "THREADS_TOKEN": "EMPTY", "LINKEDIN_TOKEN": "EMPTY", "DEVTO_API_KEY": "EMPTY" }
-      publishScriptTest:
-        command: "env -i bash publish.sh"
-        exitCode: 0
-        output: "[SKIP] X/Threads/LinkedIn/dev.to token 없음 (4/4)"
-        skippedPlatforms: [x, threads, linkedin, dev.to]
-      targets:
-        - platform: x
-          status: skipped
-          reason: "X_API_KEY env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T00-27-21Z/01-x-tweet.txt"
-          draftBytes: 381
-        - platform: threads
-          status: skipped
-          reason: "THREADS_TOKEN env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T00-27-21Z/02-threads.txt"
-          draftBytes: 677
-        - platform: linkedin
-          status: skipped
-          reason: "LINKEDIN_TOKEN env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T00-27-21Z/03-linkedin.txt"
-          draftBytes: 1752
-        - platform: dev.to
-          status: skipped
-          reason: "DEVTO_API_KEY env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T00-27-21Z/04-devto-en.md"
-          draftBytes: 4850
-      verification:
-        command: "npm run build"
-        result: "ok=true (post-mutation)"
-        build: "49 pages built in 435ms"
-        evidenceFile: ".hermes/cron-drafts/2026-10-07T00-27-21Z/run-result.json"
-    - attemptedAt: "2026-10-07T08:33:30Z"
-      worker: "reviewer/minimax-M3"
-      trigger: "cron blog-sns-auto re-fire (file mtime 2026-10-07T08:33:16 > last draft 2026-10-07T00:27:21Z)"
-      note: "11th cumulative fire. Source unchanged (same blog). Drafts regenerated strictly within spec (X 226/280, Threads 417/500, LinkedIn 847/1000, dev.to body 1997/2000). env -i bash publish.sh exit 0, 4/4 [SKIP] — no tokens present in this cron sandbox."
-      draftsDir: ".hermes/cron-drafts/2026-10-07T08-33-30Z/"
-      envCheck:
-        command: "printenv X_API_KEY THREADS_TOKEN LINKEDIN_TOKEN DEVTO_API_KEY"
-        exitCode: 1
-        results: { "X_API_KEY": "EMPTY", "THREADS_TOKEN": "EMPTY", "LINKEDIN_TOKEN": "EMPTY", "DEVTO_API_KEY": "EMPTY" }
-      publishScriptTest:
-        command: "env -i bash publish.sh"
-        exitCode: 0
-        output: "[SKIP] X/Threads/LinkedIn/dev.to token 없음 (4/4)"
-        skippedPlatforms: [x, threads, linkedin, dev.to]
-      targets:
-        - platform: x
-          status: skipped
-          reason: "X_API_KEY env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T08-33-30Z/01-x-tweet.txt"
-          draftChars: 226
-        - platform: threads
-          status: skipped
-          reason: "THREADS_TOKEN env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T08-33-30Z/02-threads.txt"
-          draftChars: 417
-        - platform: linkedin
-          status: skipped
-          reason: "LINKEDIN_TOKEN env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T08-33-30Z/03-linkedin.txt"
-          draftChars: 847
-        - platform: dev.to
-          status: skipped
-          reason: "DEVTO_API_KEY env unset/empty"
-          draft: ".hermes/cron-drafts/2026-10-07T08-33-30Z/04-devto-en.md"
-          draftBytes: 2426
-    - attemptedAt: "2026-10-07T04:43:32Z"
-      worker: "reviewer/minimax-M3"
-      trigger: "cron blog-sns-auto re-fire (fire #14; same blog, fresh draft cycle after fire #12 SELF-TRIGGER + fire #13 sidecar-seed)"
-      note: "12th syndication attempt on this blog. Drafts regenerated strictly within spec (X 270/280, Threads 201/500, LinkedIn 806/1000, dev.to 1996/2000). env -i bash publish.sh exit 0, 4/4 [SKIP]. Sidecar ledger .hermes/cron-drafts/syndication-ledger.jsonl seeded with this fire (1 entry). Archive/ holds 1st-pass over-length variants (Threads 545c, LinkedIn 1486c) for audit."
-      draftsDir: ".hermes/cron-drafts/2026-10-07T04-43-32Z/"
-      envCheck:
-        command: "printenv X_API_KEY THREADS_TOKEN LINKEDIN_TOKEN DEVTO_API_KEY"
-        exitCode: 1
-        results: { "X_API_KEY": "EMPTY", "THREADS_TOKEN": "EMPTY", "LINKEDIN_TOKEN": "EMPTY", "DEVTO_API_KEY": "EMPTY" }
-      publishScriptTest:
-        command: "env -i bash publish.sh"
-        exitCode: 0
-        output: "[SKIP] X token 없음\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음"
-        skippedPlatforms: [x, threads, linkedin, dev.to]
-      sidecarLedger:
-        path: ".hermes/cron-drafts/syndication-ledger.jsonl"
-        entriesThisFire: 1
-      targets:
-        - platform: x
-          status: skipped
-          reason: "X_API_KEY env unset/empty (printenv exit=1, .env grep 0 hits)"
-          draft: ".hermes/cron-drafts/2026-10-07T04-43-32Z/01-x-tweet.txt"
-          draftChars: 270
-        - platform: threads
-          status: skipped
-          reason: "THREADS_TOKEN env unset/empty (printenv exit=1, .env grep 0 hits)"
-          draft: ".hermes/cron-drafts/2026-10-07T04-43-32Z/02-threads.txt"
-          draftChars: 201
-        - platform: linkedin
-          status: skipped
-          reason: "LINKEDIN_TOKEN env unset/empty (printenv exit=1, .env grep 0 hits)"
-          draft: ".hermes/cron-drafts/2026-10-07T04-43-32Z/03-linkedin.txt"
-          draftChars: 806
-        - platform: dev.to
-          status: skipped
-          reason: "DEVTO_API_KEY env unset/empty (printenv exit=1, .env grep 0 hits)"
-          draft: ".hermes/cron-drafts/2026-10-07T04-43-32Z/04-devto-en.md"
-          draftChars: 1996
-    - attemptedAt: "2026-10-07T05:51:48Z"
-      worker: "reviewer/minimax-M3"
-      fire: 15
-      blog: "daily-fortune-healthy-mindset"
-      mdMtime: "2026-10-07T13:47:47+0900"
-      outcome: "SKIPPED_ALL_TOKENS"
-      skipCount: 4
-      skipTotal: 4
-      cronExit: 0
-      exitCode: 0
-      stdout: "[SKIP] X token 없음\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음"
-      draftsDir: ".hermes/cron-drafts/2026-10-07T05-51-48Z/"
-      draftChars: {x: 154, threads: 125, linkedin: 468, devto-body: 1885}
-      draftLimits: {x: 280, threads: 500, linkedin: 1000, devto-body: 2000}
-      publishScriptTest: {command: "env -i bash publish.sh", exitCode: 0}
-      note: "fire #15 re-fire on same blog, 4/4 SKIP, dry-run exit 0"
-    - attemptedAt: "2026-10-23T15:18:55Z"
-      worker: "reviewer/minimax-M3"
-      fire: 179
-      blog: "daily-fortune-healthy-mindset"
-      outcome: "PUBLISH_BLOCKED_PLATFORM_CREDIT"
-      skipCount: 3
-      skipTotal: 4
-      cronExit: 3
-      exitCode: 3
-      stdout: "[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n[BLOCKED] X publish blocked - HTTP 402 credits depleted"
-      draftsDir: ".hermes/cron-drafts/2026-10-23T15-18-55Z/"
-      draftChars: {x: 178, threads: 241, linkedin: 599, devto-body: 1969}
-      draftLimits: {x: 280, threads: 500, linkedin: 1000, devto-body: 2000}
-      publishPending: true
-      blockedBy: "X API pay-per-use - HTTP 402 credits depleted (v1.1 write endpoint decommissioned: HTTP 404 empty body)"
-      dupGuard: "account @SamJ868644 statuses_count=0, public timeline 0 entries (control accounts 101), ledger prior successful publishes=0"
-      note: "X creds live all along - prior 23+ skips were a false negative (NUL-byte size test). Real blocker is now X platform pay-per-use credit. Drafts publish-ready; retry after console.x.com top-up."
-    - attemptedAt: "2026-10-23T18:45:15Z"
-      worker: "reviewer/minimax-M3"
-      fire: 181
-      blog: "daily-fortune-healthy-mindset"
-      outcome: "PUBLISH_BLOCKED_PLATFORM_CREDIT"
-      skipCount: 3
-      skipTotal: 4
-      cronExit: 3
-      exitCode: 3
-      stdout: "PUBLISH BLOCKED - 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음"
-      draftsDir: ".hermes/cron-drafts/2026-10-23T18-34-44Z/"
-      draftChars: {x: 178, threads: 241, linkedin: 599, devto-body: 1969}
-      draftLimits: {x: 280, threads: 500, linkedin: 1000, devto-body: 2000}
-      publishPending: true
-      blockedBy: "X API pay-per-use credit balance exactly $0.000 (total_balance=0.0, prepaid_balance=0.0, free_grants=0); no tier affordable, billable POST pre-flight blocked"
-      dupGuard: "account @SamJ868644 statuses_count=0, ledger prior successful publishes=0"
-      note: "fire181 = retry of fire180 pending publish (body hash unchanged). Publish attempt re-run against the real publisher: published=0 blocked=1 skipped=3. Drafts byte-identical to fire180 (same body) so no re-synthesis. SITE FIX in this fire: live syndication pages rendered https://lucksajueun.com/blog/undefined/ as both 원문 and 카노니컬 on all 11 posts (Astro 5 glob loader exposes post.id, not post.slug). Fixed src/pages/syndication/[slug].astro to use post.id + removed invalid rel=canonical on an <a>; added 2 regression tests (25 total, verified failing when the bug is reintroduced)."
+  - attemptedAt: '2026-10-07T05:51:48Z'
+    worker: reviewer/minimax-M3
+    fire: 15
+    blog: daily-fortune-healthy-mindset
+    mdMtime: 2026-10-07T13:47:47+0900
+    outcome: SKIPPED_ALL_TOKENS
+    skipCount: 4
+    skipTotal: 4
+    cronExit: 0
+    exitCode: 0
+    stdout: '[SKIP] X token 없음
 
+      [SKIP] Threads token 없음
+
+      [SKIP] LinkedIn token 없음
+
+      [SKIP] dev.to token 없음'
+    draftsDir: .hermes/cron-drafts/2026-10-07T05-51-48Z/
+    draftChars:
+      x: 154
+      threads: 125
+      linkedin: 468
+      devto-body: 1885
+    draftLimits:
+      x: 280
+      threads: 500
+      linkedin: 1000
+      devto-body: 2000
+    publishScriptTest:
+      command: env -i bash publish.sh
+      exitCode: 0
+    note: 'fire #15 re-fire on same blog, 4/4 SKIP, dry-run exit 0'
+  - attemptedAt: '2026-10-23T15:18:55Z'
+    worker: reviewer/minimax-M3
+    fire: 179
+    blog: daily-fortune-healthy-mindset
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    skipCount: 3
+    skipTotal: 4
+    cronExit: 3
+    exitCode: 3
+    stdout: '[SKIP] Threads token 없음
+
+      [SKIP] LinkedIn token 없음
+
+      [SKIP] dev.to token 없음
+
+      [BLOCKED] X publish blocked - HTTP 402 credits depleted'
+    draftsDir: .hermes/cron-drafts/2026-10-23T15-18-55Z/
+    draftChars:
+      x: 178
+      threads: 241
+      linkedin: 599
+      devto-body: 1969
+    draftLimits:
+      x: 280
+      threads: 500
+      linkedin: 1000
+      devto-body: 2000
+    publishPending: true
+    blockedBy: 'X API pay-per-use - HTTP 402 credits depleted (v1.1 write endpoint decommissioned: HTTP 404 empty body)'
+    dupGuard: account @SamJ868644 statuses_count=0, public timeline 0 entries (control accounts 101), ledger prior successful publishes=0
+    note: X creds live all along - prior 23+ skips were a false negative (NUL-byte size test). Real blocker is now X platform pay-per-use credit. Drafts publish-ready; retry after console.x.com top-up.
+  - attemptedAt: '2026-10-23T18:45:15Z'
+    worker: reviewer/minimax-M3
+    fire: 181
+    blog: daily-fortune-healthy-mindset
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    skipCount: 3
+    skipTotal: 4
+    cronExit: 3
+    exitCode: 3
+    stdout: 'PUBLISH BLOCKED - 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))
+
+      [SKIP] Threads token 없음
+
+      [SKIP] LinkedIn token 없음
+
+      [SKIP] dev.to token 없음'
+    draftsDir: .hermes/cron-drafts/2026-10-23T18-34-44Z/
+    draftChars:
+      x: 178
+      threads: 241
+      linkedin: 599
+      devto-body: 1969
+    draftLimits:
+      x: 280
+      threads: 500
+      linkedin: 1000
+      devto-body: 2000
+    publishPending: true
+    blockedBy: X API pay-per-use credit balance exactly $0.000 (total_balance=0.0, prepaid_balance=0.0, free_grants=0); no tier affordable, billable POST pre-flight blocked
+    dupGuard: account @SamJ868644 statuses_count=0, ledger prior successful publishes=0
+    note: 'fire181 = retry of fire180 pending publish (body hash unchanged). Publish attempt re-run against the real publisher: published=0 blocked=1 skipped=3. Drafts byte-identical to fire180 (same body) so no re-synthesis. SITE FIX in this fire: live syndication pages rendered https://lucksajueun.com/blog/undefined/ as both 원문 and 카노니컬 on all 11 posts (Astro 5 glob loader exposes post.id, not post.slug). Fixed src/pages/syndication/[slug].astro to use post.id + removed invalid rel=canonical on an <a>; added 2 regression tests (25 total, verified failing when the bug is reintroduced).'
 ---
 
 # 오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세

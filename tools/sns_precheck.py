@@ -76,6 +76,7 @@ def _strip_value(raw: str) -> str:
 def load_env() -> tuple[dict, list]:
     merged: dict = {}
     provenance = []
+    sources: dict = {}
     for path in ENV_CANDIDATES:
         if not os.path.isfile(path):
             provenance.append({"path": path, "state": "absent"})
@@ -92,6 +93,15 @@ def load_env() -> tuple[dict, list]:
             key, value = match.group(1), _strip_value(match.group(2))
             if key not in merged:
                 merged[key] = value
+                sources[key] = path
+                keys += 1
+            elif not merged[key].strip() and value.strip():
+                # An empty placeholder in a higher-precedence file must not
+                # shadow a usable value in a lower-precedence one (e.g. the
+                # `X_API_KEY=` template line in the project .env would hide
+                # the working value in the reviewer profile .env).
+                merged[key] = value
+                sources[key] = path
                 keys += 1
         provenance.append({
             "path": path,
@@ -105,6 +115,7 @@ def load_env() -> tuple[dict, list]:
     for key, value in os.environ.items():
         if value:
             merged[key] = value
+            sources[key] = "<process env>"
     return merged, provenance
 
 

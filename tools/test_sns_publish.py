@@ -490,5 +490,264 @@ class TestArgparseWiring(unittest.TestCase):
                 % (call.func.id, sorted(used - given)))
 
 
+class TestEnvFileShadowing(unittest.TestCase):
+    """An empty template line must not hide a usable value in a lower scope.
+
+    Regression: copying .env.example to .env put `X_API_KEY=` (empty) in the
+    project .env, which has higher file precedence than the reviewer profile
+    .env where the working X credential actually lives. The old loader took
+    the first value it saw for a key, so the working credential was silently
+    shadowed and the platform reported UNUSABLE.
+    """
+
+    def _write(self, path, text):
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        return path
+
+    def test_empty_high_precedence_value_does_not_shadow_lower_scope(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            project = self._write(os.path.join(tmp, "project.env"), "X_API_KEY=\n")
+            profile = self._write(os.path.join(tmp, "profile.env"), "X_API_KEY=realkey\n")
+            merged, _prov, sources = sp.load_env_files_detailed([project, profile])
+            self.assertEqual(merged["X_API_KEY"], "realkey")
+            self.assertEqual(sources["X_API_KEY"], profile)
+
+    def test_non_empty_high_precedence_value_wins(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            project = self._write(os.path.join(tmp, "project.env"), "X_API_KEY=projectkey\n")
+            profile = self._write(os.path.join(tmp, "profile.env"), "X_API_KEY=realkey\n")
+            merged, _prov, sources = sp.load_env_files_detailed([project, profile])
+            self.assertEqual(merged["X_API_KEY"], "projectkey")
+            self.assertEqual(sources["X_API_KEY"], project)
+
+    def test_sources_reports_process_env_origin(self):
+        had = "X_API_KEY" in os.environ
+        old = os.environ.get("X_API_KEY")
+        os.environ["X_API_KEY"] = "fromshell"
+        try:
+            merged, _prov, sources = sp.load_env_files_detailed([])
+            self.assertEqual(merged["X_API_KEY"], "fromshell")
+            self.assertEqual(sources["X_API_KEY"], "<process env>")
+        finally:
+            if had:
+                os.environ["X_API_KEY"] = old
+            else:
+                os.environ.pop("X_API_KEY", None)
+
+    def test_credential_state_sees_shadowed_key_as_present(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            # The project .env holds the unfilled template placeholders, the
+            # profile .env holds the working values.
+            project = self._write(
+                os.path.join(tmp, "project.env"),
+                "X_API_KEY=\nX_API_SECRET=\nX_ACCESS_TOKEN=\nX_ACCESS_TOKEN_SECRET=\n")
+            profile = self._write(
+                os.path.join(tmp, "profile.env"),
+                "X_API_KEY=k\nX_API_SECRET=s\nX_ACCESS_TOKEN=t\nX_ACCESS_TOKEN_SECRET=ts\n")
+            merged, _prov, _sources = sp.load_env_files_detailed([project, profile])
+            state = sp.credential_state(merged)
+            self.assertTrue(state["x"]["usable"], state["x"])
+
+    def test_empty_placeholder_alone_is_not_usable(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            project = self._write(
+                os.path.join(tmp, "project.env"),
+                "X_API_KEY=\nX_API_SECRET=\nX_ACCESS_TOKEN=\nX_ACCESS_TOKEN_SECRET=\n")
+            merged, _prov, _sources = sp.load_env_files_detailed([project])
+            state = sp.credential_state(merged)
+            self.assertFalse(state["x"]["usable"], state["x"])
+
+
+class TestStatusJson(unittest.TestCase):
+    """`status --json` is the single source of truth for the setup script."""
+
+    def _capture(self):
+        import argparse
+        import contextlib
+        import io
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            sp.cmd_status(argparse.Namespace(json=True))
+        return json.loads(buffer.getvalue())
+
+    def test_json_reports_platform_usability_and_key_sources(self):
+        payload = self._capture()
+        self.assertIn("platforms", payload)
+        for platform in ("x", "threads", "linkedin", "dev.to"):
+            self.assertIn(platform, payload["platforms"])
+            self.assertIn("usable", payload["platforms"][platform])
+            for entry in payload["platforms"][platform]["keys"]:
+                self.assertIn("key", entry)
+                self.assertIn(entry["state"], ("present", "empty", "missing"))
+                self.assertIn("source", entry)
+
+    def test_json_never_contains_a_secret_value(self):
+        payload = self._capture()
+        blob = json.dumps(payload)
+        for secret in ("X_API_KEY", "THREADS_TOKEN", "LINKEDIN_TOKEN", "DEVTO_API_KEY"):
+            # The key NAME may appear; a secret VALUE never may.
+            value = os.environ.get(secret)
+            if value:
+                self.assertNotIn(value, blob)
+
+
+class TestFrontmatterTool(unittest.TestCase):
+    """tools/sns_frontmatter.py must bound history without touching the body."""
+
+    def _article(self, tmp, history_entries=4):
+        import sns_frontmatter as sf
+        entries = "".join(
+            '    - attemptedAt: "2026-01-0%dT00:00:00Z"\n      worker: "w"\n' % (i + 1)
+            for i in range(history_entries))
+        text = (
+            "---\n"
+            'title: "t"\n'
+            'description: "d"\n'
+            'slug: "s"\n'
+            "pubDate: 2026-01-01\n"
+            'tags: ["a"]\n'
+            "syndication:\n"
+            '  attemptedAt: "2026-01-01T00:00:00Z"\n'
+            '  worker: "reviewer/minimax-M3"\n'
+            "  targets:\n"
+            "    - platform: x\n"
+            "      status: pending\n"
+            "  history:\n"
+            + entries +
+            "---\n"
+            "\n# Heading\n\nBody text.\n")
+        path = os.path.join(tmp, "post.md")
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        return sf, path
+
+    def test_trim_bounds_history_and_preserves_body(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            sf, path = self._article(tmp, history_entries=4)
+            with open(path, encoding="utf-8") as fh:
+                before = fh.read()
+            body_before = sf.body_sha256(before)
+            code = sf.main(["trim", "--post", path, "--keep", "2",
+                            "--ledger", os.path.join(tmp, "ledger.jsonl")])
+            self.assertEqual(code, 0)
+            with open(path, encoding="utf-8") as fh:
+                after = fh.read()
+            self.assertEqual(sf.body_sha256(after), body_before)
+            data = sf.parse_frontmatter(sf.split_document(after)[1])
+            self.assertEqual(len(data["syndication"]["history"]), 2)
+            self.assertTrue(data["syndication"]["targets"])
+
+    def test_trim_keeps_the_newest_entries(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            sf, path = self._article(tmp, history_entries=4)
+            sf.main(["trim", "--post", path, "--keep", "2",
+                     "--ledger", os.path.join(tmp, "ledger.jsonl")])
+            with open(path, encoding="utf-8") as fh:
+                data = sf.parse_frontmatter(sf.split_document(fh.read())[1])
+            stamps = [e["attemptedAt"] for e in data["syndication"]["history"]]
+            self.assertEqual(stamps, ["2026-01-03T00:00:00Z", "2026-01-04T00:00:00Z"])
+
+    def test_trim_is_idempotent(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            sf, path = self._article(tmp, history_entries=4)
+            sf.main(["trim", "--post", path, "--keep", "2",
+                     "--ledger", os.path.join(tmp, "ledger.jsonl")])
+            with open(path, encoding="utf-8") as fh:
+                once = fh.read()
+            sf.main(["trim", "--post", path, "--keep", "2",
+                     "--ledger", os.path.join(tmp, "ledger.jsonl")])
+            with open(path, encoding="utf-8") as fh:
+                twice = fh.read()
+            self.assertEqual(once, twice)
+
+    def test_dry_run_does_not_write(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            sf, path = self._article(tmp, history_entries=4)
+            with open(path, encoding="utf-8") as fh:
+                before = fh.read()
+            sf.main(["trim", "--post", path, "--keep", "1", "--dry-run",
+                     "--ledger", os.path.join(tmp, "ledger.jsonl")])
+            with open(path, encoding="utf-8") as fh:
+                self.assertEqual(fh.read(), before)
+
+    def test_invalid_status_is_refused(self):
+        import sns_frontmatter as sf
+        bad = {"attemptedAt": "x", "worker": "w",
+               "targets": [{"platform": "x", "status": "blocked"}]}
+        with self.assertRaises(sf.FrontmatterError):
+            sf.validate_syndication(bad)
+
+    def test_invalid_platform_is_refused(self):
+        import sns_frontmatter as sf
+        bad = {"attemptedAt": "x", "worker": "w",
+               "targets": [{"platform": "mastodon", "status": "pending"}]}
+        with self.assertRaises(sf.FrontmatterError):
+            sf.validate_syndication(bad)
+
+    def test_missing_required_fields_are_refused(self):
+        import sns_frontmatter as sf
+        with self.assertRaises(sf.FrontmatterError):
+            sf.validate_syndication({"worker": "w", "targets": []})
+        with self.assertRaises(sf.FrontmatterError):
+            sf.validate_syndication({"attemptedAt": "x", "worker": "w"})
+
+    def test_non_http_url_is_refused(self):
+        import sns_frontmatter as sf
+        bad = {"attemptedAt": "x", "worker": "w",
+               "targets": [{"platform": "x", "status": "published",
+                            "url": "not-a-url"}]}
+        with self.assertRaises(sf.FrontmatterError):
+            sf.validate_syndication(bad)
+
+    def test_body_hash_matches_the_precheck_extraction(self):
+        """The precheck decides 'new content?' from the body hash, so the
+        frontmatter tool must hash exactly the same bytes."""
+        import tempfile
+        import sns_precheck as pre
+        with tempfile.TemporaryDirectory() as tmp:
+            sf, path = self._article(tmp, history_entries=2)
+            digest, length, _slug = pre.body_hash(path)
+            with open(path, encoding="utf-8") as fh:
+                raw = fh.read()
+            self.assertEqual(sf.body_sha256(raw), digest)
+            self.assertEqual(len(sf.split_document(raw)[3]), length)
+
+    def test_real_article_body_hash_is_unchanged_after_trim(self):
+        """Guard against the classic footgun: rewriting frontmatter and
+        silently truncating the article body to 0 bytes."""
+        import tempfile
+        import sns_frontmatter as sf
+        import sns_precheck as pre
+        article = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "src", "content", "blog", "daily-fortune-healthy-mindset.md")
+        if not os.path.isfile(article):
+            self.skipTest("pending article not present")
+        digest, length, _slug = pre.body_hash(article)
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = os.path.join(tmp, "post.md")
+            with open(article, encoding="utf-8") as fh:
+                raw = fh.read()
+            with open(copy, "w", encoding="utf-8") as fh:
+                fh.write(raw)
+            code = sf.main(["trim", "--post", copy, "--keep", "3",
+                            "--ledger", os.path.join(tmp, "ledger.jsonl")])
+            self.assertEqual(code, 0)
+            with open(copy, encoding="utf-8") as fh:
+                after = fh.read()
+        self.assertEqual(sf.body_sha256(after), digest)
+        self.assertEqual(len(sf.split_document(after)[3]), length)
+        self.assertNotEqual(digest, "e3b0c442" + "98fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
