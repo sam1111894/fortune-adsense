@@ -38,6 +38,14 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+# The durable publish-receipt store lives next to this file, so the script
+# and the offline test suite import it identically.
+_TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _TOOLS_DIR not in sys.path:
+    sys.path.insert(0, _TOOLS_DIR)
+
+import sns_receipts  # noqa: E402
+
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ENV_CANDIDATES = [
@@ -543,6 +551,205 @@ def _x_affordable_tier(env, text):
     return balance, cost
 
 
+# --- durable publish receipts -------------------------------------------
+# A publish can succeed on the platform and still leave NO trace locally, if
+# the process dies between "HTTP 200 from the API" and "the syndication
+# ledger is written by the next, separate step". The next fire then sees an
+# unchanged body, no successful publish on record, and repeats the write --
+# paying for it a second time and double-posting.
+#
+# The receipt closes that window: it is written by THIS process, around the
+# write, so the outcome is durable even if the run dies immediately after.
+# See tools/sns_receipts.py for the store format and the state machine.
+
+
+def _receipt_write(platform, attempt_id, state, text_sha=None,
+                   content_sha=None, **fields):
+    """Append one receipt line for an attempt."""
+    record = {
+        "platform": platform,
+        "attemptId": attempt_id,
+        "state": state,
+        "textSha256": text_sha,
+        "contentSha256": content_sha,
+    }
+    record.update(fields)
+    return sns_receipts.append(record)
+
+
+def _receipt_guard(platform, text_sha, content_sha, resolver=None):
+    """Decide whether a publish may proceed, based on the receipt store.
+
+    Returns (verdict, reason) where verdict is:
+      "proceed" -- no evidence of a prior publish; safe to write
+      "skip"    -- this content is already published; do NOT write again
+      "block"   -- a previous attempt for this content never reached a
+                   terminal state, so its outcome is unknown. Writing again
+                   could duplicate a post (and charge again), so the write is
+                   refused until the operator resolves it.
+
+    `resolver(attempt)` settles an unresolved attempt and returns
+    "published", "failed", or None when it cannot tell. A settled attempt is
+    appended to the receipt log so the ambiguity is gone for good.
+    """
+    receipts = sns_receipts.load()
+    attempts = sns_receipts.group_attempts(receipts, platform)
+    published = sns_receipts.find_published(attempts, text_sha, content_sha)
+    if published is not None:
+        return "skip", ("receipt %s: 이미 발행됨 (postId=%s)"
+                        % (published.get("attemptId"), published.get("postId")))
+    pending = sns_receipts.find_pending(attempts, text_sha, content_sha)
+    if pending is None:
+        return "proceed", None
+    verdict = resolver(pending) if resolver else None
+    if verdict == "published":
+        _receipt_write(platform, pending["attemptId"], "published",
+                       text_sha=pending.get("textSha256"),
+                       content_sha=pending.get("contentSha256"),
+                       postId=pending.get("postId"),
+                       url=pending.get("url"),
+                       completedAt=sns_receipts.now_iso(),
+                       note="resolved by duplicate-guard probe")
+        return "skip", ("receipt %s: 미완료 시도가 실제로 발행됨으로 확인됨"
+                        % pending["attemptId"])
+    if verdict == "failed":
+        _receipt_write(platform, pending["attemptId"], "failed",
+                       text_sha=pending.get("textSha256"),
+                       content_sha=pending.get("contentSha256"),
+                       completedAt=sns_receipts.now_iso(),
+                       note="resolved by duplicate-guard probe: not published")
+        return "proceed", None
+    return "block", ("receipt %s: 이전 발행 시도의 결과 미확정 (중복 발행/중복 과금 위험)"
+                     % pending["attemptId"])
+
+
+def _x_statuses_count(env):
+    """Free read of the account's tweet count, or None when unavailable.
+
+    GET /1.1/account/verify_credentials.json is free under X's pay-per-use
+    model, unlike GET /2/users/:id/tweets (HTTP 402).
+    """
+    status, body = x_request(env, "GET", "/account/verify_credentials.json")
+    if status != 200:
+        return None
+    try:
+        payload = json.loads(body) or {}
+    except ValueError:
+        return None
+    count = payload.get("statuses_count")
+    return count if isinstance(count, int) else None
+
+
+def _resolve_x_pending(env, attempt):
+    """Settle an unresolved X attempt by comparing the tweet count.
+
+    The count is snapshotted BEFORE the write, so a larger count means the
+    write landed and must not be repeated; an unchanged count means it did
+    not. A smaller count means a tweet was deleted, which tells us nothing
+    about our write -> unresolved.
+    """
+    before = attempt.get("statusesCountBefore")
+    if not isinstance(before, int):
+        return None
+    now = _x_statuses_count(env)
+    if now is None:
+        return None
+    if now > before:
+        return "published"
+    if now == before:
+        return "failed"
+    return None
+
+
+def _devto_article_exists(env, attempt):
+    """True/False when the published article is listed for this account, or
+    None when the listing could not be read at all.
+
+    GET /api/articles/me is free, so a dev.to publish can be verified without
+    spending anything.
+    """
+    key = env.get("DEVTO_API_KEY", "")
+    if not key:
+        return None
+    status, body = http_request(
+        "https://dev.to/api/articles/me", "GET",
+        headers={"api-key": key,
+                 "Accept": "application/vnd.forem.api-v1-json"})
+    if status != 200:
+        return None
+    try:
+        articles = json.loads(body) or []
+    except ValueError:
+        return None
+    if not isinstance(articles, list):
+        return None
+    canonical = attempt.get("canonicalUrl")
+    title = (attempt.get("title") or "").strip()
+    for article in articles:
+        if not isinstance(article, dict):
+            continue
+        if canonical and article.get("canonical_url") == canonical:
+            return True
+        if title and (article.get("title") or "").strip() == title:
+            return True
+    return False
+
+
+def _resolve_devto_pending(env, attempt):
+    """Settle an unresolved dev.to attempt via the free article listing.
+
+    An unreadable listing resolves to None (still unknown) -- it must never
+    be read as "not published", or the guard would re-publish a post that
+    had in fact landed.
+    """
+    exists = _devto_article_exists(env, attempt)
+    if exists is None:
+        return None
+    return "published" if exists else "failed"
+
+
+def _threads_thread_exists(env, attempt):
+    """True/False when the thread is listed for this account, or None when
+    the listing could not be read.
+
+    GET /v1.0/me/threads is free, so a Threads publish can be verified
+    without spending anything.
+    """
+    token = env.get("THREADS_TOKEN", "")
+    if not token:
+        return None
+    status, body = http_request(
+        "https://graph.threads.net/v1.0/me/threads", "GET",
+        params={"access_token": token, "fields": "id,text"})
+    if status != 200:
+        return None
+    try:
+        payload = json.loads(body) or {}
+    except ValueError:
+        return None
+    threads = payload.get("data")
+    if not isinstance(threads, list):
+        return None
+    text = (attempt.get("textPreview") or "").strip()
+    creation_id = attempt.get("creationId")
+    for thread in threads:
+        if not isinstance(thread, dict):
+            continue
+        if creation_id and thread.get("id") == creation_id:
+            return True
+        if text and (thread.get("text") or "").strip() == text:
+            return True
+    return False
+
+
+def _resolve_threads_pending(env, attempt):
+    """Settle an unresolved Threads attempt via the free thread listing."""
+    exists = _threads_thread_exists(env, attempt)
+    if exists is None:
+        return None
+    return "published" if exists else "failed"
+
+
 def cmd_publish_x(args):
     """Publish a tweet via the X v2 API.
 
@@ -550,6 +757,12 @@ def cmd_publish_x(args):
       * POST /1.1/statuses/update.json -> HTTP 404, empty body (retired).
       * POST /2/tweets               -> live; needs a funded credit balance
         under X's pay-per-use model (HTTP 402 "credits depleted" when empty).
+
+    A durable receipt is written around the write (see tools/sns_receipts.py):
+    a "pending" record BEFORE the POST, then "published" or "failed". The
+    pending record is what lets a later run tell "never attempted" from
+    "attempted, outcome unknown" -- the difference between a safe retry and
+    a paid duplicate.
     """
     env, _ = load_env_files()
     state = credential_state(env)
@@ -567,6 +780,22 @@ def cmd_publish_x(args):
             weighted, X_MAX_WEIGHTED, len(text)))
         return 2
     print("X weighted length: %d/%d (raw %d자)" % (weighted, X_MAX_WEIGHTED, len(text)))
+
+    # Duplicate guard, backed by the durable receipt store. This must run
+    # BEFORE any billable call: a "skip" verdict means the post already
+    # exists, and a "block" verdict means an earlier attempt's outcome is
+    # unknown -- in both cases spending $0.200 again would be wrong.
+    text_sha = sns_receipts.text_key(text)
+    content_sha = args.content_sha or None
+    verdict, reason = _receipt_guard("x", text_sha, content_sha,
+                                     resolver=lambda attempt: _resolve_x_pending(env, attempt))
+    if verdict == "skip":
+        print("[SKIP] X 이미 발행됨 — 재발행 안 함 (%s)" % reason)
+        return 2
+    if verdict == "block":
+        print("PUBLISH BLOCKED — 중복 발행 위험 (%s)" % reason)
+        print("  조치: X 계정에서 해당 게시물을 확인한 뒤 receipts 로그를 정리하세요.")
+        return 3
     # Free pre-flight: X charges per POST, so check the balance BEFORE the
     # write. GET /2/usage/credits is a free read and tells us whether the
     # attempt is even billable. Without this we burn a POST attempt to learn
@@ -585,6 +814,22 @@ def cmd_publish_x(args):
         else:
             print("  credit pre-flight OK (잔액 $%.3f, 필요 $%.3f)"
                   % (balance, cost))
+
+    # Durable receipt: record the attempt BEFORE the billable POST, so a
+    # crash between the POST and its response leaves a "pending" record
+    # instead of no trace at all. statusesCountBefore is a FREE read and
+    # lets a later run settle that pending record: a higher count means the
+    # write landed (do not retry), an unchanged count means it did not.
+    attempt_id = sns_receipts.new_attempt_id()
+    statuses_before = _x_statuses_count(env)
+    _receipt_write("x", attempt_id, "pending",
+                   text_sha=text_sha, content_sha=content_sha,
+                   startedAt=sns_receipts.now_iso(),
+                   statusesCountBefore=statuses_before,
+                   textPreview=text[:120],
+                   weightedLength=weighted)
+    print("  receipt pending attemptId=%s" % attempt_id)
+
     status, body = x_request(env, "POST", "/2/tweets", json_body={"text": text})
     print("HTTP %s" % status)
     try:
@@ -594,13 +839,27 @@ def cmd_publish_x(args):
     if status in (200, 201):
         data = payload.get("data") or {}
         tweet_id = data.get("id")
-        print("PUBLISHED id=%s url=https://x.com/%s/status/%s" % (
-            tweet_id, data.get("username") or "SamJ868644", tweet_id))
-        print(json.dumps({"id": tweet_id,
-                          "url": "https://x.com/%s/status/%s" % (
-                              data.get("username") or "SamJ868644", tweet_id)},
-                         ensure_ascii=False))
+        url = "https://x.com/%s/status/%s" % (
+            data.get("username") or "SamJ868644", tweet_id)
+        _receipt_write("x", attempt_id, "published",
+                       text_sha=text_sha, content_sha=content_sha,
+                       postId=tweet_id, url=url,
+                       completedAt=sns_receipts.now_iso())
+        print("PUBLISHED id=%s url=%s" % (tweet_id, url))
+        print(json.dumps({"id": tweet_id, "url": url}, ensure_ascii=False))
         return 0
+    if 400 <= status < 500:
+        # A 4xx is a definitive rejection: the platform created nothing, so
+        # a later retry is safe. Record it as failed, not pending.
+        _receipt_write("x", attempt_id, "failed",
+                       text_sha=text_sha, content_sha=content_sha,
+                       httpStatus=status,
+                       completedAt=sns_receipts.now_iso())
+    else:
+        # Ambiguous: a network error (status 0) or a 5xx may have happened
+        # AFTER the platform created the post. Leave the receipt "pending"
+        # so the next run resolves it instead of paying twice.
+        print("  결과 불확정 — receipt를 pending으로 남겨 다음 실행에서 확인합니다.")
     if status == 402:
         print("PUBLISH BLOCKED — HTTP 402 credits depleted")
         print("  원인: X API가 2026-02부터 pay-per-use 크레딧 과금 모델로 전환.")
@@ -821,7 +1080,11 @@ def _devto_publish(env, title, body_markdown, tags, canonical_url=None):
 
 
 def cmd_publish_threads(args):
-    """Publish the Threads draft (500 char cap)."""
+    """Publish the Threads draft (500 char cap).
+
+    A durable receipt is written around the write, so a crash mid-publish
+    leaves a resolvable trace instead of an invisible post.
+    """
     env, _ = load_env_files()
     state = credential_state(env)
     if not state["threads"]["usable"]:
@@ -835,6 +1098,23 @@ def cmd_publish_threads(args):
         print("[SKIP] Threads %d자/%d 초과" % (len(text), PLATFORM_CAP["threads"]))
         return 2
     print("Threads length: %d/%d" % (len(text), PLATFORM_CAP["threads"]))
+    text_sha = sns_receipts.text_key(text)
+    content_sha = args.content_sha or None
+    verdict, reason = _receipt_guard(
+        "threads", text_sha, content_sha,
+        resolver=lambda attempt: _resolve_threads_pending(env, attempt))
+    if verdict == "skip":
+        print("[SKIP] Threads 이미 발행됨 — 재발행 안 함 (%s)" % reason)
+        return 2
+    if verdict == "block":
+        print("PUBLISH BLOCKED — 중복 발행 위험 (%s)" % reason)
+        print("  조치: Threads 계정에서 해당 게시물을 확인한 뒤 receipts 로그를 정리하세요.")
+        return 3
+    attempt_id = sns_receipts.new_attempt_id()
+    _receipt_write("threads", attempt_id, "pending",
+                   text_sha=text_sha, content_sha=content_sha,
+                   startedAt=sns_receipts.now_iso(),
+                   textPreview=text[:120])
     status, body, creation_id = _threads_publish(env, text)
     print("HTTP %s" % status)
     if status in (200, 201):
@@ -842,16 +1122,29 @@ def cmd_publish_threads(args):
             post_id = (json.loads(body) or {}).get("id")
         except ValueError:
             post_id = None
+        _receipt_write("threads", attempt_id, "published",
+                       text_sha=text_sha, content_sha=content_sha,
+                       postId=post_id, creationId=creation_id,
+                       completedAt=sns_receipts.now_iso())
         print("PUBLISHED id=%s creation_id=%s" % (post_id, creation_id))
         print(json.dumps({"id": post_id, "creation_id": creation_id},
                          ensure_ascii=False))
         return 0
+    if 400 <= status < 500:
+        _receipt_write("threads", attempt_id, "failed",
+                       text_sha=text_sha, content_sha=content_sha,
+                       httpStatus=status, creationId=creation_id,
+                       completedAt=sns_receipts.now_iso())
     print("PUBLISH FAILED errors=%s" % body[:400])
     return 1
 
 
 def cmd_publish_linkedin(args):
-    """Publish the LinkedIn draft (1000 char cap)."""
+    """Publish the LinkedIn draft (1000 char cap).
+
+    A durable receipt is written around the write, so a crash mid-publish
+    leaves a resolvable trace instead of an invisible post.
+    """
     env, _ = load_env_files()
     state = credential_state(env)
     if not state["linkedin"]["usable"]:
@@ -865,19 +1158,43 @@ def cmd_publish_linkedin(args):
         print("[SKIP] LinkedIn %d자/%d 초과" % (len(text), PLATFORM_CAP["linkedin"]))
         return 2
     print("LinkedIn length: %d/%d" % (len(text), PLATFORM_CAP["linkedin"]))
+    text_sha = sns_receipts.text_key(text)
+    content_sha = args.content_sha or None
+    verdict, reason = _receipt_guard("linkedin", text_sha, content_sha)
+    if verdict == "skip":
+        print("[SKIP] LinkedIn 이미 발행됨 — 재발행 안 함 (%s)" % reason)
+        return 2
+    if verdict == "block":
+        print("PUBLISH BLOCKED — 중복 발행 위험 (%s)" % reason)
+        print("  조치: LinkedIn 계정에서 해당 게시물을 확인한 뒤 receipts 로그를 정리하세요.")
+        return 3
+    attempt_id = sns_receipts.new_attempt_id()
+    _receipt_write("linkedin", attempt_id, "pending",
+                   text_sha=text_sha, content_sha=content_sha,
+                   startedAt=sns_receipts.now_iso(),
+                   textPreview=text[:120])
     status, body, urn = _linkedin_publish(env, text)
+    print("HTTP %s" % status)
     if status is None:
         print("PUBLISH BLOCKED — %s" % body)
         return 1
-    print("HTTP %s" % status)
     if status in (200, 201):
         try:
             post_id = (json.loads(body) or {}).get("id")
         except ValueError:
             post_id = None
+        _receipt_write("linkedin", attempt_id, "published",
+                       text_sha=text_sha, content_sha=content_sha,
+                       postId=post_id, url=post_id,
+                       completedAt=sns_receipts.now_iso())
         print("PUBLISHED id=%s author=%s" % (post_id, urn))
         print(json.dumps({"id": post_id, "author": urn}, ensure_ascii=False))
         return 0
+    if 400 <= status < 500:
+        _receipt_write("linkedin", attempt_id, "failed",
+                       text_sha=text_sha, content_sha=content_sha,
+                       httpStatus=status,
+                       completedAt=sns_receipts.now_iso())
     print("PUBLISH FAILED errors=%s" % body[:400])
     return 1
 
@@ -905,6 +1222,24 @@ def cmd_publish_devto(args):
     tags = [t.strip() for t in (args.tags or "").split(",") if t.strip()]
     print("dev.to length: %d/%d title=%s" % (len(body_markdown),
                                              PLATFORM_CAP["dev.to"], title))
+    text_sha = sns_receipts.text_key(body_markdown)
+    content_sha = args.content_sha or None
+    verdict, reason = _receipt_guard(
+        "dev.to", text_sha, content_sha,
+        resolver=lambda attempt: _resolve_devto_pending(env, attempt))
+    if verdict == "skip":
+        print("[SKIP] dev.to 이미 발행됨 — 재발행 안 함 (%s)" % reason)
+        return 2
+    if verdict == "block":
+        print("PUBLISH BLOCKED — 중복 발행 위험 (%s)" % reason)
+        print("  조치: dev.to 계정에서 해당 글을 확인한 뒤 receipts 로그를 정리하세요.")
+        return 3
+    attempt_id = sns_receipts.new_attempt_id()
+    _receipt_write("dev.to", attempt_id, "pending",
+                   text_sha=text_sha, content_sha=content_sha,
+                   startedAt=sns_receipts.now_iso(),
+                   title=title, canonicalUrl=args.canonical_url or None,
+                   textPreview=body_markdown[:120])
     status, body = _devto_publish(env, title, body_markdown, tags,
                                   args.canonical_url)
     print("HTTP %s" % status)
@@ -913,10 +1248,21 @@ def cmd_publish_devto(args):
             data = json.loads(body) or {}
         except ValueError:
             data = {}
+        _receipt_write("dev.to", attempt_id, "published",
+                       text_sha=text_sha, content_sha=content_sha,
+                       postId=data.get("id"), url=data.get("url"),
+                       title=title, canonicalUrl=args.canonical_url or None,
+                       completedAt=sns_receipts.now_iso())
         print("PUBLISHED id=%s url=%s" % (data.get("id"), data.get("url")))
         print(json.dumps({"id": data.get("id"), "url": data.get("url")},
                          ensure_ascii=False))
         return 0
+    if 400 <= status < 500:
+        _receipt_write("dev.to", attempt_id, "failed",
+                       text_sha=text_sha, content_sha=content_sha,
+                       httpStatus=status, title=title,
+                       canonicalUrl=args.canonical_url or None,
+                       completedAt=sns_receipts.now_iso())
     print("PUBLISH FAILED errors=%s" % body[:400])
     return 1
 
@@ -944,15 +1290,19 @@ def cmd_publish_all(args):
             skipped += 1
             continue
         if platform == "x":
-            code = cmd_publish_x(argparse.Namespace(text_file=draft))
+            code = cmd_publish_x(argparse.Namespace(
+                text_file=draft, content_sha=args.content_sha))
         elif platform == "threads":
-            code = cmd_publish_threads(argparse.Namespace(text_file=draft))
+            code = cmd_publish_threads(argparse.Namespace(
+                text_file=draft, content_sha=args.content_sha))
         elif platform == "linkedin":
-            code = cmd_publish_linkedin(argparse.Namespace(text_file=draft))
+            code = cmd_publish_linkedin(argparse.Namespace(
+                text_file=draft, content_sha=args.content_sha))
         else:
             code = cmd_publish_devto(argparse.Namespace(
                 text_file=draft, title=args.devto_title,
-                tags=args.devto_tags, canonical_url=args.devto_canonical))
+                tags=args.devto_tags, canonical_url=args.devto_canonical,
+                content_sha=args.content_sha))
         if code == 0:
             published += 1
         elif code == 2:
@@ -979,24 +1329,30 @@ def main(argv=None):
     publish.add_argument("--text-file", required=True)
     publish.add_argument("--skip-credit-check", dest="skip_credit_check",
                          action="store_true")
+    publish.add_argument("--content-sha", dest="content_sha", default="",
+                         help="sha256 of the article body, for cross-draft dedup")
     weight = sub.add_parser("weight")
     weight.add_argument("--text-file", required=True)
     sub.add_parser("credits")
     threads = sub.add_parser("publish-threads")
     threads.add_argument("--text-file", required=True)
+    threads.add_argument("--content-sha", dest="content_sha", default="")
     linkedin = sub.add_parser("publish-linkedin")
     linkedin.add_argument("--text-file", required=True)
+    linkedin.add_argument("--content-sha", dest="content_sha", default="")
     devto = sub.add_parser("publish-devto")
     devto.add_argument("--text-file", required=True)
     devto.add_argument("--title", default="")
     devto.add_argument("--tags", default="")
     devto.add_argument("--canonical-url", dest="canonical_url", default="")
+    devto.add_argument("--content-sha", dest="content_sha", default="")
     publish_all = sub.add_parser("publish-all")
     publish_all.add_argument("--drafts-dir", dest="drafts_dir", required=True)
     publish_all.add_argument("--devto-title", dest="devto_title", default="")
     publish_all.add_argument("--devto-tags", dest="devto_tags", default="")
     publish_all.add_argument("--devto-canonical-url", dest="devto_canonical",
                              default="")
+    publish_all.add_argument("--content-sha", dest="content_sha", default="")
     args = parser.parse_args(argv)
     handler = {"status": cmd_status, "verify": cmd_verify,
                "timeline": cmd_timeline,

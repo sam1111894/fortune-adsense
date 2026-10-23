@@ -336,7 +336,8 @@ class TestPublishAll(unittest.TestCase, EnvMixin):
             try:
                 import argparse
                 ns = argparse.Namespace(drafts_dir=tmp, devto_title="",
-                                        devto_tags="", devto_canonical="")
+                                        devto_tags="", devto_canonical="",
+                                        content_sha="")
                 code = sp.cmd_publish_all(ns)
             finally:
                 sp.cmd_publish_x = orig_pub
@@ -352,7 +353,8 @@ class TestPublishAll(unittest.TestCase, EnvMixin):
             sp.load_env_files = lambda paths=None: ({}, [])
             try:
                 ns = argparse.Namespace(drafts_dir=tmp, devto_title="",
-                                        devto_tags="", devto_canonical="")
+                                        devto_tags="", devto_canonical="",
+                                        content_sha="")
                 code = sp.cmd_publish_all(ns)
             finally:
                 sp.load_env_files = orig
