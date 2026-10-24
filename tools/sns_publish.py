@@ -712,8 +712,36 @@ def cmd_measure(args):
 
 def _has_url(text):
     """True if the draft contains a URL (X charges $0.200 for URL posts vs
-    $0.015 for URL-free ones)."""
-    return bool(re.search(r"https?://", text or ""))
+    $0.015 for URL-free ones).
+
+    This MUST use the same URL detector as the weighted-length counter
+    (`X_URL_RE`), because the two answer the same question about the same
+    text and must never disagree:
+
+      * the length counter (`x_weighted_length`) replaces a URL with a
+        fixed 23 units -- it already treats "www.example.com" and
+        "HTTPS://example.com" as URLs;
+      * this function decides which PRICE TIER the post is billed at.
+
+    They used to use different detectors: the length counter used
+    `X_URL_RE` (case-insensitive, and it also matches a bare "www."
+    host), while this one used a case-SENSITIVE `https?://` search. So a
+    draft containing "www.example.com" or "HTTPS://example.com" was
+    measured as a URL post (23 units) but priced as a URL-FREE post --
+    the gate reserved $0.015 for a request X bills $0.200.
+
+    That is a fail-OPEN bug in the money gate, and the failure is
+    silent: the pre-flight approves a billable write it has not
+    verified it can afford. With a $0.02 balance and a "www." draft the
+    old code reserved the cheap tier, let the write through, and X
+    charged $0.200.
+
+    The tier has to be decided by the SAME rule the platform applies,
+    so both now read `X_URL_RE`. Being wrong in the expensive
+    direction is safe (the gate blocks a publish it could have made);
+    being wrong in the cheap direction is not.
+    """
+    return bool(X_URL_RE.search(text or ""))
 
 
 def _usable_post_id(value):

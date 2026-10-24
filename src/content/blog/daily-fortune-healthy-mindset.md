@@ -7,7 +7,7 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-24T17:42:21Z'
+  attemptedAt: '2026-10-24T19:43:25Z'
   worker: reviewer/minimax-M3
   cronExit: 3
   exitCode: 3
@@ -20,7 +20,7 @@ syndication:
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   lastSelfTriggerNote: 'fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
-  publishPayload: .hermes/cron-drafts/2026-10-24T17-42-01Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-24T19-37-44Z/publish-payload.json
   publishScript: .hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh
   lastAttempt: '2026-10-24T05:18:00Z'
   publishPending: true
@@ -50,37 +50,6 @@ syndication:
     reason: token 없음
     status: skipped
   history:
-  - attemptedAt: '2026-10-24T14:30:24Z'
-    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-    blog: daily-fortune-healthy-mindset
-    bodyChars: 3996
-    bodySha256: 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae
-    cronExit: 3
-    draftBytes:
-      dev.to: 1977
-      linkedin: 1310
-      threads: 474
-      x: 327
-    draftChars:
-      dev.to: 1969
-      linkedin: 599
-      threads: 241
-      x: 178
-    draftLimits:
-      dev.to: '2000'
-      linkedin: '1000'
-      threads: '500'
-      x: 280 weighted
-    draftsDir: .hermes/cron-drafts/2026-10-24T14-30-24Z/
-    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
-    exitCode: 3
-    fire: 192
-    note: 'RETRY of the fire191 pending publish (body unchanged -> no new content, no re-synthesis; drafts byte-identical to fire191 by SHA-256 on all 4 files). REAL publish-all was executed against the live publisher: published=0 blocked=1 skipped=3, exit 3. X remains blocked by the credit pre-flight (GET /2/usage/credits HTTP 200 total_balance=0.000 USD, prepaid 0.000, free 0.000, free_grants 0), so neither the 0.200 USD URL tier nor the 0.015 USD no-URL tier is affordable; the gate correctly prevented a billable POST before any write. NO tweet was created (statuses_count=0, screen_name=SamJ868644) and the durable publish-receipt store is still EMPTY (0 records) - the gate blocks before any write is attempted. Threads/LinkedIn/dev.to [SKIP] - THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY genuinely missing from every credential scope (project .env 1447B, reviewer-profile .env 2338B, global ~/.hermes/.env 1172B; 0 of the 3 tokens present in each). Their write paths ARE implemented and covered by tests. The dup-guard was consulted (free) BEFORE the publish: statuses_count=0 -> VERDICT ''NO DUPLICATE POSSIBLE'' (the metered v2 timeline read returned HTTP 402 as expected). THIS FIRE FIXED THE DRAFT-METRICS DEFECT (three bugs in one). (1) draftChars held the UTF-8 BYTE count labelled as a character count: the LinkedIn draft was recorded as ''1311자'' when it is 599 CHARACTERS / 1310 bytes, the Threads draft as ''475자'' when it is 241 chars / 474 bytes. Korean text is 3 UTF-8 bytes per character, so the two counts differ by ~2x. ROOT CAUSE: NOTHING measured the drafts - the publish payload was hand-written each fire and the numbers were copied from the wrong field. FIX: a new sanctioned source of truth, `tools/sns_publish.py measure --drafts-dir <dir>`, computes chars/bytes/weighted with the publisher''s own _read_text and x_weighted_length, and this payload is generated from it. (2) The Astro renderer gated the WHOLE counts line on t.draft - a local .hermes/ path that is gitignored and therefore never deployed - so the fire188 removal of that key silently removed EVERY count from the public syndication card. The counts now render independently of any path. (3) The renderer appends ''자'' to the value, so a value that already ended in ''자'' would render as ''1311자자''; and X''s composite ''214/280 weighted (raw 178자)'' was not a count at all. The data is now BARE INTEGERS and the unit is appended by the renderer exactly once. Guards: src/content.config.ts now requires draftChars/draftBytes to match /^[0-9]+$/ (the build REJECTS a mislabeled count), and the frontmatter writer refuses such a payload before it can reach the article. The historical rows 188-191 keep their original (mislabeled) values as the append-only ledger trail; the live card and this record are correct. TO UNBLOCK: console.x.com top-up (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
-    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-    publishPending: true
-    skipCount: 3
-    skipTotal: 4
-    worker: reviewer/minimax-M3
   - attemptedAt: '2026-10-24T16:19:00Z'
     blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
     blog: daily-fortune-healthy-mindset
@@ -146,6 +115,45 @@ syndication:
     publishPending: true
     skipCount: 3
     skipTotal: 4
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-24T19:43:25Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    cronExit: 3
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 195
+    lastMutatedBy: reviewer/minimax-M3
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-24T19-37-44Z/publish-payload.json
+    publishPending: true
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 214/280 (raw 178자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '327'
+      draftChars: '178'
+      draftWeighted: '214'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '474'
+      draftChars: '241'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1310'
+      draftChars: '599'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1977'
+      draftChars: '1969'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
     worker: reviewer/minimax-M3
 ---
 

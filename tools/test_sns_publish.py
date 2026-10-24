@@ -1399,5 +1399,110 @@ class TestWeightedCountPlatformScope(unittest.TestCase):
                          "the schema must special-case the weighted platform")
 
 
+class TestUrlTierDetection(unittest.TestCase, EnvMixin):
+    """The price tier must be decided by the SAME URL detector the length
+    counter uses.
+
+    The bug this pins: `x_weighted_length` replaced a URL with a fixed
+    23 units using `X_URL_RE` (case-insensitive, and it also matches a
+    bare "www." host), while `_has_url` -- which decides whether the
+    post is billed $0.200 (URL) or $0.015 (URL-free) -- used a
+    case-SENSITIVE `https?://` search. The two disagreed on the SAME
+    text: a draft containing "www.example.com" was measured as a URL
+    post but priced as a URL-free one.
+
+    That is fail-OPEN in the credit pre-flight, which exists precisely
+    to avoid spending money that was never verified as available: with a
+    $0.02 balance and a "www." draft, the old code reserved the cheap
+    tier, waved the billable write through, and X charged $0.200.
+
+    The tier has to come from the same rule the platform applies, so
+    `_has_url` now reads `X_URL_RE`. Getting it wrong in the EXPENSIVE
+    direction only blocks a publish that could have been made; getting
+    it wrong in the CHEAP direction spends money that was never
+    verified -- so the cheap direction is the one that must not happen.
+    """
+
+    # (text, has_url) -- the drafts that used to be mispriced.
+    CASES = [
+        ("https://example.com/a", True),
+        ("http://example.com/a", True),
+        ("HTTPS://EXAMPLE.COM/a", True),      # uppercase scheme
+        ("www.example.com/a", True),          # bare www. host, no scheme
+        ("참고 www.example.com", True),
+        ("no link here", False),
+        ("오늘의 운세는 도구입니다", False),
+        ("", False),
+    ]
+
+    def test_the_detector_matches_the_length_counter(self):
+        """`_has_url` and `X_URL_RE` must never disagree."""
+        for text, expected in self.CASES:
+            self.assertEqual(sp._has_url(text), expected, repr(text))
+            self.assertEqual(
+                sp._has_url(text), bool(sp.X_URL_RE.search(text)),
+                "the price tier and the length counter disagree on %r" % text)
+
+    def test_a_www_draft_is_priced_at_the_url_tier(self):
+        """The concrete harm: a "www." draft must reserve $0.200."""
+        orig = sp.http_request
+        sp.http_request = Recorder([
+            (200, json.dumps({"access_token": "bearer"})),
+            (200, json.dumps({"data": {"total_balance": 1.0}})),
+        ])
+        try:
+            _balance, cost = sp._x_affordable_tier(
+                self.fake_env(), "참고 www.example.com")
+        finally:
+            sp.http_request = orig
+        self.assertAlmostEqual(cost, sp.X_COST_WITH_URL)
+
+    def test_an_uppercase_scheme_draft_is_priced_at_the_url_tier(self):
+        orig = sp.http_request
+        sp.http_request = Recorder([
+            (200, json.dumps({"access_token": "bearer"})),
+            (200, json.dumps({"data": {"total_balance": 1.0}})),
+        ])
+        try:
+            _balance, cost = sp._x_affordable_tier(
+                self.fake_env(), "HTTPS://EXAMPLE.COM/a")
+        finally:
+            sp.http_request = orig
+        self.assertAlmostEqual(cost, sp.X_COST_WITH_URL)
+
+    def test_a_url_free_draft_is_still_priced_at_the_cheap_tier(self):
+        """The fix must not push every draft onto the expensive tier."""
+        orig = sp.http_request
+        sp.http_request = Recorder([
+            (200, json.dumps({"access_token": "bearer"})),
+            (200, json.dumps({"data": {"total_balance": 1.0}})),
+        ])
+        try:
+            _balance, cost = sp._x_affordable_tier(
+                self.fake_env(), "오늘의 운세는 예언이 아니라 도구입니다")
+        finally:
+            sp.http_request = orig
+        self.assertAlmostEqual(cost, sp.X_COST_NO_URL)
+
+    def test_the_gate_blocks_when_only_the_cheap_tier_is_affordable(self):
+        """A "www." draft on a $0.02 balance must be BLOCKED, not waved
+        through: $0.02 < the $0.200 the post will actually be billed."""
+        orig = sp.http_request
+        sp.http_request = Recorder([
+            (200, json.dumps({"access_token": "bearer"})),
+            (200, json.dumps({"data": {"total_balance": 0.02}})),
+        ])
+        try:
+            balance, cost = sp._x_affordable_tier(
+                self.fake_env(), "참고 www.example.com")
+        finally:
+            sp.http_request = orig
+        self.assertIsNotNone(balance)
+        self.assertIsNotNone(cost)
+        self.assertLess(balance, cost,
+                        "the gate must reserve the tier the post is "
+                        "actually billed at")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
