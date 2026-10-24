@@ -136,18 +136,24 @@ def body_hash(path: str) -> tuple[str, int, str]:
     return digest, len(body), slug
 
 
-def read_ledger() -> tuple[dict, dict]:
+def read_ledger(ledger_path: str | None = None) -> tuple[dict, dict]:
     """Map slug -> last known body hash, and slug -> pending-publish record.
 
     Returns (hashes, pending). A slug in `pending` has an unchanged body but
     a publish that could not be completed (e.g. the platform was down or the
     account had no API credit). Those must be RETRIED, not skipped.
+
+    The pending flag is LAST-EXPLICIT-STATEMENT-WINS: a later ledger record
+    for the same slug that reports publishPending=false clears an older
+    pending flag. Without that, `pending` was monotonic and the precheck
+    could never report NO_NEW_POST once an article had been published.
     """
     hashes: dict = {}
     pending: dict = {}
-    if not os.path.isfile(LEDGER):
+    target = ledger_path or LEDGER
+    if not os.path.isfile(target):
         return hashes, pending
-    with open(LEDGER, "r", encoding="utf-8") as handle:
+    with open(target, "r", encoding="utf-8") as handle:
         for line in handle:
             line = line.strip()
             if not line:
@@ -160,7 +166,22 @@ def read_ledger() -> tuple[dict, dict]:
             digest = entry.get("bodySha256")
             if slug and digest:
                 hashes[slug] = digest
-                if entry.get("publishPending"):
+                pending_value = entry.get("publishPending")
+                if pending_value is False:
+                    # An explicit publishPending=false means "the publish
+                    # completed" and must CLEAR an older pending flag for the
+                    # same slug. Without this, `pending` was monotonic: once a
+                    # slug entered it, it stayed there forever, so the
+                    # precheck could never return NO_NEW_POST after a
+                    # successful publish and the cron re-fired on an
+                    # already-published article on every cycle.
+                    #
+                    # Only a literal False clears it. `None`/absent means the
+                    # record says nothing about pending state (the ledger
+                    # writer always emits the key, possibly as null), and
+                    # that must not be read as "the publish completed".
+                    pending.pop(slug, None)
+                elif pending_value:
                     pending[slug] = {
                         "blockedBy": entry.get("blockedBy"),
                         "outcome": entry.get("outcome"),

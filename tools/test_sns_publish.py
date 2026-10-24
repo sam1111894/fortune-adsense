@@ -361,6 +361,81 @@ class TestPublishAll(unittest.TestCase, EnvMixin):
         self.assertEqual(code, 2)
 
 
+class TestDupCheckFallback(unittest.TestCase, EnvMixin):
+    """`dupcheck` must fall back to the FREE read when the tweet-listing
+    endpoints are unavailable (metered -> HTTP 402, or tier-restricted ->
+    HTTP 403), and it must never claim a needle match it could not check.
+
+    Regression: the old code printed a bare "dupcheck unavailable (scope
+    restriction)" and returned 1 even though the account's free
+    statuses_count was readable and was 0 -- i.e. a definitive
+    "no duplicate possible" was reported as an unknown.
+    """
+
+    def _run(self, listing_status, listing_body, count):
+        import argparse
+        import io
+        import contextlib
+        orig_env = sp.load_env_files
+        orig_req = sp.http_request
+        sp.load_env_files = lambda paths=None: (self.fake_env(), [])
+        responses = [
+            # verify_credentials -> user id (free)
+            (200, json.dumps({"id": "1", "id_str": "1"})),
+            # v2 tweets listing (metered / tier-restricted)
+            (listing_status, listing_body),
+            # free fallback: verify_credentials -> statuses_count
+            (200, json.dumps({"id": "1", "statuses_count": count})),
+        ]
+        rec = Recorder(responses)
+        sp.http_request = rec
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                code = sp.cmd_dupcheck(argparse.Namespace(needle="needle"))
+        finally:
+            sp.http_request = orig_req
+            sp.load_env_files = orig_env
+        return code, buf.getvalue()
+
+    def test_free_fallback_proves_no_duplicate_when_count_is_zero(self):
+        code, out = self._run(
+            402, json.dumps({"detail": "credits depleted"}), 0)
+        self.assertEqual(code, 0)
+        self.assertIn("statuses_count=0", out)
+        self.assertIn("NO DUPLICATE POSSIBLE", out)
+
+    def test_free_fallback_refuses_to_claim_a_match_when_count_is_nonzero(self):
+        code, out = self._run(
+            402, json.dumps({"detail": "credits depleted"}), 7)
+        self.assertEqual(code, 1)
+        self.assertIn("UNKNOWN", out)
+        self.assertIn("needle NOT verified", out)
+        self.assertNotIn("NO DUPLICATE POSSIBLE", out)
+
+    def test_listing_success_still_reports_needle_hits(self):
+        import argparse
+        import io
+        import contextlib
+        orig_env = sp.load_env_files
+        orig_req = sp.http_request
+        sp.load_env_files = lambda paths=None: (self.fake_env(), [])
+        rec = Recorder([
+            (200, json.dumps({"id": "1", "id_str": "1"})),
+            (200, json.dumps({"data": [{"id": "9", "text": "has the needle"}]})),
+        ])
+        sp.http_request = rec
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                code = sp.cmd_dupcheck(argparse.Namespace(needle="needle"))
+        finally:
+            sp.http_request = orig_req
+            sp.load_env_files = orig_env
+        self.assertEqual(code, 3)
+        self.assertIn("DUPLICATE id=9", buf.getvalue())
+
+
 class TestCaps(unittest.TestCase):
     def test_caps_match_job_spec(self):
         self.assertEqual(sp.PLATFORM_CAP["x"], 280)

@@ -360,8 +360,22 @@ def cmd_dupcheck(args):
     """Search the account's recent tweets for the given needle.
 
     Guards against publishing a duplicate when a post was already tweeted by
-    an earlier fire or by a manual run. Tries the v2 users-tweets endpoint
-    first, then falls back to the v1.1 timeline endpoint.
+    an earlier fire or by a manual run.
+
+    X's pay-per-use model meters the READ endpoints too, and the account's
+    access tier is narrower still:
+      * GET /2/users/:id/tweets   -> HTTP 402 "credits depleted" (metered)
+      * GET /1.1/statuses/user_timeline.json -> HTTP 403 code 453 (the app
+        only has a subset of v1.1: media post + oauth)
+
+    So there is NO endpoint that can list tweet TEXT for this account. The
+    only free read is GET /1.1/account/verify_credentials.json, whose
+    `statuses_count` is the account's LIFETIME tweet count. It cannot match
+    a needle, but it does answer the question that actually gates a publish:
+    "has this account ever posted anything?" (count == 0 => never posted).
+
+    This command therefore reports which signal it used and refuses to
+    claim a needle match it could not verify.
     """
     env, _ = load_env_files()
     state = credential_state(env)
@@ -395,8 +409,28 @@ def cmd_dupcheck(args):
         print(body[:400])
         return 1
     if status != 200:
-        print("dupcheck unavailable (scope restriction): %s" % json.dumps(
+        # The tweet-listing endpoints are unavailable for this account
+        # (metered or tier-restricted). Fall back to the one FREE read and
+        # report exactly what it proves -- never claim a needle match that
+        # could not be checked.
+        print("tweet listing unavailable (scope restriction): %s" % json.dumps(
             payload.get("errors", payload), ensure_ascii=False)[:300])
+        count = _x_statuses_count(env)
+        if count is None:
+            print("  free fallback unavailable too "
+                  "(GET /1.1/account/verify_credentials.json failed)")
+            print("  VERDICT: UNKNOWN - cannot verify a duplicate; rely on the "
+                  "durable publish-receipt store (tools/sns_receipts.py)")
+            return 1
+        print("  free fallback: statuses_count=%d "
+              "(lifetime tweets by this account)" % count)
+        if count == 0:
+            print("  VERDICT: NO DUPLICATE POSSIBLE - this account has never "
+                  "posted, so the needle cannot be present")
+            return 0
+        print("  VERDICT: UNKNOWN - the account has %d lifetime tweets but no "
+              "tweet text could be read; needle NOT verified" % count)
+        print("  조치: X 계정에서 최근 트윗을 눈으로 확인하세요.")
         return 1
     tweets = payload if isinstance(payload, list) else payload.get("data", [])
     hits = []
