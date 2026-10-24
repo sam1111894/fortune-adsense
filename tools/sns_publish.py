@@ -74,7 +74,8 @@ PLATFORM_LABEL = {
     "dev.to": "dev.to",
 }
 
-# Per-platform draft length caps (characters, not weighted units).
+# Per-platform draft length caps. See PLATFORM_CAP_METRIC for the unit
+# each one is measured in (X's is weighted, the rest are characters).
 PLATFORM_CAP = {"x": 280, "threads": 500, "linkedin": 1000, "dev.to": 2000}
 
 # Which metric each platform's cap is actually measured against.
