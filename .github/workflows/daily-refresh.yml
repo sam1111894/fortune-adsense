@@ -21,6 +21,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Test (SNS publish + receipt guard + precheck)
+        run: npm test
+
       - run: npm run build
 
       - name: Cloudflare Pages (wrangler 공식 배포 + 전면 cache purge)
