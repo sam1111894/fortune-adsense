@@ -21,7 +21,26 @@ const syndicationTarget = z.object({
   // the real usage by ~2x. Recorded for X only; the other three caps are
   // plain character caps, where `draftChars` IS the number compared.
   draftWeighted: z.string().regex(/^[0-9]+$/).optional(),
-});
+}).refine(
+  (t) => {
+    // The count must be recorded in the metric the platform's cap is
+    // actually enforced against:
+    //   x        -> weighted (its 280 cap is weighted), so a target that
+    //               records X's size MUST also record the weighted count;
+    //   the rest -> characters, so a weighted count there is a number
+    //               compared against the WRONG limit (the card would read
+    //               "가중 319/280" for a Threads draft whose cap is 500
+    //               characters — a false claim about a draft that fits).
+    if (t.platform === 'x') {
+      return t.draftWeighted !== undefined
+        || (t.draftChars === undefined && t.draftBytes === undefined);
+    }
+    return t.draftWeighted === undefined;
+  },
+  {
+    message: 'draftWeighted is required for the x platform whenever draftChars/draftBytes are recorded (X\'s 280 cap is weighted) and is forbidden for the other three platforms (their caps are character caps)',
+  },
+);
 
 const syndication = z.object({
   attemptedAt: z.string(),

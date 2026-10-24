@@ -79,6 +79,23 @@ FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n?", re.S)
 PLATFORMS = ("x", "threads", "linkedin", "dev.to")
 STATUSES = ("pending", "skipped", "published")
 
+# Platforms whose draft cap is a WEIGHTED cap: X's 280 is a twitter-text
+# weighted limit (a Hangul character is 2 units, a URL 23), so the number
+# compared against it is the weighted length, NOT the character count. The
+# other three cap plain characters, where `chars` IS the number compared.
+#
+# `draftWeighted` therefore belongs to the weighted-cap platforms only:
+#   * on x        -- REQUIRED whenever the draft size is recorded, or the
+#                    card shows the raw character count next to a weighted
+#                    limit (the "178 of 280" understatement);
+#   * elsewhere  -- FORBIDDEN, or the card would read "가중 319/280" for a
+#                    Threads draft whose real cap is 500 characters -- a
+#                    false claim about a draft that comfortably fits.
+#
+# Keep this in sync with PLATFORM_CAP_METRIC in tools/sns_publish.py (and
+# with src/content.config.ts); the drift tests assert that.
+WEIGHTED_CAP_PLATFORMS = ("x",)
+
 # The draft size fields must be BARE INTEGERS (no unit suffix, no
 # "214/280 weighted (raw 178자)" composite). The renderer appends the
 # unit itself, so a value that already carries one renders as "475자자",
@@ -245,6 +262,21 @@ def validate_syndication(syndication: dict) -> None:
                 raise FrontmatterError(
                     "targets[].%s must be a bare integer string (no unit "
                     "suffix, no composite) -- got %r" % (numeric, target[numeric]))
+        # The count must be recorded in the metric the platform's cap is
+        # actually enforced against: weighted for X (its 280 cap is
+        # weighted), characters for the other three. src/content.config.ts
+        # enforces the same rule at build time.
+        records_size = "draftChars" in target or "draftBytes" in target
+        if platform in WEIGHTED_CAP_PLATFORMS:
+            if records_size and "draftWeighted" not in target:
+                raise FrontmatterError(
+                    "targets[].draftWeighted is required for the %s platform "
+                    "when the draft size is recorded (its cap is weighted, "
+                    "so draftChars alone understates it)" % platform)
+        elif "draftWeighted" in target:
+            raise FrontmatterError(
+                "targets[].draftWeighted is only valid for the %s platform(s) "
+                "whose cap is weighted -- got %r" % (", ".join(WEIGHTED_CAP_PLATFORMS), platform))
         if "url" in target:
             if not isinstance(target["url"], str) or not _is_url(target["url"]):
                 raise FrontmatterError("targets[].url must be a valid http(s) URL")

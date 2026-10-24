@@ -1228,5 +1228,176 @@ class TestPublishedUrlHandle(unittest.TestCase):
         self.assertIsNone(published[-1].get("url"))
 
 
+class TestMeasureJsonContract(unittest.TestCase):
+    """`measure --json` must expose the cap-relevant number.
+
+    The bug this pins: `cmd_measure`'s docstring promises a `used` field
+    -- "the number the platform's cap is actually compared against" --
+    but only the TEXT output carried it. The JSON output (the one a
+    payload builder actually consumes) held only the raw sizes
+    (chars / bytes / weighted), so a builder reading it had to re-derive
+    which number the cap is compared against -- exactly the guess that
+    produced the original "178 of 280" defect, and the docstring then
+    promised a field the JSON output did not contain.
+    """
+
+    KOREAN = "오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세"
+
+    def _drafts(self, tmp):
+        # DRAFT_FILENAME maps platform -> filename; the file MUST be named
+        # by its filename, not by the platform key.
+        for platform, filename in sp.DRAFT_FILENAME.items():
+            body = self.KOREAN if platform == "x" else "draft"
+            with open(os.path.join(tmp, filename), "w", encoding="utf-8") as fh:
+                fh.write(body)
+
+    def _json(self, tmp):
+        ns = argparse.Namespace(drafts_dir=tmp, json=True)
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            sp.cmd_measure(ns)
+        return json.loads(buf.getvalue())
+
+    def test_the_json_output_carries_used_cap_and_metric(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._drafts(tmp)
+            payload = self._json(tmp)
+        for platform in sp.DRAFT_FILENAME:
+            self.assertIn("used", payload[platform], platform)
+            self.assertIn("cap", payload[platform], platform)
+            self.assertIn("metric", payload[platform], platform)
+
+    def test_the_json_output_agrees_with_the_text_output(self):
+        """Both formats must describe the same measurement."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._drafts(tmp)
+            payload = self._json(tmp)
+            ns = argparse.Namespace(drafts_dir=tmp, json=False)
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                sp.cmd_measure(ns)
+            text = buf.getvalue()
+        for platform, record in payload.items():
+            self.assertIn("used=%d" % record["used"], text, platform)
+            self.assertIn("cap=%d" % record["cap"], text, platform)
+            self.assertIn("metric=%s" % record["metric"], text, platform)
+
+    def test_x_json_used_is_the_weighted_number_not_the_char_count(self):
+        """The whole point: a JSON payload builder must see 214, not 178."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._drafts(tmp)
+            payload = self._json(tmp)
+        x = payload["x"]
+        self.assertEqual(x["metric"], "weighted")
+        self.assertEqual(x["used"], x["weighted"])
+        self.assertNotEqual(x["used"], x["chars"],
+                            "X's cap must not be read against the raw char count")
+        self.assertEqual(x["cap"], 280)
+
+    def test_the_character_cap_platforms_report_chars_in_json(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._drafts(tmp)
+            payload = self._json(tmp)
+        for platform in ("threads", "linkedin", "dev.to"):
+            record = payload[platform]
+            self.assertEqual(record["metric"], "chars", platform)
+            self.assertEqual(record["used"], record["chars"], platform)
+            self.assertEqual(record["cap"], sp.PLATFORM_CAP[platform], platform)
+
+    def test_the_json_output_keeps_the_raw_sizes(self):
+        """The enriched output must not lose the raw measurements."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._drafts(tmp)
+            payload = self._json(tmp)
+        for platform, record in payload.items():
+            for key in ("chars", "bytes", "weighted"):
+                self.assertIn(key, record, "%s.%s" % (platform, key))
+
+    def test_measure_records_is_the_single_source_for_both_formats(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._drafts(tmp)
+            records = sp.measure_records(tmp)
+            payload = self._json(tmp)
+        self.assertEqual(payload, records)
+
+
+class TestWeightedCountPlatformScope(unittest.TestCase):
+    """`draftWeighted` must appear only for the weighted-cap platform.
+
+    X's 280 cap is WEIGHTED; the other three cap plain characters. A
+    weighted count recorded for Threads would make the public card read
+    "가중 319/280" for a draft whose real cap is 500 characters -- a
+    false claim that the draft busts its limit when it comfortably
+    fits. And an X target that records its size WITHOUT the weighted
+    count falls back to the raw character count next to a weighted
+    limit -- the original "178 of 280" understatement.
+    """
+
+    def _block(self, target):
+        import sns_frontmatter as sf
+        return {
+            "attemptedAt": "2026-01-01T00:00:00Z",
+            "worker": "w",
+            "targets": [target],
+        }
+
+    def test_x_requires_the_weighted_count_when_the_size_is_recorded(self):
+        import sns_frontmatter as sf
+        with self.assertRaises(sf.FrontmatterError) as ctx:
+            sf.validate_syndication(self._block({
+                "platform": "x", "status": "pending",
+                "draftChars": "178", "draftBytes": "327"}))
+        self.assertIn("draftWeighted", str(ctx.exception))
+
+    def test_x_accepts_the_weighted_count_alongside_the_size(self):
+        import sns_frontmatter as sf
+        sf.validate_syndication(self._block({
+            "platform": "x", "status": "pending",
+            "draftChars": "178", "draftBytes": "327", "draftWeighted": "214"}))
+
+    def test_a_character_cap_platform_refuses_the_weighted_count(self):
+        import sns_frontmatter as sf
+        for platform in ("threads", "linkedin", "dev.to"):
+            with self.assertRaises(sf.FrontmatterError) as ctx:
+                sf.validate_syndication(self._block({
+                    "platform": platform, "status": "skipped",
+                    "draftChars": "241", "draftWeighted": "319"}))
+            self.assertIn("draftWeighted", str(ctx.exception))
+
+    def test_a_character_cap_platform_accepts_the_char_count(self):
+        import sns_frontmatter as sf
+        for platform in ("threads", "linkedin", "dev.to"):
+            sf.validate_syndication(self._block({
+                "platform": platform, "status": "skipped",
+                "draftChars": "241", "draftBytes": "474"}))
+
+    def test_the_weighted_platform_set_matches_the_publisher(self):
+        """The writer and the publisher must agree on which cap is weighted."""
+        import sns_frontmatter as sf
+        weighted = tuple(sorted(
+            p for p, metric in sp.PLATFORM_CAP_METRIC.items()
+            if metric == "weighted"))
+        self.assertEqual(tuple(sorted(sf.WEIGHTED_CAP_PLATFORMS)), weighted)
+
+    def test_the_content_schema_enforces_the_same_rule(self):
+        """src/content.config.ts must refuse the same payloads."""
+        path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), "src", "content.config.ts")
+        with open(path, encoding="utf-8") as fh:
+            source = fh.read()
+        self.assertIn("draftWeighted", source)
+        self.assertIn(".refine(", source,
+                        "the content schema must constrain where a weighted "
+                        "count may be recorded")
+        self.assertRegex(source, r"platform\s*===\s*'x'",
+                         "the schema must special-case the weighted platform")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

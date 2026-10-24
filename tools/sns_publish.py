@@ -621,6 +621,39 @@ def measure_drafts(drafts_dir):
     return measured
 
 
+def measure_records(drafts_dir):
+    """Measure every draft AND attach the cap-relevant number.
+
+    `measure_drafts` reports the RAW sizes (chars / bytes / weighted).
+    That is not enough for a payload builder: it also has to know WHICH
+    of those numbers the platform's cap is actually compared against,
+    and what the limit is. X's 280 is a WEIGHTED cap, so its number is
+    `weighted` (214 for a 178-character Korean draft); the other three
+    caps are plain CHARACTER caps, so theirs is `chars`.
+
+    This function attaches that decision to every measurement:
+
+        used   -- the number the platform's cap is compared against
+        cap    -- that platform's limit
+        metric -- which unit `used` is in ("weighted" | "chars")
+
+    so a payload built from this output cannot record the wrong number.
+    Recording `chars` against X's 280 is what makes a card claim "178
+    of 280" for a tweet the platform measures at 214 -- and for pure
+    Hangul it understates the real usage by ~2x, so a draft X would
+    REJECT can be recorded as comfortably inside the limit.
+    """
+    records = {}
+    for platform, measured in measure_drafts(drafts_dir).items():
+        used, limit, metric = cap_usage(platform, measured)
+        record = dict(measured)
+        record["used"] = used
+        record["cap"] = limit
+        record["metric"] = metric
+        records[platform] = record
+    return records
+
+
 def cap_usage(platform, measured):
     """Return (used, limit, metric) for a measured draft.
 
@@ -655,19 +688,26 @@ def cmd_measure(args):
     weighted length (214 of 280 for a 178-character Korean draft), NOT
     the character count -- so a payload built from this output cannot
     record "178 of 280" for a tweet the platform measures at 214.
+
+    BOTH output formats carry that decision. The JSON form is the one a
+    payload builder consumes, so it MUST expose `used` / `cap` /
+    `metric` too: emitting only the raw sizes there would leave the
+    builder to re-derive which number the cap is compared against --
+    exactly the guess that produced the original "178 of 280" defect,
+    and the docstring above would then promise a `used` field the JSON
+    output does not contain.
     """
-    measured = measure_drafts(args.drafts_dir)
+    records = measure_records(args.drafts_dir)
     if args.json:
-        print(json.dumps(measured, ensure_ascii=False, indent=2, sort_keys=True))
+        print(json.dumps(records, ensure_ascii=False, indent=2, sort_keys=True))
     else:
-        for platform in sorted(measured):
-            m = measured[platform]
-            used, limit, metric = cap_usage(platform, m)
+        for platform in sorted(records):
+            r = records[platform]
             print("%-9s chars=%-5d bytes=%-5d weighted=%-5d used=%-5d "
                   "cap=%-4d metric=%s"
-                  % (platform, m["chars"], m["bytes"], m["weighted"],
-                     used, limit, metric))
-    return 0 if measured else 2
+                  % (platform, r["chars"], r["bytes"], r["weighted"],
+                     r["used"], r["cap"], r["metric"]))
+    return 0 if records else 2
 
 
 def _has_url(text):

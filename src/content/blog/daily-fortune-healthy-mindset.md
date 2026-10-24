@@ -7,7 +7,7 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-24T16:19:00Z'
+  attemptedAt: '2026-10-24T17:42:21Z'
   worker: reviewer/minimax-M3
   cronExit: 3
   exitCode: 3
@@ -20,7 +20,7 @@ syndication:
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   lastSelfTriggerNote: 'fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
-  publishPayload: .hermes/cron-drafts/2026-10-24T15-59-06Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-24T17-42-01Z/publish-payload.json
   publishScript: .hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh
   lastAttempt: '2026-10-24T05:18:00Z'
   publishPending: true
@@ -50,32 +50,6 @@ syndication:
     reason: token 없음
     status: skipped
   history:
-  - attemptedAt: '2026-10-24T12:00:54Z'
-    blockedBy: X credit balance 0.000 USD
-    blog: daily-fortune-healthy-mindset
-    bodyChars: 3996
-    bodySha256: 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae
-    cronExit: 3
-    draftChars:
-      dev.to: 1978자
-      linkedin: 1311자
-      threads: 475자
-      x: 214/280 weighted (raw 178자)
-    draftLimits:
-      dev.to: '2000'
-      linkedin: '1000'
-      threads: '500'
-      x: 280 weighted
-    draftsDir: .hermes/cron-drafts/2026-10-24T12-00-54Z/
-    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
-    exitCode: 3
-    fire: 191
-    note: 'RETRY of the fire190 pending publish (body unchanged -> no new content, no re-synthesis; drafts byte-identical to fire190 by SHA-256 on all 4 files). REAL publish-all was executed against the live publisher (tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-24T12-00-54Z/ --content-sha 0fdd3165...ace71dae --devto-title ''How to Read Your Daily Fortune Without Letting It Run Your Life'' --devto-tags self-improvement,mental-health,mindfulness,korean-culture --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/): published=0 blocked=1 skipped=3, exit 3. X remains blocked by the credit pre-flight: GET /2/usage/credits returned HTTP 200 with total_balance=0.000 USD, prepaid_balance=0.000, free_balance=0.000 and free_grants=0, so neither the 0.200 USD URL tier nor the 0.015 USD no-URL tier is affordable; the gate therefore prevented a billable POST before any write. NO tweet was created (statuses_count=0, screen_name=SamJ868644) and the durable publish-receipt store remains at 0 records, which is the correct behaviour for a credit-blocked attempt. Threads/LinkedIn/dev.to were skipped because their tokens are genuinely absent from every credential scope. The free duplicate guard was consulted before publishing and returned NO DUPLICATE POSSIBLE; the metered v2 timeline read returned HTTP 402. THIS FIRE FIXED A LEDGER AUDIT-TRAIL DEFECT: the fire190 ledger row had an EMPTY top-level ''ts'' because `sns_frontmatter.py record` copies argparse --timestamp (default '''') straight into the ledger row, and the fire190 record call omitted the flag. `sns_precheck.py read_ledger()` copies that field into the pending record''s ''ts'', so the pending-publish audit trail lost the attempt time entirely (the precheck reported pendingDetail.ts=''''). The writer now falls back to the payload''s own ''attemptedAt'' when --timestamp is omitted, the precheck falls back to the nested history entry''s ''attemptedAt'' so pre-existing rows still surface a usable timestamp, and the one corrupted fire190 row was repaired in place to its own entry.attemptedAt (2026-10-24T09:33:21Z). 3 new regression tests, verified to FAIL against the old code and PASS with the fix; suite 127 -> 130. TO UNBLOCK: top up at console.x.com (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
-    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-    publishPending: true
-    skipCount: 3
-    skipTotal: 4
-    worker: reviewer/minimax-M3
   - attemptedAt: '2026-10-24T14:30:24Z'
     blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
     blog: daily-fortune-healthy-mindset
@@ -135,6 +109,39 @@ syndication:
     exitCode: 3
     fire: 193
     note: 'RETRY of the fire192 pending publish on daily-fortune-healthy-mindset (body unchanged -> no new content, no re-synthesis; all 4 drafts byte-identical to fire192 by SHA-256). REAL publish-all executed against the live publisher (tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-24T15-59-06Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title ''How to Read Your Daily Fortune Without Letting It Run Your Life'' --devto-tags self-improvement,mental-health,mindfulness,korean-culture --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/): published=0 blocked=1 skipped=3 failed=0, exit 3. X PUBLISH BLOCKED by the credit pre-flight: GET /2/usage/credits HTTP 200 total_balance=0.000 USD (prepaid_balance=0.000, free_balance=0.000, free_grants=0), so NOT even the 0.015 USD no-URL tier is affordable and the gate prevented a billable POST before any write. NO tweet created (statuses_count=0); the durable publish-receipt store is still 0 records, which is the CORRECT behaviour for a credit-blocked attempt. Threads/LinkedIn/dev.to [SKIP]: THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY are genuinely missing (live ''sns_publish.py status'' -> x USABLE, threads/linkedin/dev.to UNUSABLE, each key missing). DUP-GUARD consulted before publishing (free): v2 timeline read HTTP 402 (metered) -> free fallback statuses_count=0 -> VERDICT ''NO DUPLICATE POSSIBLE''. THIS FIRE FIXED THREE PIPELINE DEFECTS. (1) THE CAP METRIC MISMATCH: the public card recorded X''s draft as 178 CHARACTERS next to X''s 280 limit, but X''s 280 is a WEIGHTED cap (twitter-text v3: a Hangul character is 2 units, a URL is 23) and the same draft measures 214 units. For a Korean-language site the understatement is ~2x for pure Hangul (200 Hangul chars = 200 chars but 400 weighted units -> X REJECTS it), so a card showing only ''chars'' could claim a draft fitted when the platform would refuse it. FIX: a new PLATFORM_CAP_METRIC map declares which metric each platform''s cap is actually enforced against (x=weighted, the other three=chars); ''sns_publish.py measure'' now reports used/metric alongside chars/bytes/weighted so a payload cannot record the wrong number; the frontmatter gained a bare-integer draftWeighted field (X only) that the card renders as ''ga-jung 214/280''. GUARDS: src/content.config.ts requires draftWeighted to match /^[0-9]+$/ (the BUILD rejects a mislabeled count) and the frontmatter writer refuses such a payload before it can reach the article. (2) publish-all CONFLATED FAILURE WITH BLOCK: cmd_publish_all mapped every non-zero non-skip handler code to ''blocked'', but a handler returns 1 for a hard platform rejection (HTTP 4xx / credential error) and 3 for a genuine block (duplicate risk, insufficient credits) -- so a rejected post was indistinguishable from a credit hold and the recorded outcome said PUBLISH_BLOCKED when the platform had actually refused the write. FIX: failures are counted separately (failed=N), the summary reports them, and publish-all now exits 1 for a failure and 3 for a block. (3) THE PUBLISHED URL NAMED A HARDCODED ACCOUNT: the tweet URL was built with the literal ''SamJ868644'' as the fallback handle, even though the account''s real handle is read for free before every write -- so a rename, or a different X account under the same keys, would produce a URL pointing at the WRONG profile, and that URL is what an operator uses to verify the post. FIX: use the handle actually read; if no handle can be resolved the post id is recorded WITHOUT a fabricated URL. 14 new regression tests, each verified to FAIL against the reintroduced defect (syntax-valid reintroduction: 7 targeted failures) and PASS with the fix; suite 144 -> 158. TO UNBLOCK: console.x.com top-up (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPending: true
+    skipCount: 3
+    skipTotal: 4
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-24T17:42:21Z'
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    blog: daily-fortune-healthy-mindset
+    bodyChars: 3996
+    bodySha256: 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae
+    cronExit: 3
+    draftBytes:
+      dev.to: 1977
+      linkedin: 1310
+      threads: 474
+      x: 327
+    draftChars:
+      dev.to: 1969
+      linkedin: 599
+      threads: 241
+      x: 178
+    draftLimits:
+      dev.to: '2000'
+      linkedin: '1000'
+      threads: '500'
+      x: 280 weighted
+    draftWeighted:
+      x: 214
+    draftsDir: .hermes/cron-drafts/2026-10-24T17-42-01Z/
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 194
+    note: 'RETRY of the fire193 pending publish on daily-fortune-healthy-mindset (body unchanged 0fdd3165...ace71dae -> no new content, no re-synthesis; all 4 drafts byte-identical to fire193 by SHA-256). REAL publish-all executed against the live publisher (tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-24T17-42-01Z/ --content-sha 0fdd3165...ace71dae --devto-title ''How to Read Your Daily Fortune Without Letting It Run Your Life'' --devto-tags self-improvement,mental-health,mindfulness,korean-culture --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/): published=0 blocked=1 skipped=3 failed=0, exit 3. X PUBLISH BLOCKED by the credit pre-flight: live GET /2/usage/credits HTTP 200 total_balance=0.000 USD (prepaid 0.000, free 0.000, free_grants 0), so NOT even the 0.015 USD no-URL tier is affordable; the gate correctly prevented a billable POST before any write. NO tweet created (statuses_count=0); the durable publish-receipt store is still 0 records, which is the CORRECT behaviour for a credit-blocked attempt. Threads/LinkedIn/dev.to [SKIP]: THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY are genuinely missing (live ''sns_publish.py status'' -> x USABLE, threads/linkedin/dev.to UNUSABLE, each key missing; also absent from project .env, reviewer-profile .env and global ~/.hermes/.env). DUP-GUARD consulted before publishing (free): v2 timeline read HTTP 402 (metered) -> free fallback statuses_count=0 -> VERDICT ''NO DUPLICATE POSSIBLE''. THIS FIRE FIXED TWO PIPELINE DEFECTS IN THE MEASUREMENT CONTRACT. (1) ''measure --json'' DROPPED THE CAP METRIC: the TEXT output reported used=/cap=/metric= per platform but the JSON output -- the one a payload builder actually consumes -- carried only the raw sizes (chars/bytes/weighted). Its own docstring promised a ''used'' field (''the number the platform''s cap is actually compared against'') that the JSON output did not contain, so a builder reading JSON had to RE-DERIVE which number the cap is compared against: exactly the guess that produced the original ''178 of 280'' defect, now one layer down. FIX: a new measure_records() attaches used/cap/metric to every measurement, and BOTH output formats are rendered from it, so the JSON and text can no longer disagree. (2) ''draftWeighted'' WAS NOT SCOPED TO THE PLATFORM WHOSE CAP IS WEIGHTED: nothing stopped a weighted count from being recorded for threads/linkedin/dev.to, whose caps are plain CHARACTER caps -- the card would then read ''ga-jung 319/280'' for a Threads draft whose real cap is 500 characters, a FALSE claim that a comfortably-fitting draft busts its limit; and an x target was allowed to record its size WITHOUT the weighted count, reintroducing the raw-character-count-next-to-a-weighted-limit understatement. FIX: src/content.config.ts now .refine()s each target (draftWeighted REQUIRED for x whenever the size is recorded, FORBIDDEN for the other three) and tools/sns_frontmatter.py enforces the identical rule before writing. VERIFIED: the real ''npm run build'' rejects a threads target carrying draftWeighted with InvalidContentEntryDataError, and accepts the correct payload (49 pages built); zod 4''s .refine() preserves .shape so Astro''s type inference is unaffected. 12 new regression tests, each verified to FAIL against a SYNTAX-VALID reintroduction of the defect (6 targeted failures for the JSON gap, 2 for the platform scope); suite 158 -> 170, all passing. TO UNBLOCK: console.x.com top-up (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
     outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
     publishPending: true
     skipCount: 3
