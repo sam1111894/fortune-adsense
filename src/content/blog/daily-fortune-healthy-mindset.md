@@ -7,7 +7,7 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-24T08:04:32Z'
+  attemptedAt: '2026-10-24T09:33:21Z'
   worker: reviewer/minimax-M3
   cronExit: 3
   exitCode: 3
@@ -20,7 +20,7 @@ syndication:
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   lastSelfTriggerNote: 'fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
-  publishPayload: .hermes/cron-drafts/2026-10-24T08-04-32Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-24T09-33-21/publish-payload.json
   publishScript: .hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh
   lastAttempt: '2026-10-24T05:18:00Z'
   publishPending: true
@@ -28,53 +28,27 @@ syndication:
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
   dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
   targets:
-  - platform: x
-    status: pending
-    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+  - draftBytes: '328'
     draftChars: 214/280 weighted (raw 178자)
-    draftBytes: '328'
-  - platform: threads
-    status: skipped
-    reason: token 없음
+    platform: x
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    status: pending
+  - draftBytes: '475'
     draftChars: 475자
-    draftBytes: '475'
-  - platform: linkedin
-    status: skipped
+    platform: threads
     reason: token 없음
+    status: skipped
+  - draftBytes: '1311'
     draftChars: 1311자
-    draftBytes: '1311'
-  - platform: dev.to
-    status: skipped
+    platform: linkedin
     reason: token 없음
+    status: skipped
+  - draftBytes: '1978'
     draftChars: 1978자
-    draftBytes: '1978'
+    platform: dev.to
+    reason: token 없음
+    status: skipped
   history:
-  - attemptedAt: '2026-10-24T05:18:00Z'
-    worker: reviewer/minimax-M3
-    fire: 187
-    blog: daily-fortune-healthy-mindset
-    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-    publishPending: true
-    blockedBy: X pay-per-use balance still exactly $0.000 (total_balance=0.0, prepaid_balance=0.0, free_grants=0); X reads metered too (GET /2/users/:id/tweets -> 402) and GET /1.1/statuses/user_timeline.json -> 403 code 453 (v1.1 subset only). Threads/LinkedIn/dev.to tokens absent across all scopes.
-    skipCount: 3
-    skipTotal: 4
-    cronExit: 3
-    exitCode: 3
-    bodySha256: 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae
-    bodyChars: 3996
-    draftsDir: .hermes/cron-drafts/2026-10-24T05-14-00Z/
-    draftChars:
-      devto-body: '1969'
-      linkedin: '599'
-      threads: '241'
-      x: '178'
-    draftLimits:
-      devto-body: '2000'
-      linkedin: '1000'
-      threads: '500'
-      x: '280'
-    dupGuard: account @SamJ868644 statuses_count=0 (GET /1.1/account/verify_credentials.json HTTP 200 auth OK id=1921849479613005824), ledger prior successful publishes=0, durable publish-receipt store 0 records (the credit gate blocked before any write was attempted)
-    note: 'fire187 = retry of fire186 pending publish (body hash unchanged 0fdd3165...ace71dae, 3996c -> no new content). REAL publish-all executed against the live publisher (tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-24T05-14-00Z/ --content-sha 0fdd3165...ace71dae): published=0 blocked=1 skipped=3, exit 3. X BLOCKED by the credit gate - GET /2/usage/credits HTTP 200 total_balance=0.000 USD (prepaid_balance=0.0, free_balance=0.0, free_grants=0), so neither the 0.200 USD URL tier nor the 0.015 USD no-URL tier is affordable and the pre-flight gate correctly prevented a billable POST. NO tweet created (statuses_count=0, ledger prior successful publishes=0, durable publish-receipt store 0 records - the gate blocks before any write is attempted). Threads/LinkedIn/dev.to [SKIP] - tokens absent across the process env, project .env, reviewer-profile .env, global ~/.hermes/.env and all sibling Hermes profile .env files. Drafts byte-identical to fire185/fire186 (SHA-256 verified on all 4 files) because the body is unchanged, so no re-synthesis. FIRST FIRE TO RUN ON THE fire186 RECEIPT-STATE-MACHINE FIXES: the credit pre-flight now FAILS CLOSED (an unreadable balance blocks the write instead of proceeding blind to a billable POST) and every platform write records a receipt with a correct published|failed|pending outcome, so a 2xx without a usable post id can no longer be mistaken for a publication. Live re-verification of the fixed code: identical result (published=0 blocked=1 skipped=3, exit 3) and the receipt store is STILL 0 records, because the credit gate blocks before any write is attempted - exactly the intended behaviour. VERIFIED: npm run build exit 0 (49 pages), 0 occurrences of blog/undefined and 0 ''undefined'' in dist, precheck=RETRY_PENDING_PUBLISH with latestIsNewContent=false (no self-trigger), body sha256 identical before/after the frontmatter rewrite (0fdd3165...ace71dae), ledger entry == payload historyEntry, disk history[-1].fire == 187, history bounded to 3, SNS test suite 96/96 OK. TO UNBLOCK: console.x.com top-up (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
   - attemptedAt: '2026-10-24T06:55:00Z'
     worker: reviewer/minimax-M3
     fire: 188
@@ -127,6 +101,32 @@ syndication:
       linkedin: '1000'
       dev.to: '2000'
     note: 'RETRY of the fire188 pending publish (body hash unchanged 0fdd3165...ace71dae -> no new content, no re-synthesis; drafts byte-identical to fire188 by SHA-256 on all 4 files). REAL publish-all was executed against the live publisher (tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-24T08-04-32Z/ --content-sha 0fdd3165...ace71dae): published=0 blocked=1 skipped=3, exit 3. X remains blocked by the credit pre-flight: GET /2/usage/credits returned HTTP 200 with total_balance=0.000 USD, prepaid_balance=0.000, free_balance=0.000 and free_grants=0, so neither the 0.200 USD URL tier nor the 0.015 USD no-URL tier is affordable. The gate therefore prevented a billable POST before any write. NO tweet was created (statuses_count=0) and the durable publish-receipt store remains empty. Threads/LinkedIn/dev.to were skipped because their tokens are genuinely absent from every credential scope. The free duplicate guard was consulted before publishing and returned NO DUPLICATE POSSIBLE; the metered v2 timeline read returned HTTP 402. No code change was required this fire. TO UNBLOCK: top up at console.x.com (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
+  - attemptedAt: '2026-10-24T09:33:21Z'
+    blockedBy: X credit balance 0.000 USD
+    blog: daily-fortune-healthy-mindset
+    bodyChars: 3996
+    bodySha256: 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae
+    cronExit: 3
+    draftChars:
+      dev.to: 1978자
+      linkedin: 1311자
+      threads: 475자
+      x: 214/280 weighted (raw 178자)
+    draftLimits:
+      dev.to: '2000'
+      linkedin: '1000'
+      threads: '500'
+      x: 280 weighted
+    draftsDir: .hermes/cron-drafts/2026-10-24T09-33-21/
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 190
+    note: 'RETRY of the fire189 pending publish (body unchanged). Publish still credit-blocked. THIS FIRE FIXED THE X AMBIGUOUS-PUBLISH RECOVERY DEFECT: a pending X attempt could never be settled when its pre-write tweet-count snapshot was lost, so the guard blocked that content forever. The resolver now settles it from a content-addressed free read of the account''s public timeline, plus an operator escape hatch (sns_receipts.py resolve).'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPending: true
+    skipCount: 3
+    skipTotal: 4
+    worker: reviewer/minimax-M3
 ---
 
 # 오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세
