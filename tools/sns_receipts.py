@@ -154,6 +154,7 @@ def group_attempts(receipts: list, platform: str) -> list:
                 "url": None,
                 "httpStatus": None,
                 "statusesCountBefore": None,
+                "screenName": None,
                 "note": None,
                 # Metadata the FREE-read resolvers need to settle an
                 # ambiguous attempt. Dropping them makes every resolver
@@ -170,8 +171,8 @@ def group_attempts(receipts: list, platform: str) -> list:
         if record.get("state"):
             slot["state"] = record.get("state")
         for field in ("postId", "url", "httpStatus", "statusesCountBefore",
-                      "note", "textSha256", "contentSha256", "creationId",
-                      "textPreview", "title", "canonicalUrl"):
+                      "screenName", "note", "textSha256", "contentSha256",
+                      "creationId", "textPreview", "title", "canonicalUrl"):
             if record.get(field) is not None:
                 slot[field] = record.get(field)
         if record.get("completedAt"):
@@ -212,6 +213,40 @@ def find_pending(attempts: list, text_sha: str, content_sha: Optional[str] = Non
     return None
 
 
+def resolve(attempt_id: str, state: str, path_override: Optional[str] = None,
+            note: str = "") -> dict:
+    """Settle one pending attempt by hand, appending a terminal receipt.
+
+    The escape hatch for an attempt the free-read resolvers cannot settle
+    (for example a LinkedIn attempt, which has no free post listing at
+    all). It appends to the same append-only log, so the audit trail
+    survives and the attempt can never be retried by accident.
+    """
+    if state not in (STATE_PUBLISHED, STATE_FAILED):
+        raise ValueError("state must be %r or %r" % (STATE_PUBLISHED,
+                                                     STATE_FAILED))
+    records = load(path_override)
+    matches = [r for r in records if r.get("attemptId") == attempt_id]
+    if not matches:
+        raise ValueError("no receipt with attemptId %r" % attempt_id)
+    last = matches[-1]
+    record = {
+        "platform": last.get("platform"),
+        "attemptId": attempt_id,
+        "state": state,
+        "textSha256": last.get("textSha256"),
+        "contentSha256": last.get("contentSha256"),
+        "startedAt": last.get("startedAt"),
+        "completedAt": now_iso(),
+        "note": note or "resolved by operator",
+    }
+    if last.get("postId"):
+        record["postId"] = last.get("postId")
+    if last.get("url"):
+        record["url"] = last.get("url")
+    return append(record, path_override)
+
+
 def summarise(receipts: list, platform: str) -> dict:
     """Counts per state, for reporting."""
     counts = {STATE_PENDING: 0, STATE_PUBLISHED: 0, STATE_FAILED: 0}
@@ -225,7 +260,24 @@ def summarise(receipts: list, platform: str) -> dict:
 if __name__ == "__main__":
     import sys
 
-    target = sys.argv[1] if len(sys.argv) > 1 else "all"
+    args = sys.argv[1:]
+    if args and args[0] == "resolve":
+        if len(args) < 3:
+            print("usage: sns_receipts.py resolve <attemptId> "
+                  "published|failed [--note TEXT]")
+            raise SystemExit(2)
+        note = ""
+        if "--note" in args:
+            note = args[args.index("--note") + 1]
+        try:
+            record = resolve(args[1], args[2], note=note)
+        except ValueError as exc:
+            print("ERROR: %s" % exc)
+            raise SystemExit(1)
+        print("resolved %s -> %s" % (record["attemptId"], record["state"]))
+        raise SystemExit(0)
+
+    target = args[0] if args else "all"
     records = load()
     platforms = sorted({r.get("platform") for r in records if r.get("platform")})
     if target != "all" and target not in platforms:

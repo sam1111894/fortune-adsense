@@ -160,12 +160,198 @@ class TestReceiptGuard(ReceiptTestCase):
         self.assertIsNone(sr.find_pending(attempts, "T", None))
 
 
+class TestXPendingResolverRecovery(ReceiptTestCase):
+    """REGRESSION: an ambiguous X attempt must never stay blocked forever.
+
+    The old resolver settled an attempt only by comparing the account's
+    LIFETIME tweet count against a pre-write snapshot. When that snapshot
+    was missing (the free read failed at write time) the attempt could
+    never be settled: the guard blocked it on every later run, forever,
+    with no way out but editing the receipts file by hand.
+
+    The fix settles it from a CONTENT-ADDRESSED signal -- our own text on
+    the account's free public timeline -- which needs no snapshot at all.
+    """
+
+    DRAFT = ("운세는 예언이 아니라 60갑자·24절기·오행을 압축한 도구입니다. "
+             "하루 1회, 한 가지만, 결정은 본인 몫. "
+             "https://lucksajueun.com/blog/daily-fortune-healthy-mindset/")
+    ATTEMPT_TS = "2026-10-24T09:33:21Z"
+
+    def _attempt(self, before=None, screen="SamJ868644", text=None,
+                 started=None):
+        body = self.DRAFT if text is None else text
+        return {"attemptId": "a1",
+                "statusesCountBefore": before,
+                "screenName": screen,
+                "textSha256": sr.text_key(body),
+                "textPreview": body[:120],
+                "startedAt": self.ATTEMPT_TS if started is None else started}
+
+    def _timeline_html(self, entries):
+        """Build the syndication page the resolver parses."""
+        payload = {"props": {"pageProps": {"timeline": {"entries": [
+            {"content": {"tweet": {"id_str": e.get("id", "1"),
+                                   "full_text": e.get("text", ""),
+                                   "created_at": e.get(
+                                       "created_at",
+                                       "Fri Feb 06 21:09:45 +0000 2026")}}}
+            for e in entries]}}}}
+        return ("<html><script id=\"__NEXT_DATA__\" type=\"application/json\">"
+                + json.dumps(payload) + "</script></html>")
+
+    def _resolve(self, attempt, count, timeline_entries=None,
+                 timeline_status=200):
+        """Run the resolver with both free reads mocked."""
+        orig_x, orig_http = sp.x_request, sp.http_request
+        sp.x_request = lambda *a, **k: (
+            200, json.dumps({"statuses_count": count,
+                             "screen_name": attempt.get("screenName")}))
+        if timeline_entries is None:
+            sp.http_request = lambda *a, **k: (429, "Too Many Requests")
+        else:
+            html = self._timeline_html(timeline_entries)
+            sp.http_request = lambda *a, **k: (timeline_status, html)
+        try:
+            return sp._resolve_x_pending({}, attempt)
+        finally:
+            sp.x_request, sp.http_request = orig_x, orig_http
+
+    def test_lost_snapshot_is_settled_by_our_own_text(self):
+        """THE DEFECT: no pre-write snapshot, but our text IS on the
+        account. The attempt must resolve to "published" so the content is
+        not re-posted and charged twice."""
+        attempt = self._attempt(before=None)
+        verdict = self._resolve(attempt, count=1, timeline_entries=[
+            {"id": "77", "text": self.DRAFT,
+             "created_at": "Sat Oct 24 10:00:00 +0000 2026"}])
+        self.assertEqual(verdict, "published")
+
+    def test_lost_snapshot_with_no_trace_is_retried_safely(self):
+        """No snapshot and our text is provably absent -> the write did
+        not land, so a retry is safe (no money was spent twice)."""
+        attempt = self._attempt(before=None)
+        verdict = self._resolve(
+            attempt, count=1,
+            timeline_entries=[{"id": "5", "text": "a completely different "
+                                                    "tweet about coffee",
+                                "created_at": "Fri Feb 06 21:09:45 +0000 2026"}])
+        self.assertEqual(verdict, "failed")
+
+    def test_unreadable_timeline_never_means_not_published(self):
+        """A rate-limited timeline must NOT be read as "our post is
+        absent" -- that would spend the money twice."""
+        attempt = self._attempt(before=None)
+        verdict = self._resolve(attempt, count=1, timeline_entries=None)
+        self.assertIsNone(verdict)
+
+    def test_truncated_timeline_never_means_not_published(self):
+        """A listing shorter than the account's tweet count is truncated
+        or stale, so absence proves nothing."""
+        attempt = self._attempt(before=None)
+        verdict = self._resolve(
+            attempt, count=5,
+            timeline_entries=[{"id": "5", "text": "an unrelated tweet",
+                                "created_at": "Fri Feb 06 21:09:45 +0000 2026"}])
+        self.assertIsNone(verdict)
+
+    def test_fingerprint_survives_link_rewriting(self):
+        """X rewrites links to t.co in stored tweets, so the stored text
+        is not byte-identical to the draft. The prose in front of the link
+        is, and that is what the match uses."""
+        attempt = self._attempt(before=None)
+        rewritten = self.DRAFT.replace(
+            "https://lucksajueun.com/blog/daily-fortune-healthy-mindset/",
+            "https://t.co/abcdef")
+        verdict = self._resolve(
+            attempt, count=1,
+            timeline_entries=[{"id": "77", "text": rewritten,
+                                "created_at": "Sat Oct 24 10:00:00 +0000 2026"}])
+        self.assertEqual(verdict, "published")
+
+    def test_unrelated_tweet_does_not_match(self):
+        """A different tweet that merely shares a prefix must not be
+        mistaken for ours."""
+        attempt = self._attempt(before=None)
+        verdict = self._resolve(
+            attempt, count=1,
+            timeline_entries=[{"id": "9",
+                                "text": "운세는 예언이 아니라 60갑자·24절기·"
+                                        "오행을 압축한 도구입니다. 하지만 "
+                                        "이것은 완전히 다른 이야기입니다.",
+                                "created_at": "Sat Oct 24 10:00:00 +0000 2026"}])
+        self.assertIsNone(verdict)
+
+    def test_account_with_no_tweets_ever_is_retried_safely(self):
+        """statuses_count == 0 means the account has never posted, so our
+        post cannot exist: a retry cannot duplicate anything."""
+        attempt = self._attempt(before=None)
+        verdict = self._resolve(attempt, count=0, timeline_entries=None)
+        self.assertEqual(verdict, "failed")
+
+    def test_blocked_attempt_is_settled_end_to_end(self):
+        """The guard must release the block once the resolver can settle
+        the attempt -- otherwise the content is stuck forever."""
+        attempt = self._attempt(before=None)
+        sr.append({"platform": "x", "attemptId": "a1", "state": "pending",
+                   "textSha256": attempt["textSha256"],
+                   "screenName": attempt["screenName"],
+                   "textPreview": attempt["textPreview"],
+                   "startedAt": attempt["startedAt"]})
+        orig_x, orig_http = sp.x_request, sp.http_request
+        sp.x_request = lambda *a, **k: (
+            200, json.dumps({"statuses_count": 1,
+                             "screen_name": "SamJ868644"}))
+        sp.http_request = lambda *a, **k: (
+            200, self._timeline_html(
+                [{"id": "77", "text": self.DRAFT,
+                  "created_at": "Sat Oct 24 10:00:00 +0000 2026"}]))
+        try:
+            verdict, reason = sp._receipt_guard(
+                "x", attempt["textSha256"], None,
+                resolver=lambda a: sp._resolve_x_pending({}, a))
+        finally:
+            sp.x_request, sp.http_request = orig_x, orig_http
+        self.assertEqual(verdict, "skip")
+        self.assertIn("실제로 발행됨으로 확인됨", reason)
+
+
+class TestReceiptOperatorResolve(ReceiptTestCase):
+    """An attempt that no free read can settle (LinkedIn has no free post
+    listing at all) needs an operator escape hatch, so it is never a
+    permanent deadlock needing hand-editing of the receipts file."""
+
+    def test_resolve_settles_a_pending_attempt(self):
+        sr.append({"platform": "linkedin", "attemptId": "a1",
+                   "state": "pending", "textSha256": "T"})
+        record = sr.resolve("a1", "failed", note="checked the account")
+        self.assertEqual(record["state"], "failed")
+        attempts = sr.group_attempts(self.records(), "linkedin")
+        self.assertIsNone(sr.find_pending(attempts, "T", None))
+
+    def test_resolve_refuses_an_unknown_attempt(self):
+        with self.assertRaises(ValueError):
+            sr.resolve("nope", "published")
+
+    def test_resolve_refuses_a_non_terminal_state(self):
+        sr.append({"platform": "linkedin", "attemptId": "a1",
+                   "state": "pending", "textSha256": "T"})
+        with self.assertRaises(ValueError):
+            sr.resolve("a1", "pending")
+
+
 class TestXPendingResolver(ReceiptTestCase):
     """The X resolver decides an unresolved attempt using the FREE tweet
     count (GET /1.1/account/verify_credentials.json)."""
 
     def _attempt(self, before):
         return {"attemptId": "a1", "statusesCountBefore": before}
+
+    def _no_timeline(self):
+        """Default: the public timeline is unreadable -> unknown."""
+        orig = sp.http_request
+        sp.http_request = lambda *a, **k: (429, "Too Many Requests")
+        return orig
 
     def test_higher_count_means_the_write_landed(self):
         orig = sp.x_request

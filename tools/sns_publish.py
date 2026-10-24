@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import calendar
 import hashlib
 import hmac
 import json
@@ -83,6 +84,13 @@ PLATFORM_CAP = {"x": 280, "threads": 500, "linkedin": 1000, "dev.to": 2000}
 #   Post: Create (with URL) $0.200 per request
 X_COST_NO_URL = 0.015
 X_COST_WITH_URL = 0.200
+
+# Month names for the timeline timestamp format. Parsed by hand instead of
+# via strptime, whose %a/%b depend on the process locale.
+_X_MONTHS = {
+    "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
+    "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12,
+}
 
 # Draft file names inside a run directory, per platform.
 DRAFT_FILENAME = {
@@ -694,40 +702,244 @@ def _receipt_guard(platform, text_sha, content_sha, resolver=None):
                      % pending["attemptId"])
 
 
-def _x_statuses_count(env):
-    """Free read of the account's tweet count, or None when unavailable.
+def _x_account_state(env):
+    """Free read of the account's tweet count and public handle.
 
     GET /1.1/account/verify_credentials.json is free under X's pay-per-use
     model, unlike GET /2/users/:id/tweets (HTTP 402).
+
+    Returns (count, screen_name); either may be None.
     """
     status, body = x_request(env, "GET", "/account/verify_credentials.json")
     if status != 200:
-        return None
+        return None, None
     try:
         payload = json.loads(body) or {}
     except ValueError:
-        return None
+        return None, None
     count = payload.get("statuses_count")
-    return count if isinstance(count, int) else None
+    count = count if isinstance(count, int) else None
+    screen = payload.get("screen_name")
+    screen = screen if isinstance(screen, str) and screen else None
+    return count, screen
+
+
+def _x_statuses_count(env):
+    """Free read of the account's tweet count, or None when unavailable."""
+    count, _ = _x_account_state(env)
+    return count
+
+
+# The public profile timeline is a free, unauthenticated read. It is the
+# only signal that proves OUR OWN text landed, which is what makes a
+# receipt whose pre-write snapshot was lost settleable at all.
+X_PUBLIC_TIMELINE_URL = ("https://syndication.twitter.com/srv/"
+                          "timeline-profile/screen-name/%s")
+
+# Minimum prose length before a fingerprint match is trusted.
+_X_FINGERPRINT_MIN = 40
+
+# Slack for clock skew between this host and X when comparing a receipt's
+# timestamp with a tweet's created_at.
+_X_CLOCK_SKEW_SECONDS = 300
+
+
+def _x_normalize_prose(text):
+    """Text with links removed and whitespace collapsed.
+
+    X rewrites links to t.co in stored tweets, so the stored text of a
+    posted tweet can differ from the draft that was sent. The prose in
+    front of the link is identical on both sides, so compare that.
+    """
+    without = re.sub(r"(?:https?://|t\.co/)\S+", " ", text or "")
+    return " ".join(without.split())
+
+
+def _x_fingerprint(text):
+    """Short content fingerprint of a tweet's prose, or None if too short."""
+    prose = _x_normalize_prose(text)
+    if len(prose) < _X_FINGERPRINT_MIN:
+        return None
+    return prose[:_X_FINGERPRINT_MIN]
+
+
+def _x_public_timeline(screen_name):
+    """Free read of the account's PUBLIC timeline, or None when unreadable.
+
+    Returns a list of {"id", "text", "created_at"} entries, newest first.
+    A failed read (rate limit, markup change, network error) returns None
+    -- which the caller must treat as "unknown", never as "not published".
+    """
+    if not screen_name:
+        return None
+    url = X_PUBLIC_TIMELINE_URL % urllib.parse.quote(screen_name, safe="")
+    status, body = http_request(url, "GET", headers={"Accept": "text/html"})
+    if status != 200:
+        return None
+    match = re.search(r'id="__NEXT_DATA__"[^>]*>(.*?)</script>', body, re.S)
+    if not match:
+        return None
+    try:
+        data = json.loads(match.group(1))
+    except ValueError:
+        return None
+    timeline = (((data.get("props") or {}).get("pageProps") or {})
+                .get("timeline") or {})
+    entries = timeline.get("entries")
+    if not isinstance(entries, list):
+        return None
+    out = []
+    for entry in entries:
+        tweet = ((entry.get("content") or {}).get("tweet") or {})
+        text = tweet.get("full_text") or tweet.get("text") or ""
+        out.append({"id": tweet.get("id_str") or tweet.get("id"),
+                    "text": text,
+                    "created_at": tweet.get("created_at")})
+    return out
+
+
+def _x_timeline_state(env, attempt, count_now=None):
+    """What the public timeline proves about OUR post: "ours", "absent"
+    or "unknown".
+
+    "ours"    -- our own text is listed: the post landed.
+    "absent"  -- our text is NOT listed, the listing is COMPLETE (it holds
+                 exactly as many tweets as the account's lifetime count,
+                 so it is not a stale or truncated page) and its newest
+                 entry predates our attempt by a safe margin: the post did
+                 not land.
+    "unknown" -- anything else. Never collapse this into "absent": that
+                 would spend the money twice.
+    """
+    screen = attempt.get("screenName")
+    if not screen:
+        return "unknown"
+    entries = _x_public_timeline(screen)
+    if not entries:
+        return "unknown"
+
+    text_sha = attempt.get("textSha256")
+    preview = attempt.get("textPreview")
+    wanted = _x_fingerprint(preview or "")
+    for entry in entries:
+        listed = entry.get("text") or ""
+        if text_sha and sns_receipts.text_key(listed) == text_sha:
+            return "ours"
+        if wanted:
+            found = _x_fingerprint(listed)
+            if found and (found.startswith(wanted) or wanted.startswith(found)):
+                return "ours"
+
+    # Our text is not listed. Before concluding "absent", require the
+    # listing to be COMPLETE: it must account for every tweet the account
+    # has. A short listing means a stale or truncated page, which could
+    # be hiding a post of ours -- and a stale page is exactly what would
+    # turn a landed post into a paid duplicate.
+    if count_now is None or len(entries) != count_now:
+        return "unknown"
+
+    # Even a complete listing must not be trusted if it already contains
+    # something newer than our attempt: that means the page is fresher
+    # than our snapshot, so absence really does prove absence. A listing
+    # whose newest entry predates the attempt is safe too, with a margin
+    # for clock skew between this host and X.
+    started = _x_parse_timestamp(attempt.get("startedAt"))
+    if started is None:
+        return "unknown"
+    newest = None
+    for entry in entries:
+        stamp = _x_parse_timestamp(entry.get("created_at"))
+        if stamp is not None and (newest is None or stamp > newest):
+            newest = stamp
+    if newest is None:
+        return "unknown"
+    if newest < started - _X_CLOCK_SKEW_SECONDS:
+        return "absent"
+    return "unknown"
+
+
+def _x_parse_timestamp(value):
+    """Epoch seconds for a timestamp, or None when unparseable.
+
+    Accepts the "2026-10-24T09:33:21Z" form this module writes and the
+    "Fri Feb 06 21:09:45 +0000 2026" form X's timeline uses. The second
+    form is parsed by hand rather than with strptime: %a/%b depend on the
+    process locale, and a cron job must not silently stop understanding it
+    because the locale changed.
+    """
+    if not value or not isinstance(value, str):
+        return None
+    text = value.strip()
+
+    iso = re.match(r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z$", text)
+    if iso:
+        parts = [int(g) for g in iso.groups()]
+        try:
+            return int(calendar.timegm(tuple(parts) + (0, 1, -1)))
+        except (ValueError, OverflowError):
+            return None
+
+    twitter = re.match(
+        r"^[A-Za-z]{3} ([A-Za-z]{3}) (\d{1,2}) (\d{2}):(\d{2}):(\d{2}) "
+        r"([+-]\d{4}) (\d{4})$", text)
+    if twitter:
+        month_name, day, hour, minute, second, offset, year = twitter.groups()
+        month = _X_MONTHS.get(month_name.title())
+        if month is None:
+            return None
+        sign = -1 if offset[0] == "-" else 1
+        offset_secs = sign * (int(offset[1:3]) * 3600 + int(offset[3:5]) * 60)
+        try:
+            epoch = calendar.timegm((int(year), month, int(day), int(hour),
+                                     int(minute), int(second), 0, 1, -1))
+        except (ValueError, OverflowError):
+            return None
+        return epoch - offset_secs
+    return None
 
 
 def _resolve_x_pending(env, attempt):
-    """Settle an unresolved X attempt by comparing the tweet count.
+    """Settle an unresolved X attempt using FREE reads.
 
-    The count is snapshotted BEFORE the write, so a larger count means the
-    write landed and must not be repeated; an unchanged count means it did
-    not. A smaller count means a tweet was deleted, which tells us nothing
-    about our write -> unresolved.
+    Signals, strongest first:
+
+      1. CONTENT-ADDRESSED (public timeline). If our own text is listed,
+         the post landed -> "published". This needs no pre-write snapshot,
+         so it settles exactly the receipt whose snapshot was lost -- the
+         case that used to block this content forever. If the listing is
+         provably fresh and our text is absent, the post did not land ->
+         "failed", which is safe to retry.
+      2. THE PRE-WRITE TWEET COUNT. An unchanged count means nothing was
+         posted since the snapshot, so our write did not land -> "failed".
+         A larger count means something was posted; assume it was ours,
+         because a wrong "published" only skips a post while a wrong
+         "failed" spends the money twice. A smaller count means a tweet
+         was deleted, which says nothing about our write.
+      3. NOTHING USABLE -> unknown, which the guard treats as a block. The
+         operator can settle such a receipt explicitly:
+             python3 tools/sns_receipts.py resolve <attemptId> published|failed
     """
     before = attempt.get("statusesCountBefore")
-    if not isinstance(before, int):
-        return None
     now = _x_statuses_count(env)
-    if now is None:
-        return None
-    if now > before:
+
+    # 1) Content-addressed: does OUR text exist on the account?
+    state = _x_timeline_state(env, attempt, count_now=now)
+    if state == "ours":
         return "published"
-    if now == before:
+    if state == "absent":
+        return "failed"
+
+    if isinstance(before, int) and now is not None:
+        if now == before:
+            return "failed"
+        if now > before:
+            return "published"
+        # A tweet was deleted: the count tells us nothing about our write.
+        return None
+
+    # No usable snapshot. If the account has never posted at all, our post
+    # cannot exist either -> it definitely did not land.
+    if now == 0:
         return "failed"
     return None
 
@@ -910,11 +1122,12 @@ def cmd_publish_x(args):
     # lets a later run settle that pending record: a higher count means the
     # write landed (do not retry), an unchanged count means it did not.
     attempt_id = sns_receipts.new_attempt_id()
-    statuses_before = _x_statuses_count(env)
+    statuses_before, screen_name = _x_account_state(env)
     _receipt_write("x", attempt_id, "pending",
                    text_sha=text_sha, content_sha=content_sha,
                    startedAt=sns_receipts.now_iso(),
                    statusesCountBefore=statuses_before,
+                   screenName=screen_name,
                    textPreview=text[:120],
                    weightedLength=weighted)
     print("  receipt pending attemptId=%s" % attempt_id)
