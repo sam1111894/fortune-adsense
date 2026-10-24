@@ -449,9 +449,20 @@ def cmd_record(args) -> int:
     result["written"] = True
     if args.ledger:
         _prefix, _fm, _tail, body = split_document(new_raw)
+        # The ledger row's top-level 'ts' must NEVER be empty:
+        # sns_precheck.read_ledger() copies it into the pending record's
+        # 'ts', and an empty string there silently erases the attempt time
+        # from the pending-publish audit trail. --timestamp is optional
+        # (default ''), so fall back to the payload's own 'attemptedAt',
+        # which validate_syndication() guarantees to be a present string.
+        ledger_ts = (
+            args.timestamp
+            or str(current.get("attemptedAt") or "")
+            or str(history_entry.get("attemptedAt") or "")
+        )
         append_ledger(args.ledger, {
             "type": "syndication_record",
-            "ts": args.timestamp,
+            "ts": ledger_ts,
             "blog": slug_from_path(path),
             "bodySha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
             "bodyChars": len(body),

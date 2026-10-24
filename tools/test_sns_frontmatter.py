@@ -327,6 +327,71 @@ class ExistingBlockTest(unittest.TestCase):
                                         "targets": []})
 
 
+@unittest.skipUnless(sf.yaml is not None, "PyYAML is required by the writer")
+class LedgerTimestampTest(unittest.TestCase):
+    """The ledger row's top-level 'ts' must never be empty.
+
+    `--timestamp` defaults to '', so a record call that omits it wrote a
+    ledger row whose 'ts' was the empty string. The precheck copies that
+    field straight into the pending record's 'ts', so the pending-publish
+    audit trail lost the attempt time entirely (observed live: the
+    fire190 row had ts='' and the precheck reported pendingDetail.ts='').
+    The writer now falls back to the payload's own 'attemptedAt'.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.path = os.path.join(self.tmp.name, "post.md")
+        self.ledger = os.path.join(self.tmp.name, "ledger.jsonl")
+        self.payload_path = os.path.join(self.tmp.name, "payload.json")
+        with open(self.path, "w", encoding="utf-8") as fh:
+            fh.write(NEW_POST)
+        with open(self.payload_path, "w", encoding="utf-8") as fh:
+            json.dump(PAYLOAD, fh, ensure_ascii=False)
+
+    def _record(self, extra_args=()):
+        out = io.StringIO()
+        with redirect_stdout(out):
+            code = sf.main(["record", "--post", self.path,
+                            "--payload", self.payload_path,
+                            "--ledger", self.ledger] + list(extra_args))
+        self.assertEqual(code, 0)
+        with open(self.ledger, "r", encoding="utf-8") as fh:
+            rows = [json.loads(line) for line in fh if line.strip()]
+        self.assertEqual(len(rows), 1)
+        return rows[0]
+
+    def test_ts_falls_back_to_the_payload_attempted_at(self):
+        row = self._record()
+        self.assertEqual(row["ts"], "2026-10-24T06:00:00Z")
+        self.assertNotEqual(row["ts"], "")
+        self.assertEqual(row["ts"], row["entry"]["attemptedAt"])
+
+    def test_explicit_timestamp_still_wins(self):
+        row = self._record(["--timestamp", "2026-10-25T01:02:03Z"])
+        self.assertEqual(row["ts"], "2026-10-25T01:02:03Z")
+
+    def test_the_precheck_can_still_report_the_pending_timestamp(self):
+        """A row written before the fix (empty 'ts') must still surface a
+        usable timestamp through the nested history entry."""
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import sns_precheck as pre
+        with open(self.ledger, "w", encoding="utf-8") as fh:
+            fh.write(json.dumps({
+                "type": "syndication_record",
+                "ts": "",
+                "blog": "new-post",
+                "bodySha256": "sha-x",
+                "publishPending": True,
+                "outcome": "PUBLISH_BLOCKED_PLATFORM_CREDIT",
+                "blockedBy": "credit",
+                "entry": {"attemptedAt": "2026-10-24T06:00:00Z"},
+            }, ensure_ascii=False) + "\n")
+        _hashes, pending = pre.read_ledger(self.ledger)
+        self.assertEqual(pending["new-post"]["ts"], "2026-10-24T06:00:00Z")
+
+
 class KeepHistoryTest(unittest.TestCase):
     """`_keep_history` must never drop an entry it was asked to keep.
 

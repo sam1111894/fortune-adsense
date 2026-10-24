@@ -182,10 +182,17 @@ def read_ledger(ledger_path: str | None = None) -> tuple[dict, dict]:
                     # that must not be read as "the publish completed".
                     pending.pop(slug, None)
                 elif pending_value:
+                    # Fall back to the nested history entry's 'attemptedAt'
+                    # when the row's own top-level 'ts' is empty. Older
+                    # rows were written with an empty 'ts' (the --timestamp
+                    # flag defaults to ''), which erased the attempt time
+                    # from the pending-publish audit trail.
+                    nested = entry.get("entry")
+                    nested_ts = nested.get("attemptedAt") if isinstance(nested, dict) else None
                     pending[slug] = {
                         "blockedBy": entry.get("blockedBy"),
                         "outcome": entry.get("outcome"),
-                        "ts": entry.get("ts"),
+                        "ts": entry.get("ts") or nested_ts,
                     }
     return hashes, pending
 
