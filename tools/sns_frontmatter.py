@@ -142,11 +142,13 @@ def parse_frontmatter(fm_text: str) -> dict:
     return data if isinstance(data, dict) else {}
 
 
-def syndication_span(fm_text: str) -> tuple:
-    """Return (start, end) character offsets of the top-level syndication key.
+def find_syndication_span(fm_text: str):
+    """Return (start, end) offsets of the top-level syndication key, or None.
 
     Offsets come from the YAML parser's node marks, so multi-line scalars
-    are handled correctly.
+    are handled correctly. None means the frontmatter is a valid mapping
+    that simply has no 'syndication' key yet -- the state of a BRAND-NEW
+    post, which the writer has to be able to bootstrap.
     """
     if yaml is None:
         raise FrontmatterError("PyYAML is required but not importable")
@@ -161,7 +163,15 @@ def syndication_span(fm_text: str) -> tuple:
             start = key_node.start_mark.index
             end = value_node.end_mark.index
             return start, end
-    raise FrontmatterError("frontmatter has no 'syndication:' block")
+    return None
+
+
+def syndication_span(fm_text: str) -> tuple:
+    """Like find_syndication_span, but raise when the block is absent."""
+    span = find_syndication_span(fm_text)
+    if span is None:
+        raise FrontmatterError("frontmatter has no 'syndication:' block")
+    return span
 
 
 def render_syndication(syndication: dict) -> str:
@@ -223,11 +233,32 @@ def validate_syndication(syndication: dict) -> None:
 # ------------------------------------------------------------------ rewriting
 
 
-def build_new_raw(raw: str, syndication: dict) -> str:
-    """Return `raw` with the syndication block replaced; body untouched."""
+def build_new_raw(raw: str, syndication: dict, create: bool = False) -> str:
+    """Return `raw` with the syndication block replaced; body untouched.
+
+    When `create` is True and the post has no syndication block yet, the
+    rendered block is APPENDED to the frontmatter instead of replacing an
+    existing one. That is the bootstrap path for a brand-new post: the
+    writer is the only sanctioned way to record a publish attempt, and a
+    post that has never been syndicated has no block to replace.
+
+    Either way only the frontmatter changes -- the body is copied
+    verbatim and its SHA-256 is asserted to be unchanged.
+    """
     prefix, fm_text, tail, _body = split_document(raw)
-    start, end = syndication_span(fm_text)
-    new_fm_text = fm_text[:start] + render_syndication(syndication) + fm_text[end:]
+    span = find_syndication_span(fm_text)
+    if span is None:
+        if not create:
+            raise FrontmatterError("frontmatter has no 'syndication:' block")
+        # fm_text is the frontmatter body without its trailing newline, so
+        # the separator has to be added unless it is already there. The
+        # block goes in at column 0, which correctly terminates any
+        # multi-line scalar the previous key may have used.
+        separator = "" if fm_text.endswith("\n") else "\n"
+        new_fm_text = fm_text + separator + render_syndication(syndication)
+    else:
+        start, end = span
+        new_fm_text = fm_text[:start] + render_syndication(syndication) + fm_text[end:]
     new_raw = prefix + new_fm_text + tail
     # The body must survive the rewrite byte-for-byte.
     if body_sha256(new_raw) != body_sha256(raw):
@@ -268,7 +299,14 @@ def _load_post(path: str) -> tuple:
 
 
 def _keep_history(history: list, keep: int) -> list:
-    return history[len(history) - keep:] if keep else []
+    # `len(history) - keep` can be NEGATIVE (a post that has fewer
+    # entries than `keep` -- e.g. a brand-new post on its first fires),
+    # and a negative slice index silently selects from the END of the
+    # list: history[-1:] keeps ONE entry instead of all of them. Clamp
+    # at 0 so "keep the last N" never drops an entry it should keep.
+    if not keep:
+        return []
+    return history[max(0, len(history) - keep):]
 
 
 # ------------------------------------------------------------------- commands
@@ -299,11 +337,29 @@ def cmd_status(args) -> int:
 def cmd_trim(args) -> int:
     path = resolve_post(args.post)
     raw, data = _load_post(path)
-    syndication = dict(data.get("syndication") or {})
-    history = list(syndication.get("history") or [])
     keep = args.keep if args.keep is not None else DEFAULT_KEEP
     if keep < 0:
         raise FrontmatterError("--keep must be >= 0")
+    if not data.get("syndication"):
+        # A post that was never syndicated has no history to trim. Do NOT
+        # fabricate a block here: 'syndication' is optional in the content
+        # schema but, when present, it requires attemptedAt/worker/targets,
+        # and inventing them would claim an attempt that never happened.
+        result = {
+            "path": path,
+            "removedHistoryEntries": 0,
+            "historyLength": 0,
+            "keep": keep,
+            "bodySha256Before": body_sha256(raw),
+            "bodySha256After": body_sha256(raw),
+            "dryRun": bool(args.dry_run),
+            "written": False,
+            "skipped": "post has no 'syndication:' block; nothing to trim",
+        }
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0
+    syndication = dict(data.get("syndication") or {})
+    history = list(syndication.get("history") or [])
     removed = max(0, len(history) - keep)
     syndication["history"] = _keep_history(history, keep)
     validate_syndication(syndication)
@@ -371,8 +427,11 @@ def cmd_record(args) -> int:
     history.append(history_entry)
     syndication["history"] = _keep_history(history, keep)
     validate_syndication(syndication)
-
-    new_raw = build_new_raw(raw, syndication)
+    # create=True: a brand-new post has no 'syndication:' block to
+    # replace, and the writer is the only sanctioned way to record a
+    # publish attempt -- so the block is bootstrapped here. The payload is
+    # still validated above, so invalid input is refused before any write.
+    new_raw = build_new_raw(raw, syndication, create=True)
     result = {
         "path": path,
         "historyLength": len(syndication["history"]),
