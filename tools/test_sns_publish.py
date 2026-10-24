@@ -950,8 +950,10 @@ class TestSyndicationCardCounts(unittest.TestCase):
             "draftBytes", draft_block,
             "the counts must not live inside the t.draft gate")
         self.assertRegex(
-            source, r"\(t\.draftChars\s*\|\|\s*t\.draftBytes\)\s*&&\s*\(",
-            "the counts line must render whenever draftChars/draftBytes exist")
+            source,
+            r"\(t\.draftChars\s*\|\|\s*t\.draftBytes\s*\|\|\s*t\.draftWeighted\)"
+            r"\s*&&\s*\(",
+            "the counts line must render whenever any count field exists")
 
     def test_the_renderer_appends_the_unit_exactly_once(self):
         """`draftChars` is a bare integer; the renderer adds the unit.
@@ -973,10 +975,257 @@ class TestSyndicationCardCounts(unittest.TestCase):
         path = os.path.join(self.REPO, "src", "content.config.ts")
         with open(path, encoding="utf-8") as fh:
             source = fh.read()
-        for field in ("draftChars", "draftBytes"):
+        for field in ("draftChars", "draftBytes", "draftWeighted"):
             self.assertRegex(
                 source, r"%s:\s*z\.string\(\)\.regex\(/\^\[0-9\]\+\$/\)\.optional\(\)" % field,
                 "%s must be constrained to bare integers in the content schema" % field)
+
+
+class TestCapMetric(unittest.TestCase):
+    """The number recorded against a cap must be the one the cap uses.
+
+    X's 280 is a WEIGHTED cap (twitter-text v3): a Hangul character is 2
+    units, a URL is 23. The other three platforms cap plain characters.
+
+    The bug this pins: the public card recorded X's draft as 178
+    CHARACTERS, so the page read "178" next to a 280 limit -- but X
+    measures that same draft at 214 units. For a pure-Hangul draft the
+    understatement is ~2x, so a tweet X would REJECT can be recorded as
+    comfortably inside the limit.
+    """
+
+    KOREAN = "오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세"
+
+    def test_x_cap_is_compared_against_the_weighted_length(self):
+        measured = {"chars": len(self.KOREAN),
+                    "bytes": len(self.KOREAN.encode("utf-8")),
+                    "weighted": sp.x_weighted_length(self.KOREAN)}
+        used, limit, metric = sp.cap_usage("x", measured)
+        self.assertEqual(metric, "weighted")
+        self.assertEqual(limit, 280)
+        self.assertEqual(used, measured["weighted"])
+        self.assertNotEqual(used, measured["chars"],
+                            "the weighted cap must not be read against the "
+                            "raw character count")
+        self.assertGreater(used, measured["chars"],
+                           "Hangul text must weigh MORE than it counts")
+
+    def test_the_other_three_caps_are_character_caps(self):
+        measured = {"chars": 599, "bytes": 1310, "weighted": 1198}
+        for platform in ("threads", "linkedin", "dev.to"):
+            used, limit, metric = sp.cap_usage(platform, measured)
+            self.assertEqual(metric, "chars", platform)
+            self.assertEqual(used, measured["chars"], platform)
+            self.assertEqual(limit, sp.PLATFORM_CAP[platform], platform)
+
+    def test_every_platform_declares_a_metric(self):
+        """A new platform must not silently inherit the wrong metric."""
+        self.assertEqual(set(sp.PLATFORM_CAP_METRIC), set(sp.PLATFORM_CAP))
+
+    def test_a_pure_hangul_draft_can_exceed_the_cap_while_looking_short(self):
+        """The concrete harm: chars under the limit, weighted over it.
+
+        200 Hangul characters is 200 chars (under 280) but 400 weighted
+        units -- X rejects it. A card that recorded only `chars` would
+        have shown "200" and claimed the draft fitted.
+        """
+        text = "가" * 200
+        self.assertLessEqual(len(text), sp.PLATFORM_CAP["x"])
+        self.assertGreater(sp.x_weighted_length(text), sp.X_MAX_WEIGHTED)
+
+    def test_measure_reports_the_cap_relevant_number(self):
+        """`measure` must not let a payload record the wrong number."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "01-x-tweet.txt")
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write(self.KOREAN)
+            ns = argparse.Namespace(drafts_dir=tmp, json=False)
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                sp.cmd_measure(ns)
+            out = buf.getvalue()
+        self.assertIn("metric=weighted", out,
+                      "measure must name the metric the cap is enforced against")
+        self.assertRegex(out, r"used=\d+", "measure must report the used count")
+
+    def test_the_card_shows_the_weighted_length_for_x(self):
+        """The public card must show the number X actually enforces."""
+        path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), "src", "pages", "syndication",
+            "[slug].astro")
+        with open(path, encoding="utf-8") as fh:
+            source = fh.read()
+        self.assertIn("{t.draftWeighted}", source,
+                      "the renderer must render the weighted length")
+        self.assertRegex(source, r"가중 \{t\.draftWeighted\}/280",
+                         "the weighted count must be shown against X's cap")
+
+
+class TestPublishAllExitCodes(unittest.TestCase):
+    """publish-all must distinguish FAILED from BLOCKED.
+
+    The bug this pins: `cmd_publish_all` mapped every non-zero, non-skip
+    handler code to "blocked". A handler returns 1 for a hard platform
+    rejection (HTTP 4xx, credential error) and 3 for a genuine block
+    (duplicate risk, insufficient credits). Collapsing 1 into "blocked"
+    made a rejected post indistinguishable from a credit hold, so the
+    recorded outcome said PUBLISH_BLOCKED when the platform had actually
+    refused the write -- and the exit code said 3 instead of 1.
+    """
+
+    def _run(self, x_code, tmp):
+        import argparse
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            for name in sp.DRAFT_FILENAME.values():
+                with open(os.path.join(tmp, name), "w", encoding="utf-8") as fh:
+                    fh.write("draft")
+            orig_env = sp.load_env_files
+            orig_state = sp.credential_state
+            orig_x = sp.cmd_publish_x
+            orig_t = sp.cmd_publish_threads
+            orig_l = sp.cmd_publish_linkedin
+            orig_d = sp.cmd_publish_devto
+            sp.load_env_files = lambda paths=None: (
+                {"X_API_KEY": "ck", "X_API_SECRET": "cs",
+                 "X_ACCESS_TOKEN": "at", "X_ACCESS_TOKEN_SECRET": "ats"}, [])
+            sp.credential_state = lambda env: {
+                p: {"usable": True}
+                for p in ("x", "threads", "linkedin", "dev.to")}
+            sp.cmd_publish_x = lambda args: x_code
+            sp.cmd_publish_threads = lambda args: 2
+            sp.cmd_publish_linkedin = lambda args: 2
+            sp.cmd_publish_devto = lambda args: 2
+            try:
+                ns = argparse.Namespace(drafts_dir=tmp, devto_title="",
+                                        devto_tags="", devto_canonical="",
+                                        content_sha="")
+                buf = io.StringIO()
+                with redirect_stdout(buf):
+                    code = sp.cmd_publish_all(ns)
+                out = buf.getvalue()
+            finally:
+                sp.load_env_files = orig_env
+                sp.credential_state = orig_state
+                sp.cmd_publish_x = orig_x
+                sp.cmd_publish_threads = orig_t
+                sp.cmd_publish_linkedin = orig_l
+                sp.cmd_publish_devto = orig_d
+        return code, out
+
+    def test_a_hard_failure_exits_1_and_is_counted_as_failed(self):
+        code, out = self._run(1, None)
+        self.assertEqual(code, 1, "a rejected write is a failure, not a block")
+        self.assertIn("failed=1", out)
+        self.assertIn("blocked=0", out)
+
+    def test_a_genuine_block_still_exits_3(self):
+        code, out = self._run(3, None)
+        self.assertEqual(code, 3)
+        self.assertIn("blocked=1", out)
+        self.assertIn("failed=0", out)
+
+    def test_a_success_still_exits_0(self):
+        code, out = self._run(0, None)
+        self.assertEqual(code, 0)
+        self.assertIn("published=1", out)
+
+
+class TestPublishedUrlHandle(unittest.TestCase):
+    """The published post's URL must name the account that actually posted.
+
+    The bug this pins: the URL was built with a hardcoded account handle
+    as the fallback. The account's real handle is read for free before
+    every write, so a rename -- or a different X account authorised under
+    the same keys -- would still produce a URL pointing at the WRONG
+    profile, and that URL is what an operator uses to verify the post.
+    """
+
+    def _publish(self, screen_name, api_username):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "01-x-tweet.txt")
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write("hello")
+            receipts = os.path.join(tmp, "receipts.jsonl")
+            orig_path = os.environ.get("SNS_RECEIPTS_PATH")
+            os.environ["SNS_RECEIPTS_PATH"] = receipts
+            orig_env = sp.load_env_files
+            orig_state = sp.credential_state
+            orig_req = sp.x_request
+            orig_state_fn = sp._x_account_state
+            orig_credit = sp._x_affordable_tier
+            orig_guard = sp._receipt_guard
+            sp.load_env_files = lambda paths=None: (
+                {"X_API_KEY": "ck", "X_API_SECRET": "cs",
+                 "X_ACCESS_TOKEN": "at", "X_ACCESS_TOKEN_SECRET": "ats"}, [])
+            sp.credential_state = lambda env: {p: {"usable": True} for p in
+                                                ("x", "threads", "linkedin",
+                                                 "dev.to")}
+            sp._x_affordable_tier = lambda env, text: (10.0, 0.2)
+            sp._receipt_guard = lambda *a, **k: ("proceed", None)
+            sp._x_account_state = lambda env: (0, screen_name)
+
+            def fake_request(env, method, path, params=None, body=None,
+                              json_body=None):
+                if method == "POST":
+                    payload = {"data": {"id": "123"}}
+                    if api_username:
+                        payload["data"]["username"] = api_username
+                    return 201, json.dumps(payload)
+                return 200, json.dumps({"statuses_count": 0,
+                                         "screen_name": screen_name})
+            sp.x_request = fake_request
+            try:
+                ns = argparse.Namespace(text_file=path, content_sha="abc")
+                buf = io.StringIO()
+                with redirect_stdout(buf):
+                    code = sp.cmd_publish_x(ns)
+                out = buf.getvalue()
+                records = []
+                if os.path.isfile(receipts):
+                    with open(receipts, encoding="utf-8") as fh:
+                        records = [json.loads(l) for l in fh if l.strip()]
+            finally:
+                sp.load_env_files = orig_env
+                sp.credential_state = orig_state
+                sp.x_request = orig_req
+                sp._x_account_state = orig_state_fn
+                sp._x_affordable_tier = orig_credit
+                sp._receipt_guard = orig_guard
+                if orig_path is None:
+                    os.environ.pop("SNS_RECEIPTS_PATH", None)
+                else:
+                    os.environ["SNS_RECEIPTS_PATH"] = orig_path
+        return code, out, records
+
+    def test_the_url_uses_the_account_handle_that_was_read(self):
+        """The free account read is authoritative; use it, not a literal."""
+        code, out, records = self._publish("RenamedAccount", None)
+        self.assertEqual(code, 0)
+        self.assertIn("RenamedAccount", out)
+        self.assertNotIn("SamJ868644", out,
+                         "the URL must not fall back to a hardcoded account")
+        published = [r for r in records if r.get("state") == "published"]
+        self.assertTrue(published)
+        self.assertIn("RenamedAccount", published[-1].get("url", ""))
+
+    def test_the_api_username_still_wins_when_present(self):
+        code, out, records = self._publish("AccountA", "ApiUser")
+        self.assertEqual(code, 0)
+        self.assertIn("ApiUser", out)
+
+    def test_no_handle_anywhere_records_the_post_without_a_url(self):
+        """Never invent a profile: record the id, omit the URL."""
+        code, out, records = self._publish(None, None)
+        self.assertEqual(code, 0)
+        self.assertIn("123", out)
+        self.assertNotIn("https://x.com/", out,
+                         "no URL may be fabricated without a handle")
+        published = [r for r in records if r.get("state") == "published"]
+        self.assertTrue(published)
+        self.assertIsNone(published[-1].get("url"))
 
 
 if __name__ == "__main__":

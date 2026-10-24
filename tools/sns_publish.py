@@ -77,6 +77,23 @@ PLATFORM_LABEL = {
 # Per-platform draft length caps (characters, not weighted units).
 PLATFORM_CAP = {"x": 280, "threads": 500, "linkedin": 1000, "dev.to": 2000}
 
+# Which metric each platform's cap is actually measured against.
+#
+# X's 280 is a WEIGHTED cap (twitter-text v3): a Hangul character is 2
+# units and a URL is 23, so 178 raw Korean characters are 214 units. The
+# other three caps are plain CHARACTER caps, so `chars` is the number
+# their limit is compared against.
+#
+# Reading `chars` against X's 280 therefore understates the real usage
+# (and for pure-Hangul text by ~2x), which is how a draft gets recorded
+# as "178 of 280" while the platform would actually reject it at 214.
+PLATFORM_CAP_METRIC = {
+    "x": "weighted",
+    "threads": "chars",
+    "linkedin": "chars",
+    "dev.to": "chars",
+}
+
 # X pay-per-use write pricing (docs.x.com/x-api/getting-started/pricing,
 # retrieved 2026-10-24). A Post that CONTAINS a URL costs 13x more than a
 # URL-free Post, so the balance decides which tier we can afford:
@@ -603,6 +620,26 @@ def measure_drafts(drafts_dir):
     return measured
 
 
+def cap_usage(platform, measured):
+    """Return (used, limit, metric) for a measured draft.
+
+    `used` is the number the platform's cap is actually compared against,
+    which is NOT the same number for every platform: X's 280 is a WEIGHTED
+    cap (a Hangul character is 2 units, a URL 23), so a 178-character
+    Korean draft is 214 units against the limit, not 178. The other three
+    platforms cap plain characters.
+
+    Recording `chars` against X's 280 is what makes the public card claim
+    "178 of 280" for a tweet the platform measures at 214 -- and for pure
+    Hangul text it understates the real usage by ~2x, so a draft can look
+    comfortably inside the limit while X would reject it.
+    """
+    limit = PLATFORM_CAP[platform]
+    metric = PLATFORM_CAP_METRIC[platform]
+    used = measured["weighted"] if metric == "weighted" else measured["chars"]
+    return used, limit, metric
+
+
 def cmd_measure(args):
     """Print the measured size of each draft in a drafts directory.
 
@@ -611,6 +648,12 @@ def cmd_measure(args):
     and `x_weighted_length` the publisher itself uses -- is what keeps the
     recorded numbers from drifting away from the numbers the caps are
     enforced against.
+
+    The `used` field is the number the platform's cap is actually
+    compared against, and `metric` names that unit. For X that is the
+    weighted length (214 of 280 for a 178-character Korean draft), NOT
+    the character count -- so a payload built from this output cannot
+    record "178 of 280" for a tweet the platform measures at 214.
     """
     measured = measure_drafts(args.drafts_dir)
     if args.json:
@@ -618,9 +661,11 @@ def cmd_measure(args):
     else:
         for platform in sorted(measured):
             m = measured[platform]
-            limit = PLATFORM_CAP[platform]
-            print("%-9s chars=%-5d bytes=%-5d weighted=%-5d cap=%d" % (
-                platform, m["chars"], m["bytes"], m["weighted"], limit))
+            used, limit, metric = cap_usage(platform, m)
+            print("%-9s chars=%-5d bytes=%-5d weighted=%-5d used=%-5d "
+                  "cap=%-4d metric=%s"
+                  % (platform, m["chars"], m["bytes"], m["weighted"],
+                     used, limit, metric))
     return 0 if measured else 2
 
 
@@ -1201,15 +1246,32 @@ def cmd_publish_x(args):
         payload = {}
     if not isinstance(payload, dict):
         payload = {}
-    data = payload.get("data") if isinstance(payload.get("data"), dict) else {}
+    data = payload.get("data")
+    if not isinstance(data, dict):
+        data = {}
     tweet_id = _usable_post_id(data.get("id"))
     # The POST was sent, so any 2xx without a usable id is UNKNOWN, not a
     # failure: the tweet may exist but we cannot prove it. Leaving it
     # pending lets the free statuses_count probe settle it.
     outcome = _publish_outcome(status, tweet_id, write_attempted=True)
     if outcome == "published":
-        url = "https://x.com/%s/status/%s" % (
-            data.get("username") or "SamJ868644", tweet_id)
+        # The account's real handle was already read for free above
+        # (screen_name). Prefer it over a hardcoded fallback: the URL is
+        # what an operator uses to verify the published post, and a stale
+        # literal would point it at the wrong profile the moment the
+        # account is renamed or a different X account is authorised.
+        handle = data.get("username") or screen_name
+        if not handle:
+            _receipt_write("x", attempt_id, "published",
+                           text_sha=text_sha, content_sha=content_sha,
+                           postId=tweet_id,
+                           completedAt=sns_receipts.now_iso(),
+                           note="published, but the account handle could not "
+                                "be resolved, so no status URL was recorded")
+            print("PUBLISHED id=%s (계정 핸들 확인 불가로 URL 미기록)" % tweet_id)
+            print(json.dumps({"id": tweet_id}, ensure_ascii=False))
+            return 0
+        url = "https://x.com/%s/status/%s" % (handle, tweet_id)
         _receipt_write("x", attempt_id, "published",
                        text_sha=text_sha, content_sha=content_sha,
                        postId=tweet_id, url=url,
@@ -1687,6 +1749,7 @@ def cmd_publish_all(args):
     published = 0
     blocked = 0
     skipped = 0
+    failed = 0
     for platform in ("x", "threads", "linkedin", "dev.to"):
         label = PLATFORM_LABEL[platform]
         if not state[platform]["usable"]:
@@ -1716,10 +1779,21 @@ def cmd_publish_all(args):
             published += 1
         elif code == 2:
             skipped += 1
+        elif code == 1:
+            # A hard platform rejection (HTTP 4xx, credential error) is a
+            # FAILURE, not a block: nothing was published, and the draft
+            # itself is at fault. Collapsing it into "blocked" made a
+            # rejected post indistinguishable from a credit hold, so the
+            # recorded outcome said PUBLISH_BLOCKED when the platform had
+            # actually refused the write.
+            failed += 1
         else:
             blocked += 1
     print("=== publish summary ===")
-    print("published=%d blocked=%d skipped=%d" % (published, blocked, skipped))
+    print("published=%d blocked=%d skipped=%d failed=%d"
+          % (published, blocked, skipped, failed))
+    if failed:
+        return 1
     if blocked:
         return 3
     return 0 if published else 2

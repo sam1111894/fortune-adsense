@@ -113,11 +113,12 @@ const postUrl = `${siteUrl}/blog/${post.id}/`;
               초안: <code>{t.draft}</code>
             </p>
           )}
-          {(t.draftChars || t.draftBytes) && (
+          {(t.draftChars || t.draftBytes || t.draftWeighted) && (
             <p class="meta">
               초안 길이:{" "}
               {t.draftChars && <>{t.draftChars}자</>}
               {t.draftBytes && <> · {t.draftBytes}B</>}
+              {t.draftWeighted && <> · 가중 {t.draftWeighted}/280</>}
             </p>
           )}
         </section>

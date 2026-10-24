@@ -473,6 +473,22 @@ class DraftCountFormatTest(unittest.TestCase):
                     "draftChars": value,
                 }))
 
+    def test_a_bare_integer_weighted_count_is_accepted(self):
+        """X's weighted length is a bare integer like the other counts."""
+        sf.validate_syndication(self._block({
+            "platform": "x", "status": "pending",
+            "draftChars": "178", "draftBytes": "327", "draftWeighted": "214",
+        }))
+
+    def test_a_unit_suffixed_weighted_count_is_refused(self):
+        """'214 가중' would render as '214 가중/280' twice-labelled."""
+        with self.assertRaises(sf.FrontmatterError) as ctx:
+            sf.validate_syndication(self._block({
+                "platform": "x", "status": "pending",
+                "draftWeighted": "214 가중",
+            }))
+        self.assertIn("bare integer", str(ctx.exception))
+
     def test_the_writer_refuses_a_bad_payload_and_writes_nothing(self):
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
@@ -520,7 +536,7 @@ class SchemaDriftTest(unittest.TestCase):
         path = os.path.join(REPO_ROOT, "src", "content.config.ts")
         with open(path, encoding="utf-8") as fh:
             source = fh.read()
-        for field in ("draftChars", "draftBytes"):
+        for field in ("draftChars", "draftBytes", "draftWeighted"):
             self.assertRegex(
                 source,
                 r"%s:\s*z\.string\(\)\.regex\(/\^\[0-9\]\+\$/\)\.optional\(\)" % field,

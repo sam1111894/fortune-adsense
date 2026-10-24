@@ -231,7 +231,8 @@ def validate_syndication(syndication: dict) -> None:
         if status not in STATUSES:
             raise FrontmatterError(
                 "targets[].status must be one of %s (got %r)" % (", ".join(STATUSES), status))
-        for optional in ("reason", "draft", "draftChars", "draftBytes"):
+        for optional in ("reason", "draft", "draftChars", "draftBytes",
+                         "draftWeighted"):
             if optional in target and not isinstance(target[optional], str):
                 raise FrontmatterError("targets[].%s must be a string" % optional)
         # The draft size fields must be BARE INTEGERS. The renderer appends
@@ -239,7 +240,7 @@ def validate_syndication(syndication: dict) -> None:
         # "475자자"; and a byte count labelled as a character count
         # misreports the size (Korean text is 3 UTF-8 bytes per char).
         # src/content.config.ts enforces the same rule at build time.
-        for numeric in ("draftChars", "draftBytes"):
+        for numeric in ("draftChars", "draftBytes", "draftWeighted"):
             if numeric in target and not DRAFT_COUNT_RE.match(target[numeric]):
                 raise FrontmatterError(
                     "targets[].%s must be a bare integer string (no unit "
