@@ -7,7 +7,7 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-24T06:55:00Z'
+  attemptedAt: '2026-10-24T08:04:32Z'
   worker: reviewer/minimax-M3
   cronExit: 3
   exitCode: 3
@@ -20,7 +20,7 @@ syndication:
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   lastSelfTriggerNote: 'fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
-  publishPayload: .hermes/cron-drafts/2026-10-24T06-55-00Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-24T08-04-32Z/publish-payload.json
   publishScript: .hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh
   lastAttempt: '2026-10-24T05:18:00Z'
   publishPending: true
@@ -49,32 +49,6 @@ syndication:
     draftChars: 1978자
     draftBytes: '1978'
   history:
-  - attemptedAt: '2026-10-24T01:22:00Z'
-    worker: reviewer/minimax-M3
-    fire: 186
-    blog: daily-fortune-healthy-mindset
-    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-    publishPending: true
-    blockedBy: X pay-per-use balance still exactly $0.000 (total_balance=0.0, prepaid_balance=0.0, free_grants=0); X reads metered too (GET /2/users/:id/tweets -> 402) and GET /1.1/statuses/user_timeline.json -> 403 code 453 (v1.1 subset only). Threads/LinkedIn/dev.to tokens absent across all scopes.
-    skipCount: 3
-    skipTotal: 4
-    cronExit: 3
-    exitCode: 3
-    bodySha256: 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae
-    bodyChars: 3996
-    draftsDir: .hermes/cron-drafts/2026-10-24T01-22-00Z/
-    draftChars:
-      devto-body: '1969'
-      linkedin: '599'
-      threads: '241'
-      x: '178'
-    draftLimits:
-      devto-body: '2000'
-      linkedin: '1000'
-      threads: '500'
-      x: '280'
-    dupGuard: account @SamJ868644 statuses_count=0 (GET /1.1/account/verify_credentials.json HTTP 200 auth OK id=1921849479613005824), ledger prior successful publishes=0, durable publish-receipt store 0 records (the credit gate blocked before any write was attempted)
-    note: 'fire186 = retry of fire185 pending publish (body hash unchanged 0fdd3165...ace71dae, 3996c -> no new content). REAL publish-all executed against the live publisher (tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-24T01-22-00Z/ --content-sha 0fdd3165...ace71dae): published=0 blocked=1 skipped=3, exit 3. X BLOCKED by the credit gate - GET /2/usage/credits HTTP 200 total_balance=0.000 USD (prepaid_balance=0.0, free_balance=0.0, free_grants=0), so neither the 0.200 USD URL tier nor the 0.015 USD no-URL tier is affordable and the pre-flight gate correctly prevented a billable POST. NO tweet created (statuses_count=0, ledger prior successful publishes=0, durable publish-receipt store 0 records - the gate blocks before any write is attempted). Threads/LinkedIn/dev.to [SKIP] - tokens verified absent across the process env, project .env, reviewer-profile .env, global ~/.hermes/.env and all sibling Hermes profile .env files. Drafts byte-identical to fire185 (SHA-256 verified on all 4 files) because the body is unchanged, so no re-synthesis. THREE TOOLING DEFECTS FOUND AND FIXED THIS FIRE (all in the durable publish-receipt state machine, all reproduced offline first and verified to FAIL when reverted): (1) THREADS FALSE SUCCESS - the container POST (graph.threads.net/v1.0/threads) returned HTTP 200 but carried no usable ''id'', so the publish step was never attempted; the old code recorded a ''published'' receipt and exited 0, reporting a Post that never existed and then making the receipt guard skip that content FOREVER. A response without a usable platform post id can no longer be recorded as a successful publication on any platform. (2) LINKEDIN PERMANENT DEADLOCK - the author URN could not be resolved, so NO write was ever sent; the old code left the receipt ''pending'' forever, and because LinkedIn has no free post-listing endpoint the guard could never resolve it and refused every later attempt - a deadlock that needed manual surgery on the receipts file. A pre-write failure is now settled as ''failed'' (nothing was published, so a retry is safe). (3) RESOLVER METADATA DROPPED - sns_receipts.group_attempts() discarded creationId / textPreview / title / canonicalUrl, so the FREE-read resolvers could never confirm that a landed post existed and always answered ''failed''; the guard then treated a live post as never published and re-published the same content - a duplicate-post bug, and a paid duplicate on X. The metadata now survives grouping, and the Threads text match compares the full-text hash (textPreview is a 120-char truncation, so the old exact comparison against the full listed text could never match). Also: the X credit pre-flight now FAILS CLOSED - an unreadable balance is no longer treated as ''proceeding; the API will decide'' (which would have attempted a billable POST whose cost could not be checked); it blocks with exit 3 and the --skip-credit-check escape hatch still works. NEW REGRESSION TESTS in tools/test_sns_receipts.py: 14 new tests (3 classes) covering the outcome classification, the pre-write-failure settlement, the resolver metadata, and the credit gate; suite 82 -> 96/96 passing, and every new test was verified to FAIL when its defect was reintroduced and PASS when restored. VERIFIED: npm run build exit 0 (49 pages), 0 occurrences of blog/undefined in dist, precheck=RETRY_PENDING_PUBLISH with latestIsNewContent=false (no self-trigger), body sha256 identical before/after the frontmatter rewrite (0fdd3165...ace71dae). TO UNBLOCK: console.x.com top-up (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
   - attemptedAt: '2026-10-24T05:18:00Z'
     worker: reviewer/minimax-M3
     fire: 187
@@ -127,6 +101,32 @@ syndication:
       linkedin: '1000'
       dev.to: '2000'
     note: 'RETRY of the fire187 pending publish (body hash unchanged 0fdd3165...ace71dae -> no new content, no re-synthesis; drafts byte-identical to fire187). THIS FIRE ALSO FIXED THE FRONTMATTER WRITER''S NEW-POST BOOTSTRAP DEFECT: ''sns_frontmatter.py record'' died with "ERROR: frontmatter has no ''syndication:'' block" on any post that had never been syndicated -- i.e. exactly the post this job fires on. A second, related off-by-one in _keep_history dropped the oldest entry when len(history) < keep (a negative slice index), silently losing a new post''s first publish attempt. Both fixed, with a new 20-test regression suite (tools/test_sns_frontmatter.py); each defect was verified to FAIL when reintroduced and PASS when restored. X publish still blocked by the credit gate (0.000 USD), so NO tweet was created and the durable publish-receipt store remains empty.'
+  - attemptedAt: '2026-10-24T08:04:32Z'
+    worker: reviewer/minimax-M3
+    fire: 189
+    blog: daily-fortune-healthy-mindset
+    bodySha256: 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae
+    bodyChars: 3996
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPending: true
+    blockedBy: X credit balance 0.000 USD
+    cronExit: 3
+    exitCode: 3
+    skipCount: 3
+    skipTotal: 4
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    draftsDir: .hermes/cron-drafts/2026-10-24T08-04-32Z/
+    draftChars:
+      x: 214/280 weighted (raw 178자)
+      threads: 475자
+      linkedin: 1311자
+      dev.to: 1978자
+    draftLimits:
+      x: 280 weighted
+      threads: '500'
+      linkedin: '1000'
+      dev.to: '2000'
+    note: 'RETRY of the fire188 pending publish (body hash unchanged 0fdd3165...ace71dae -> no new content, no re-synthesis; drafts byte-identical to fire188 by SHA-256 on all 4 files). REAL publish-all was executed against the live publisher (tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-24T08-04-32Z/ --content-sha 0fdd3165...ace71dae): published=0 blocked=1 skipped=3, exit 3. X remains blocked by the credit pre-flight: GET /2/usage/credits returned HTTP 200 with total_balance=0.000 USD, prepaid_balance=0.000, free_balance=0.000 and free_grants=0, so neither the 0.200 USD URL tier nor the 0.015 USD no-URL tier is affordable. The gate therefore prevented a billable POST before any write. NO tweet was created (statuses_count=0) and the durable publish-receipt store remains empty. Threads/LinkedIn/dev.to were skipped because their tokens are genuinely absent from every credential scope. The free duplicate guard was consulted before publishing and returned NO DUPLICATE POSSIBLE; the metered v2 timeline read returned HTTP 402. No code change was required this fire. TO UNBLOCK: top up at console.x.com (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
 ---
 
 # 오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세
