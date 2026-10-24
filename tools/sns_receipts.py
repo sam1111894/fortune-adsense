@@ -155,13 +155,23 @@ def group_attempts(receipts: list, platform: str) -> list:
                 "httpStatus": None,
                 "statusesCountBefore": None,
                 "note": None,
+                # Metadata the FREE-read resolvers need to settle an
+                # ambiguous attempt. Dropping them makes every resolver
+                # answer "failed" (nothing matched) even when the post IS
+                # listed -- which then lets the guard re-publish a post
+                # that already landed.
+                "creationId": None,
+                "textPreview": None,
+                "title": None,
+                "canonicalUrl": None,
             }
             order.append(attempt_id)
         slot = by_id[attempt_id]
         if record.get("state"):
             slot["state"] = record.get("state")
         for field in ("postId", "url", "httpStatus", "statusesCountBefore",
-                      "note", "textSha256", "contentSha256"):
+                      "note", "textSha256", "contentSha256", "creationId",
+                      "textPreview", "title", "canonicalUrl"):
             if record.get(field) is not None:
                 slot[field] = record.get(field)
         if record.get("completedAt"):

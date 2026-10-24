@@ -389,5 +389,314 @@ class TestPublishAllForwardsContentSha(ReceiptTestCase):
                                 "linkedin": "BODYHASH", "dev.to": "BODYHASH"})
 
 
+class TestPublishOutcomeClassification(ReceiptTestCase):
+    """A receipt may only say "published" when the platform returned a
+    USABLE post id AND the write was actually attempted.
+
+    Three defects motivated these tests:
+      A. Threads: the container POST returned HTTP 200 without a usable
+         "id", so the publish step never ran. The old code recorded
+         "published" and exited 0 -- a publish that never happened, after
+         which the guard skipped that content forever.
+      B. LinkedIn: the author URN could not be resolved, so NO write was
+         sent. The old code left the receipt "pending" forever. LinkedIn
+         has no free post listing, so the guard blocked every later
+         attempt -- a permanent deadlock needing manual receipt surgery.
+      C. group_attempts() dropped creationId / textPreview / title /
+         canonicalUrl, so the FREE-read resolvers could never confirm a
+         landed post and always answered "failed" -> the same content was
+         published a second time.
+    """
+
+    class ByUrl(object):
+        """Dispatch canned responses by URL, longest needle first."""
+
+        def __init__(self, mapping, default=None):
+            self.mapping = mapping
+            self.default = default
+            self.calls = []
+
+        def __call__(self, url, method="GET", params=None, body=None,
+                     headers=None, timeout=25, json_body=None):
+            self.calls.append({"url": url, "method": method})
+            for needle in sorted(self.mapping, key=len, reverse=True):
+                if needle in url:
+                    return self.mapping[needle]
+            if self.default is not None:
+                return self.default
+            return 200, json.dumps({"ok": True})
+
+    def _draft(self, text="body text"):
+        path = os.path.join(self.tmp.name, "draft.txt")
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        return path
+
+    def _run(self, platform, fake, env, text="body text", **kwargs):
+        orig_http, orig_env = sp.http_request, sp.load_env_files
+        sp.http_request = fake
+        sp.load_env_files = lambda paths=None: (env, [])
+        try:
+            ns = argparse.Namespace(text_file=self._draft(text),
+                                    content_sha="")
+            if platform == "threads":
+                return sp.cmd_publish_threads(ns)
+            if platform == "linkedin":
+                return sp.cmd_publish_linkedin(ns)
+            if platform == "dev.to":
+                ns.title = "A Title"
+                ns.tags = ""
+                ns.canonical_url = ""
+                return sp.cmd_publish_devto(ns)
+            ns.skip_credit_check = True
+            return sp.cmd_publish_x(ns)
+        finally:
+            sp.http_request, sp.load_env_files = orig_http, orig_env
+
+    def _states(self, platform):
+        return [a.get("state")
+                for a in sr.group_attempts(self.records(), platform)]
+
+    # --- DEFECT A: a 2xx without a usable id is not a publication ---
+
+    def test_threads_container_200_without_id_is_not_published(self):
+        """The container POST succeeded but carried no usable id, so the
+        publish step never ran and nothing was published."""
+        fake = self.ByUrl({
+            "/threads": (200, json.dumps({"message": "created but id missing"})),
+        })
+        code = self._run("threads", fake, {"THREADS_TOKEN": "tok"})
+        self.assertEqual(code, 1)
+        self.assertEqual(self._states("threads"), ["failed"])
+        attempts = sr.group_attempts(self.records(), "threads")
+        self.assertIsNone(sr.find_published(attempts, "", None))
+
+    def test_threads_publish_200_without_post_id_is_not_published(self):
+        """The publish step ran and returned 2xx, but without an id we
+        cannot prove the thread landed -> pending, never "published"."""
+        fake = self.ByUrl({
+            "/threads_publish": (200, json.dumps({"message": "ok"})),
+            "/threads": (200, json.dumps({"id": "container-1"})),
+        })
+        code = self._run("threads", fake, {"THREADS_TOKEN": "tok"})
+        self.assertEqual(code, 1)
+        self.assertEqual(self._states("threads"), ["pending"])
+
+    def test_threads_publish_with_id_is_published(self):
+        fake = self.ByUrl({
+            "/threads_publish": (200, json.dumps({"id": "post-99"})),
+            "/threads": (200, json.dumps({"id": "container-1"})),
+        })
+        code = self._run("threads", fake, {"THREADS_TOKEN": "tok"})
+        self.assertEqual(code, 0)
+        self.assertEqual(self._states("threads"), ["published"])
+        attempts = sr.group_attempts(self.records(), "threads")
+        self.assertEqual(attempts[0]["postId"], "post-99")
+
+    def test_x_2xx_without_tweet_id_is_not_published(self):
+        """X answered 2xx but gave no tweet id: the tweet may exist, so
+        the attempt stays pending for the free statuses_count probe."""
+        fake = self.ByUrl({
+            "/2/tweets": (201, json.dumps({"data": {"text": "hi"}})),
+            "verify_credentials": (200, json.dumps({"statuses_count": 0})),
+        })
+        code = self._run("x", fake, {
+            "X_API_KEY": "ck", "X_API_SECRET": "cs",
+            "X_ACCESS_TOKEN": "at", "X_ACCESS_TOKEN_SECRET": "ats"})
+        self.assertEqual(code, 1)
+        self.assertEqual(self._states("x"), ["pending"])
+
+    def test_devto_2xx_without_article_id_is_not_published(self):
+        fake = self.ByUrl({
+            "/api/articles": (201, json.dumps({"url": "https://dev.to/x"})),
+        })
+        code = self._run("dev.to", fake, {"DEVTO_API_KEY": "dk"})
+        self.assertEqual(code, 1)
+        self.assertEqual(self._states("dev.to"), ["pending"])
+
+    # --- DEFECT B: a pre-write failure must not stay pending forever ---
+
+    def test_linkedin_unresolved_urn_is_failed_not_pending(self):
+        """The author URN could not be resolved, so NO write was sent."""
+        fake = self.ByUrl({
+            "/v2/me": (403, json.dumps({"message": "insufficient scope"})),
+            "/v2/userinfo": (403, json.dumps({"message": "insufficient scope"})),
+        })
+        code = self._run("linkedin", fake, {"LINKEDIN_TOKEN": "tok"})
+        self.assertEqual(code, 1)
+        self.assertEqual(self._states("linkedin"), ["failed"])
+
+    def test_linkedin_unresolved_urn_does_not_deadlock_the_guard(self):
+        """A pre-write failure leaves no pending attempt, so the guard
+        allows a later retry instead of blocking it forever."""
+        fake = self.ByUrl({
+            "/v2/me": (403, json.dumps({"message": "insufficient scope"})),
+            "/v2/userinfo": (403, json.dumps({"message": "insufficient scope"})),
+        })
+        self._run("linkedin", fake, {"LINKEDIN_TOKEN": "tok"})
+        text_sha = sr.text_key("body text")
+        verdict, _reason = sp._receipt_guard("linkedin", text_sha, None)
+        self.assertEqual(verdict, "proceed")
+
+    # --- DEFECT C: the resolver metadata must survive grouping ---
+
+    def test_group_attempts_keeps_resolver_metadata(self):
+        """The free-read resolvers match on creationId / textPreview /
+        title / canonicalUrl. Dropping them makes every resolver answer
+        "failed", which re-publishes a post that already landed."""
+        sr.append({"platform": "threads", "attemptId": "a1",
+                   "state": "pending", "textSha256": "T",
+                   "textPreview": "preview", "creationId": "c1"})
+        sr.append({"platform": "dev.to", "attemptId": "a2",
+                   "state": "pending", "textSha256": "D",
+                   "title": "Title", "canonicalUrl": "https://x.test/"})
+        threads = sr.group_attempts(self.records(), "threads")[0]
+        devto = sr.group_attempts(self.records(), "dev.to")[0]
+        self.assertEqual(threads["creationId"], "c1")
+        self.assertEqual(threads["textPreview"], "preview")
+        self.assertEqual(devto["title"], "Title")
+        self.assertEqual(devto["canonicalUrl"], "https://x.test/")
+
+    def test_threads_resolver_confirms_a_listed_thread(self):
+        sr.append({"platform": "threads", "attemptId": "a1",
+                   "state": "pending", "textSha256": "T",
+                   "textPreview": "hello", "creationId": "container-9"})
+        attempt = sr.group_attempts(self.records(), "threads")[0]
+        listing = {"data": [{"id": "container-9", "text": "hello world"}]}
+        orig = sp.http_request
+        sp.http_request = lambda *a, **k: (200, json.dumps(listing))
+        try:
+            verdict = sp._resolve_threads_pending({"THREADS_TOKEN": "tt"}, attempt)
+        finally:
+            sp.http_request = orig
+        self.assertEqual(verdict, "published")
+
+    def test_threads_resolver_matches_a_truncated_preview(self):
+        """textPreview is a 120-char truncation, so it cannot be compared
+        for equality against the full listed text."""
+        text = "abcdefghij" * 30  # 300 chars
+        sr.append({"platform": "threads", "attemptId": "a1",
+                   "state": "pending", "textSha256": sr.text_key(text),
+                   "textPreview": text[:120]})
+        attempt = sr.group_attempts(self.records(), "threads")[0]
+        listing = {"data": [{"id": "other", "text": text}]}
+        orig = sp.http_request
+        sp.http_request = lambda *a, **k: (200, json.dumps(listing))
+        try:
+            verdict = sp._resolve_threads_pending({"THREADS_TOKEN": "tt"}, attempt)
+        finally:
+            sp.http_request = orig
+        self.assertEqual(verdict, "published")
+
+    def test_devto_resolver_confirms_a_listed_article(self):
+        sr.append({"platform": "dev.to", "attemptId": "a1",
+                   "state": "pending", "textSha256": "D",
+                   "title": "My Article",
+                   "canonicalUrl": "https://lucksajueun.com/blog/x/"})
+        attempt = sr.group_attempts(self.records(), "dev.to")[0]
+        articles = [{"title": "My Article",
+                     "canonical_url": "https://lucksajueun.com/blog/x/"}]
+        orig = sp.http_request
+        sp.http_request = lambda *a, **k: (200, json.dumps(articles))
+        try:
+            verdict = sp._resolve_devto_pending({"DEVTO_API_KEY": "dk"}, attempt)
+        finally:
+            sp.http_request = orig
+        self.assertEqual(verdict, "published")
+
+
+class TestCreditGateFailsClosed(ReceiptTestCase):
+    """The X credit pre-flight must fail CLOSED: an unreadable balance is
+    not an affordable balance. Proceeding would spend money on a write
+    whose cost could not be checked.
+    """
+
+    class ByUrl(object):
+        def __init__(self, mapping):
+            self.mapping = mapping
+            self.calls = []
+
+        def __call__(self, url, method="GET", params=None, body=None,
+                     headers=None, timeout=25, json_body=None):
+            self.calls.append({"url": url, "method": method})
+            for needle in sorted(self.mapping, key=len, reverse=True):
+                if needle in url:
+                    return self.mapping[needle]
+            return 200, json.dumps({"ok": True})
+
+    def _draft(self):
+        path = os.path.join(self.tmp.name, "01-x-tweet.txt")
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write("hello world")
+        return path
+
+    def _env(self):
+        return {"X_API_KEY": "ck", "X_API_SECRET": "cs",
+                "X_ACCESS_TOKEN": "at", "X_ACCESS_TOKEN_SECRET": "ats"}
+
+    def test_unreadable_credit_balance_blocks_the_write(self):
+        fake = self.ByUrl({
+            "oauth2/token": (200, json.dumps({"access_token": "bearer"})),
+            "/2/usage/credits": (500, json.dumps({"error": "boom"})),
+            "verify_credentials": (200, json.dumps({"statuses_count": 0})),
+        })
+        orig_http, orig_env = sp.http_request, sp.load_env_files
+        sp.http_request = fake
+        sp.load_env_files = lambda paths=None: (self._env(), [])
+        try:
+            code = sp.cmd_publish_x(argparse.Namespace(
+                text_file=self._draft(), skip_credit_check=False,
+                content_sha=""))
+        finally:
+            sp.http_request, sp.load_env_files = orig_http, orig_env
+        self.assertEqual(code, 3)
+        posts = [c for c in fake.calls
+                 if c["method"] == "POST" and "tweets" in c["url"]]
+        self.assertEqual(posts, [], "no billable POST may be attempted")
+        # No receipt at all: the write was never attempted.
+        self.assertEqual(self.records(), [])
+
+    def test_zero_balance_blocks_the_write(self):
+        fake = self.ByUrl({
+            "oauth2/token": (200, json.dumps({"access_token": "bearer"})),
+            "/2/usage/credits": (200, json.dumps(
+                {"data": {"total_balance": 0.0}})),
+            "verify_credentials": (200, json.dumps({"statuses_count": 0})),
+        })
+        orig_http, orig_env = sp.http_request, sp.load_env_files
+        sp.http_request = fake
+        sp.load_env_files = lambda paths=None: (self._env(), [])
+        try:
+            code = sp.cmd_publish_x(argparse.Namespace(
+                text_file=self._draft(), skip_credit_check=False,
+                content_sha=""))
+        finally:
+            sp.http_request, sp.load_env_files = orig_http, orig_env
+        self.assertEqual(code, 3)
+        posts = [c for c in fake.calls
+                 if c["method"] == "POST" and "tweets" in c["url"]]
+        self.assertEqual(posts, [])
+
+    def test_skip_credit_check_still_allows_the_write(self):
+        """The operator escape hatch must keep working."""
+        fake = self.ByUrl({
+            "/2/tweets": (201, json.dumps({"data": {"id": "42"}})),
+            "verify_credentials": (200, json.dumps({"statuses_count": 0})),
+        })
+        orig_http, orig_env = sp.http_request, sp.load_env_files
+        sp.http_request = fake
+        sp.load_env_files = lambda paths=None: (self._env(), [])
+        try:
+            code = sp.cmd_publish_x(argparse.Namespace(
+                text_file=self._draft(), skip_credit_check=True,
+                content_sha=""))
+        finally:
+            sp.http_request, sp.load_env_files = orig_http, orig_env
+        self.assertEqual(code, 0)
+        posts = [c for c in fake.calls
+                 if c["method"] == "POST" and "tweets" in c["url"]]
+        self.assertEqual(len(posts), 1)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -561,6 +561,43 @@ def _has_url(text):
     return bool(re.search(r"https?://", text or ""))
 
 
+def _usable_post_id(value):
+    """Normalize a platform post id, or None when there is not a usable one.
+
+    A response without a usable id cannot be recorded as a successful
+    publication: we would have no way to point at the post we claim
+    exists, and the guard would then skip this content forever.
+    """
+    if value is None or isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return str(value) if value > 0 else None
+    if isinstance(value, str):
+        text = value.strip()
+        return text or None
+    return None
+
+
+def _publish_outcome(status, post_id, write_attempted):
+    """Classify a platform write into a receipt state.
+
+    "published" -- HTTP 2xx AND a usable post id: the post exists.
+    "failed"    -- a 4xx rejection, or nothing was ever sent to the
+                   platform: definitively NOT published, so a retry is safe.
+    "pending"   -- the write may have landed but we cannot prove it: the
+                   outcome is UNKNOWN and must be resolved with a free read
+                   before any retry.
+    """
+    if write_attempted and status in (200, 201) and post_id:
+        return "published"
+    if not write_attempted or status is None:
+        # Nothing was sent, so nothing can have been published.
+        return "failed"
+    if 400 <= status < 500:
+        return "failed"
+    return "pending"
+
+
 def _x_affordable_tier(env, text):
     """Return (balance, required_cost) for the X write, or (None, 0) if the
     free credit read is unavailable.
@@ -764,14 +801,27 @@ def _threads_thread_exists(env, attempt):
     threads = payload.get("data")
     if not isinstance(threads, list):
         return None
-    text = (attempt.get("textPreview") or "").strip()
+    preview = (attempt.get("textPreview") or "").strip()
+    text_sha = attempt.get("textSha256")
     creation_id = attempt.get("creationId")
     for thread in threads:
         if not isinstance(thread, dict):
             continue
         if creation_id and thread.get("id") == creation_id:
             return True
-        if text and (thread.get("text") or "").strip() == text:
+        listed = (thread.get("text") or "").strip()
+        if not listed:
+            continue
+        # textPreview is a 120-char TRUNCATION of the posted text, so an
+        # exact comparison against the full listed text can never match.
+        # Compare the hash of the full text, and fall back to a prefix
+        # comparison for platform-side whitespace normalisation. A false
+        # "published" verdict only skips a publish (recoverable); a false
+        # "failed" verdict would re-post a live thread, so err towards
+        # matching.
+        if text_sha and sns_receipts.text_key(listed) == text_sha:
+            return True
+        if preview and len(preview) >= 40 and listed.startswith(preview):
             return True
     return False
 
@@ -837,8 +887,13 @@ def cmd_publish_x(args):
     if not getattr(args, "skip_credit_check", False):
         balance, cost = _x_affordable_tier(env, text)
         if balance is None:
-            print("  credit pre-flight unavailable ( proceeding; API will decide)")
-        elif balance < cost:
+            # Fail CLOSED: an unreadable balance is not an affordable
+            # balance. Proceeding would spend money we could not verify.
+            print("PUBLISH BLOCKED — 크레딧 잔액 확인 불가 (fail-closed)")
+            print("  조치: GET /2/usage/credits 조회를 복구한 뒤 재실행하세요.")
+            print("        (잔액 확인 없이 진행하려면 --skip-credit-check 를 사용하세요)")
+            return 3
+        if balance < cost:
             tier = "URL 포함($%.3f)" % X_COST_WITH_URL if _has_url(text) \
                 else "URL 미포함($%.3f)" % X_COST_NO_URL
             print("PUBLISH BLOCKED — 크레딧 부족 (잔액 $%.3f < %s)"
@@ -870,9 +925,15 @@ def cmd_publish_x(args):
         payload = json.loads(body) if body else {}
     except ValueError:
         payload = {}
-    if status in (200, 201):
-        data = payload.get("data") or {}
-        tweet_id = data.get("id")
+    if not isinstance(payload, dict):
+        payload = {}
+    data = payload.get("data") if isinstance(payload.get("data"), dict) else {}
+    tweet_id = _usable_post_id(data.get("id"))
+    # The POST was sent, so any 2xx without a usable id is UNKNOWN, not a
+    # failure: the tweet may exist but we cannot prove it. Leaving it
+    # pending lets the free statuses_count probe settle it.
+    outcome = _publish_outcome(status, tweet_id, write_attempted=True)
+    if outcome == "published":
         url = "https://x.com/%s/status/%s" % (
             data.get("username") or "SamJ868644", tweet_id)
         _receipt_write("x", attempt_id, "published",
@@ -882,7 +943,7 @@ def cmd_publish_x(args):
         print("PUBLISHED id=%s url=%s" % (tweet_id, url))
         print(json.dumps({"id": tweet_id, "url": url}, ensure_ascii=False))
         return 0
-    if 400 <= status < 500:
+    if outcome == "failed":
         # A 4xx is a definitive rejection: the platform created nothing, so
         # a later retry is safe. Record it as failed, not pending.
         _receipt_write("x", attempt_id, "failed",
@@ -890,9 +951,10 @@ def cmd_publish_x(args):
                        httpStatus=status,
                        completedAt=sns_receipts.now_iso())
     else:
-        # Ambiguous: a network error (status 0) or a 5xx may have happened
-        # AFTER the platform created the post. Leave the receipt "pending"
-        # so the next run resolves it instead of paying twice.
+        # Ambiguous: a network error (status 0), a 5xx, or a 2xx without
+        # a usable tweet id may have happened AFTER the platform created
+        # the post. Leave the receipt "pending" so the next run resolves it
+        # instead of paying twice.
         print("  결과 불확정 — receipt를 pending으로 남겨 다음 실행에서 확인합니다.")
     if status == 402:
         print("PUBLISH BLOCKED — HTTP 402 credits depleted")
@@ -1151,11 +1213,16 @@ def cmd_publish_threads(args):
                    textPreview=text[:120])
     status, body, creation_id = _threads_publish(env, text)
     print("HTTP %s" % status)
-    if status in (200, 201):
-        try:
-            post_id = (json.loads(body) or {}).get("id")
-        except ValueError:
-            post_id = None
+    # creation_id is non-None exactly when the PUBLISH step was actually
+    # sent: _threads_publish returns None for it whenever the container
+    # step failed, and a container alone never publishes a thread.
+    publish_attempted = creation_id is not None
+    try:
+        post_id = _usable_post_id((json.loads(body) or {}).get("id"))
+    except ValueError:
+        post_id = None
+    outcome = _publish_outcome(status, post_id, publish_attempted)
+    if outcome == "published":
         _receipt_write("threads", attempt_id, "published",
                        text_sha=text_sha, content_sha=content_sha,
                        postId=post_id, creationId=creation_id,
@@ -1164,11 +1231,21 @@ def cmd_publish_threads(args):
         print(json.dumps({"id": post_id, "creation_id": creation_id},
                          ensure_ascii=False))
         return 0
-    if 400 <= status < 500:
+    if outcome == "failed":
         _receipt_write("threads", attempt_id, "failed",
                        text_sha=text_sha, content_sha=content_sha,
                        httpStatus=status, creationId=creation_id,
                        completedAt=sns_receipts.now_iso())
+    else:
+        # Ambiguous: the publish request was sent but we cannot prove it
+        # landed. Keep it pending and carry the container id, so the next
+        # run can settle it against the free thread listing instead of
+        # publishing the same thread twice.
+        _receipt_write("threads", attempt_id, "pending",
+                       text_sha=text_sha, content_sha=content_sha,
+                       httpStatus=status, creationId=creation_id,
+                       note="publish outcome unproven")
+        print("  결과 불확정 — receipt를 pending으로 남겨 다음 실행에서 확인합니다.")
     print("PUBLISH FAILED errors=%s" % body[:400])
     return 1
 
@@ -1209,14 +1286,25 @@ def cmd_publish_linkedin(args):
                    textPreview=text[:120])
     status, body, urn = _linkedin_publish(env, text)
     print("HTTP %s" % status)
+    # status is None when the author URN could not be resolved, which
+    # happens BEFORE any write is sent: nothing was published, so the
+    # attempt must be settled as failed. Leaving it pending would be a
+    # permanent deadlock -- LinkedIn has no free post listing, so the
+    # guard could never resolve it and would refuse every later attempt.
     if status is None:
+        _receipt_write("linkedin", attempt_id, "failed",
+                       text_sha=text_sha, content_sha=content_sha,
+                       note="author URN unresolved: no write attempted",
+                       completedAt=sns_receipts.now_iso())
         print("PUBLISH BLOCKED — %s" % body)
+        print("  조치: LINKEDIN_TOKEN에 r_liteprofile 또는 openid 스코프를 추가하세요.")
         return 1
-    if status in (200, 201):
-        try:
-            post_id = (json.loads(body) or {}).get("id")
-        except ValueError:
-            post_id = None
+    try:
+        post_id = _usable_post_id((json.loads(body) or {}).get("id"))
+    except ValueError:
+        post_id = None
+    outcome = _publish_outcome(status, post_id, write_attempted=True)
+    if outcome == "published":
         _receipt_write("linkedin", attempt_id, "published",
                        text_sha=text_sha, content_sha=content_sha,
                        postId=post_id, url=post_id,
@@ -1224,11 +1312,16 @@ def cmd_publish_linkedin(args):
         print("PUBLISHED id=%s author=%s" % (post_id, urn))
         print(json.dumps({"id": post_id, "author": urn}, ensure_ascii=False))
         return 0
-    if 400 <= status < 500:
+    if outcome == "failed":
         _receipt_write("linkedin", attempt_id, "failed",
                        text_sha=text_sha, content_sha=content_sha,
                        httpStatus=status,
                        completedAt=sns_receipts.now_iso())
+    else:
+        # Ambiguous: the write was sent but we cannot prove it landed, and
+        # LinkedIn has no free listing to settle it. Stay pending so the
+        # guard blocks a duplicate until an operator resolves it.
+        print("  결과 불확정 — receipt를 pending으로 남겨 확인이 필요합니다.")
     print("PUBLISH FAILED errors=%s" % body[:400])
     return 1
 
@@ -1277,26 +1370,34 @@ def cmd_publish_devto(args):
     status, body = _devto_publish(env, title, body_markdown, tags,
                                   args.canonical_url)
     print("HTTP %s" % status)
-    if status in (200, 201):
-        try:
-            data = json.loads(body) or {}
-        except ValueError:
-            data = {}
+    try:
+        data = json.loads(body) or {}
+    except ValueError:
+        data = {}
+    if not isinstance(data, dict):
+        data = {}
+    post_id = _usable_post_id(data.get("id"))
+    outcome = _publish_outcome(status, post_id, write_attempted=True)
+    if outcome == "published":
         _receipt_write("dev.to", attempt_id, "published",
                        text_sha=text_sha, content_sha=content_sha,
-                       postId=data.get("id"), url=data.get("url"),
+                       postId=post_id, url=data.get("url"),
                        title=title, canonicalUrl=args.canonical_url or None,
                        completedAt=sns_receipts.now_iso())
-        print("PUBLISHED id=%s url=%s" % (data.get("id"), data.get("url")))
-        print(json.dumps({"id": data.get("id"), "url": data.get("url")},
+        print("PUBLISHED id=%s url=%s" % (post_id, data.get("url")))
+        print(json.dumps({"id": post_id, "url": data.get("url")},
                          ensure_ascii=False))
         return 0
-    if 400 <= status < 500:
+    if outcome == "failed":
         _receipt_write("dev.to", attempt_id, "failed",
                        text_sha=text_sha, content_sha=content_sha,
                        httpStatus=status, title=title,
                        canonicalUrl=args.canonical_url or None,
                        completedAt=sns_receipts.now_iso())
+    else:
+        # Ambiguous: the write was sent but we cannot prove it landed.
+        # Keep it pending so the free article listing settles it.
+        print("  결과 불확정 — receipt를 pending으로 남겨 다음 실행에서 확인합니다.")
     print("PUBLISH FAILED errors=%s" % body[:400])
     return 1
 
