@@ -563,6 +563,67 @@ def cmd_weight(args):
     return 0 if weighted <= X_MAX_WEIGHTED else 3
 
 
+def measure_draft(path):
+    """Return the measured size of one draft, in CHARACTERS and BYTES.
+
+    The two are different numbers for any non-ASCII draft (Korean text is
+    3 UTF-8 bytes per character), and conflating them is exactly the bug
+    this function exists to prevent:
+
+      * `chars`  -- len(text): the number the platform CAP is measured
+        against (X's cap is weighted, see `weighted`).
+      * `bytes`  -- len(text.encode("utf-8")): the on-disk size.
+      * `weighted` -- X's twitter-text weighted length, which is what X's
+        280 cap actually applies to.
+
+    The text is read with `_read_text` (stripped) so the numbers describe
+    EXACTLY the bytes that would be published, not the file including a
+    trailing newline.
+    """
+    text = _read_text(path)
+    return {
+        "chars": len(text),
+        "bytes": len(text.encode("utf-8")),
+        "weighted": x_weighted_length(text),
+    }
+
+
+def measure_drafts(drafts_dir):
+    """Measure every draft in `drafts_dir`, keyed by platform.
+
+    Returns {platform: {"chars", "bytes", "weighted"}}. Platforms whose
+    draft file is missing are omitted.
+    """
+    measured = {}
+    for platform, filename in DRAFT_FILENAME.items():
+        path = os.path.join(drafts_dir, filename)
+        if not os.path.isfile(path):
+            continue
+        measured[platform] = measure_draft(path)
+    return measured
+
+
+def cmd_measure(args):
+    """Print the measured size of each draft in a drafts directory.
+
+    This is the source of truth for the `draftChars` / `draftBytes`
+    frontmatter fields. Measuring them here -- with the same `_read_text`
+    and `x_weighted_length` the publisher itself uses -- is what keeps the
+    recorded numbers from drifting away from the numbers the caps are
+    enforced against.
+    """
+    measured = measure_drafts(args.drafts_dir)
+    if args.json:
+        print(json.dumps(measured, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        for platform in sorted(measured):
+            m = measured[platform]
+            limit = PLATFORM_CAP[platform]
+            print("%-9s chars=%-5d bytes=%-5d weighted=%-5d cap=%d" % (
+                platform, m["chars"], m["bytes"], m["weighted"], limit))
+    return 0 if measured else 2
+
+
 def _has_url(text):
     """True if the draft contains a URL (X charges $0.200 for URL posts vs
     $0.015 for URL-free ones)."""
@@ -1681,6 +1742,9 @@ def main(argv=None):
                          help="sha256 of the article body, for cross-draft dedup")
     weight = sub.add_parser("weight")
     weight.add_argument("--text-file", required=True)
+    measure = sub.add_parser("measure")
+    measure.add_argument("--drafts-dir", dest="drafts_dir", required=True)
+    measure.add_argument("--json", dest="json", action="store_true")
     sub.add_parser("credits")
     threads = sub.add_parser("publish-threads")
     threads.add_argument("--text-file", required=True)
@@ -1706,6 +1770,7 @@ def main(argv=None):
                "timeline": cmd_timeline,
                "dupcheck": cmd_dupcheck,
                "weight": cmd_weight,
+               "measure": cmd_measure,
                "credits": cmd_credits,
                "publish-x": cmd_publish_x,
                "publish-threads": cmd_publish_threads,

@@ -7,12 +7,15 @@ request shape (method, URL, headers, body) can be asserted.
 Run: python3 tools/test_sns_publish.py
 """
 
+import argparse
 import ast
+import io
 import json
 import os
 import re
 import sys
 import unittest
+from contextlib import redirect_stdout
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -824,6 +827,156 @@ class TestFrontmatterTool(unittest.TestCase):
         self.assertEqual(sf.body_sha256(after), digest)
         self.assertEqual(len(sf.split_document(after)[3]), length)
         self.assertNotEqual(digest, "e3b0c442" + "98fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+
+
+class TestDraftMeasurement(unittest.TestCase):
+    """`measure` must report CHARACTERS and BYTES as different numbers.
+
+    The bug this pins: the syndication frontmatter recorded the UTF-8 BYTE
+    count under `draftChars` (LinkedIn: "1311자" for a draft that is 599
+    characters / 1310 bytes), because nothing in the pipeline measured the
+    drafts -- the payload was hand-written each fire and the two counts
+    were copied from the wrong field.
+    """
+
+    KOREAN = "오늘의 운세, 어떻게 봐야 적당할까 — 운세 활용의 건강한 자세"
+
+    def _drafts(self, tmp):
+        for name in sp.DRAFT_FILENAME.values():
+            with open(os.path.join(tmp, name), "w", encoding="utf-8") as fh:
+                fh.write(self.KOREAN)
+        return tmp
+
+    def test_chars_and_bytes_are_distinct_for_non_ascii(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            measured = sp.measure_drafts(self._drafts(tmp))
+        self.assertEqual(measured["linkedin"]["chars"], len(self.KOREAN))
+        self.assertEqual(measured["linkedin"]["bytes"],
+                         len(self.KOREAN.encode("utf-8")))
+        self.assertGreater(measured["linkedin"]["bytes"],
+                           measured["linkedin"]["chars"])
+
+    def test_measure_draft_reads_the_text_the_publisher_would_send(self):
+        """The counts must describe the STRIPPED text (no trailing newline).
+
+        The publisher sends `_read_text(...)`, so a draft file with a
+        trailing newline must not inflate the recorded size by one byte.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "d.txt")
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write(self.KOREAN + "\n")
+            measured = sp.measure_draft(path)
+        self.assertEqual(measured["chars"], len(self.KOREAN))
+        self.assertEqual(measured["bytes"], len(self.KOREAN.encode("utf-8")))
+
+    def test_measure_drafts_covers_every_platform(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            measured = sp.measure_drafts(self._drafts(tmp))
+        self.assertEqual(set(measured), set(sp.DRAFT_FILENAME))
+
+    def test_measure_drafts_omits_a_missing_draft(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            measured = sp.measure_drafts(tmp)
+        self.assertEqual(measured, {})
+
+    def test_cmd_measure_json_is_machine_readable(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._drafts(tmp)
+            ns = argparse.Namespace(drafts_dir=tmp, json=True)
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                code = sp.cmd_measure(ns)
+            payload = json.loads(buf.getvalue())
+        self.assertEqual(code, 0)
+        self.assertEqual(payload["x"]["chars"], len(self.KOREAN))
+
+
+class TestSyndicationCardCounts(unittest.TestCase):
+    """The public card must render draft counts as CHARACTERS.
+
+    Two defects met here:
+      1. the whole counts line was gated on `t.draft` -- a local
+         `.hermes/` path that is gitignored and therefore never deployed,
+         so removing it silently removed EVERY count from the public page;
+      2. the renderer appended "자" to a value that already ended in "자",
+         which renders as "475자자" (the template was always right; the
+         DATA carried the unit, so the data must be bare integers).
+    """
+
+    REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    PAGE = os.path.join(REPO, "src", "pages", "syndication", "[slug].astro")
+
+    def _source(self):
+        with open(self.PAGE, encoding="utf-8") as fh:
+            return fh.read()
+
+    @staticmethod
+    def _block_after(source, marker):
+        """Return the text of the balanced (...) group that follows marker."""
+        start = source.find(marker)
+        if start == -1:
+            return None
+        depth = 0
+        for index in range(start + len(marker) - 1, len(source)):
+            char = source[index]
+            if char == "(":
+                depth += 1
+            elif char == ")":
+                depth -= 1
+                if depth == 0:
+                    return source[start:index + 1]
+        return None
+
+    def test_the_counts_line_is_not_gated_on_the_draft_path(self):
+        """A missing `draft` path must not hide the counts.
+
+        `.hermes/` is gitignored, so no deployed page ever has a `draft`
+        path -- gating the counts on it emptied the public card.
+        """
+        source = self._source()
+        draft_block = self._block_after(source, "t.draft && (")
+        self.assertIsNotNone(draft_block, "the draft path block should exist")
+        assert draft_block is not None
+        self.assertNotIn(
+            "draftChars", draft_block,
+            "the counts must not live inside the t.draft gate")
+        self.assertNotIn(
+            "draftBytes", draft_block,
+            "the counts must not live inside the t.draft gate")
+        self.assertRegex(
+            source, r"\(t\.draftChars\s*\|\|\s*t\.draftBytes\)\s*&&\s*\(",
+            "the counts line must render whenever draftChars/draftBytes exist")
+
+    def test_the_renderer_appends_the_unit_exactly_once(self):
+        """`draftChars` is a bare integer; the renderer adds the unit.
+
+        The old data ("475자") plus the template's own suffix produced
+        "475자자". The template appends one unit to a bare value, and the
+        schema/writer refuse a value that already carries one.
+        """
+        source = self._source()
+        self.assertEqual(
+            source.count("{t.draftChars}자"), 1,
+            "the character unit must be appended exactly once")
+        self.assertEqual(
+            source.count("{t.draftBytes}B"), 1,
+            "the byte unit must be appended exactly once")
+
+    def test_the_content_schema_requires_bare_integers(self):
+        """The build must reject a unit-suffixed or composite count."""
+        path = os.path.join(self.REPO, "src", "content.config.ts")
+        with open(path, encoding="utf-8") as fh:
+            source = fh.read()
+        for field in ("draftChars", "draftBytes"):
+            self.assertRegex(
+                source, r"%s:\s*z\.string\(\)\.regex\(/\^\[0-9\]\+\$/\)\.optional\(\)" % field,
+                "%s must be constrained to bare integers in the content schema" % field)
 
 
 if __name__ == "__main__":

@@ -426,6 +426,74 @@ class KeepHistoryTest(unittest.TestCase):
             self.assertLessEqual(len(history), 3)
 
 
+class DraftCountFormatTest(unittest.TestCase):
+    """`draftChars` / `draftBytes` must be BARE INTEGERS.
+
+    The syndication frontmatter recorded the UTF-8 BYTE count under
+    `draftChars` (LinkedIn "1311자" for a 599-character draft), and the
+    renderer appended its own "자" suffix on top of the value's. The
+    writer now refuses both shapes before they can reach the article.
+    """
+
+    def _block(self, target):
+        return {
+            "attemptedAt": "2026-10-24T14:30:24Z",
+            "worker": "reviewer/minimax-M3",
+            "targets": [target],
+        }
+
+    def test_a_bare_integer_count_is_accepted(self):
+        sf.validate_syndication(self._block({
+            "platform": "linkedin", "status": "skipped",
+            "draftChars": "599", "draftBytes": "1310",
+        }))
+
+    def test_a_unit_suffixed_count_is_refused(self):
+        """'475자' would render as '475자자'."""
+        with self.assertRaises(sf.FrontmatterError) as ctx:
+            sf.validate_syndication(self._block({
+                "platform": "threads", "status": "skipped",
+                "draftChars": "475자",
+            }))
+        self.assertIn("bare integer", str(ctx.exception))
+
+    def test_a_composite_weighted_count_is_refused(self):
+        """'214/280 weighted (raw 178자)' is not a count."""
+        with self.assertRaises(sf.FrontmatterError):
+            sf.validate_syndication(self._block({
+                "platform": "x", "status": "pending",
+                "draftChars": "214/280 weighted (raw 178자)",
+            }))
+
+    def test_a_non_numeric_count_is_refused(self):
+        for value in ("", "abc", "59 9", "599.0", "-1"):
+            with self.assertRaises(sf.FrontmatterError):
+                sf.validate_syndication(self._block({
+                    "platform": "linkedin", "status": "skipped",
+                    "draftChars": value,
+                }))
+
+    def test_the_writer_refuses_a_bad_payload_and_writes_nothing(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            post = os.path.join(tmp, "post.md")
+            with open(post, "w", encoding="utf-8") as fh:
+                fh.write(NEW_POST)
+            payload = os.path.join(tmp, "payload.json")
+            with open(payload, "w", encoding="utf-8") as fh:
+                json.dump(PAYLOAD, fh)
+            bad = json.loads(json.dumps(PAYLOAD))
+            bad["current"]["targets"][0]["draftChars"] = "214/280 weighted"
+            with open(payload, "w", encoding="utf-8") as fh:
+                json.dump(bad, fh)
+            before = open(post, encoding="utf-8").read()
+            code = sf.main(["record", "--post", post, "--payload", payload,
+                            "--ledger", os.path.join(tmp, "ledger.jsonl")])
+            after = open(post, encoding="utf-8").read()
+        self.assertEqual(code, 2)
+        self.assertEqual(before, after)
+
+
 class SchemaDriftTest(unittest.TestCase):
     """The writer's validator must not drift from src/content.config.ts."""
 
@@ -441,6 +509,23 @@ class SchemaDriftTest(unittest.TestCase):
 
         self.assertEqual(set(sf.PLATFORMS), _enum("platform"))
         self.assertEqual(set(sf.STATUSES), _enum("status"))
+
+    def test_the_draft_count_rule_matches_the_content_schema(self):
+        """The writer's bare-integer rule must match content.config.ts.
+
+        The writer refuses a unit-suffixed count; if the content schema
+        stopped requiring bare integers, a hand-edited article could put
+        "475자" back and the page would render "475자자".
+        """
+        path = os.path.join(REPO_ROOT, "src", "content.config.ts")
+        with open(path, encoding="utf-8") as fh:
+            source = fh.read()
+        for field in ("draftChars", "draftBytes"):
+            self.assertRegex(
+                source,
+                r"%s:\s*z\.string\(\)\.regex\(/\^\[0-9\]\+\$/\)\.optional\(\)" % field,
+                "%s must be constrained to bare integers in content.config.ts" % field)
+        self.assertEqual(sf.DRAFT_COUNT_RE.pattern, r"^[0-9]+$")
 
 
 if __name__ == "__main__":

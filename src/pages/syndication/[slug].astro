@@ -111,7 +111,12 @@ const postUrl = `${siteUrl}/blog/${post.id}/`;
           {t.draft && (
             <p class="meta">
               초안: <code>{t.draft}</code>
-              {t.draftChars && <> · {t.draftChars}자</>}
+            </p>
+          )}
+          {(t.draftChars || t.draftBytes) && (
+            <p class="meta">
+              초안 길이:{" "}
+              {t.draftChars && <>{t.draftChars}자</>}
               {t.draftBytes && <> · {t.draftBytes}B</>}
             </p>
           )}

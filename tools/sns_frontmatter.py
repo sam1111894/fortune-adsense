@@ -79,6 +79,15 @@ FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n?", re.S)
 PLATFORMS = ("x", "threads", "linkedin", "dev.to")
 STATUSES = ("pending", "skipped", "published")
 
+# The draft size fields must be BARE INTEGERS (no unit suffix, no
+# "214/280 weighted (raw 178자)" composite). The renderer appends the
+# unit itself, so a value that already carries one renders as "475자자",
+# and a BYTE count labelled as a character count misreports the draft's
+# size (Korean text is 3 UTF-8 bytes per character). src/content.config.ts
+# enforces the same rule at build time; SchemaDriftTest keeps the two in
+# sync.
+DRAFT_COUNT_RE = re.compile(r"^[0-9]+$")
+
 
 class FrontmatterError(Exception):
     """Raised for malformed input or a refused write."""
@@ -225,6 +234,16 @@ def validate_syndication(syndication: dict) -> None:
         for optional in ("reason", "draft", "draftChars", "draftBytes"):
             if optional in target and not isinstance(target[optional], str):
                 raise FrontmatterError("targets[].%s must be a string" % optional)
+        # The draft size fields must be BARE INTEGERS. The renderer appends
+        # the unit itself, so a value that already carries one renders as
+        # "475자자"; and a byte count labelled as a character count
+        # misreports the size (Korean text is 3 UTF-8 bytes per char).
+        # src/content.config.ts enforces the same rule at build time.
+        for numeric in ("draftChars", "draftBytes"):
+            if numeric in target and not DRAFT_COUNT_RE.match(target[numeric]):
+                raise FrontmatterError(
+                    "targets[].%s must be a bare integer string (no unit "
+                    "suffix, no composite) -- got %r" % (numeric, target[numeric]))
         if "url" in target:
             if not isinstance(target["url"], str) or not _is_url(target["url"]):
                 raise FrontmatterError("targets[].url must be a valid http(s) URL")

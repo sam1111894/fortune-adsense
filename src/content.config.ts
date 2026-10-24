@@ -7,8 +7,13 @@ const syndicationTarget = z.object({
   reason: z.string().optional(),
   url: z.string().url().optional(),
   draft: z.string().optional(),
-  draftChars: z.string().optional(),
-  draftBytes: z.string().optional(),
+  // Bare integers ONLY. The renderer appends the unit, so a value that
+  // already carries one ("475자") renders as "475자자"; and a BYTE count
+  // labelled as a character count misreports the draft size (Korean text
+  // is 3 UTF-8 bytes per character). Measured by
+  // `tools/sns_publish.py measure --drafts-dir <dir>`.
+  draftChars: z.string().regex(/^[0-9]+$/).optional(),
+  draftBytes: z.string().regex(/^[0-9]+$/).optional(),
 });
 
 const syndication = z.object({
