@@ -7,13 +7,13 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-24T20:49:57Z'
+  attemptedAt: '2026-10-24T22:30:57Z'
   worker: reviewer/minimax-M3
   cronExit: 3
   exitCode: 3
   stdout: '[recovered] X weighted length: 214/280 (raw 178 chars) / PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD (no billable POST attempted) / [SKIP] Threads token 없음 / [SKIP] LinkedIn token 없음 / [SKIP] dev.to token 없음 / === publish summary === published=0 blocked=1 skipped=3 failed=0 / exit 3
 
-    [recovered] cron run 72be0556 (2026-10-24T20:49:57Z) executed publish-all against the drafts it had just written (.hermes/cron-drafts/2026-10-24T20-50-11Z/) -> published=0 blocked=1 skipped=3 failed=0, exit 3; receipt store 0 records; baseline suite Ran 188 tests OK
+    [recovered] cron run a3f2d0fc (2026-10-24T22:30:57Z) executed publish-all against the previous run''s byte-identical drafts (.hermes/cron-drafts/2026-10-24T20-50-11Z/, SHA-256 identical to fire195) -> published=0 blocked=1 skipped=3 failed=0, exit 3; receipt store 0 records; the port work was still uncommitted and NOT yet connected to the publisher
 
     NOTE: the interrupted run did not capture its verbatim publish-all stdout; this summary is reconstructed from its cron output file.'
   skipCount: 3
@@ -24,7 +24,7 @@ syndication:
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   lastSelfTriggerNote: 'fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
-  publishPayload: /Users/gurumi/HermesPractice/reviewer/fortune-adsense/.hermes/cron-drafts/2026-10-24T20-50-11Z/publish-payload-fire196.json
+  publishPayload: /Users/gurumi/HermesPractice/reviewer/fortune-adsense/.hermes/cron-drafts/2026-10-24T20-50-11Z/publish-payload-fire197.json
   publishScript: .hermes/cron-drafts/2026-10-07T04-43-32Z/publish.sh
   lastAttempt: '2026-10-24T05:18:00Z'
   publishPending: true
@@ -53,45 +53,12 @@ syndication:
     platform: dev.to
     reason: token 없음
     status: skipped
-  cronOutput: 2026-10-25_06-30-23.md
-  cronRunId: 72be0556b30942fa9e835f05196ec9e6
+  cronOutput: 2026-10-25_08-11-09.md
+  cronRunId: a3f2d0fc37ea43689b7f04b9e02971b8
   recovered: true
   recoveredBy: cron run bb610199e13c4809a652fa59b6e501b3
   timestampSource: cron run start time from `hermes cron runs` - the run died before it could record its own attempt timestamp
   history:
-  - attemptedAt: '2026-10-24T17:42:21Z'
-    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-    blog: daily-fortune-healthy-mindset
-    bodyChars: 3996
-    bodySha256: 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae
-    cronExit: 3
-    draftBytes:
-      dev.to: 1977
-      linkedin: 1310
-      threads: 474
-      x: 327
-    draftChars:
-      dev.to: 1969
-      linkedin: 599
-      threads: 241
-      x: 178
-    draftLimits:
-      dev.to: '2000'
-      linkedin: '1000'
-      threads: '500'
-      x: 280 weighted
-    draftWeighted:
-      x: 214
-    draftsDir: .hermes/cron-drafts/2026-10-24T17-42-01Z/
-    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
-    exitCode: 3
-    fire: 194
-    note: 'RETRY of the fire193 pending publish on daily-fortune-healthy-mindset (body unchanged 0fdd3165...ace71dae -> no new content, no re-synthesis; all 4 drafts byte-identical to fire193 by SHA-256). REAL publish-all executed against the live publisher (tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-24T17-42-01Z/ --content-sha 0fdd3165...ace71dae --devto-title ''How to Read Your Daily Fortune Without Letting It Run Your Life'' --devto-tags self-improvement,mental-health,mindfulness,korean-culture --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/): published=0 blocked=1 skipped=3 failed=0, exit 3. X PUBLISH BLOCKED by the credit pre-flight: live GET /2/usage/credits HTTP 200 total_balance=0.000 USD (prepaid 0.000, free 0.000, free_grants 0), so NOT even the 0.015 USD no-URL tier is affordable; the gate correctly prevented a billable POST before any write. NO tweet created (statuses_count=0); the durable publish-receipt store is still 0 records, which is the CORRECT behaviour for a credit-blocked attempt. Threads/LinkedIn/dev.to [SKIP]: THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY are genuinely missing (live ''sns_publish.py status'' -> x USABLE, threads/linkedin/dev.to UNUSABLE, each key missing; also absent from project .env, reviewer-profile .env and global ~/.hermes/.env). DUP-GUARD consulted before publishing (free): v2 timeline read HTTP 402 (metered) -> free fallback statuses_count=0 -> VERDICT ''NO DUPLICATE POSSIBLE''. THIS FIRE FIXED TWO PIPELINE DEFECTS IN THE MEASUREMENT CONTRACT. (1) ''measure --json'' DROPPED THE CAP METRIC: the TEXT output reported used=/cap=/metric= per platform but the JSON output -- the one a payload builder actually consumes -- carried only the raw sizes (chars/bytes/weighted). Its own docstring promised a ''used'' field (''the number the platform''s cap is actually compared against'') that the JSON output did not contain, so a builder reading JSON had to RE-DERIVE which number the cap is compared against: exactly the guess that produced the original ''178 of 280'' defect, now one layer down. FIX: a new measure_records() attaches used/cap/metric to every measurement, and BOTH output formats are rendered from it, so the JSON and text can no longer disagree. (2) ''draftWeighted'' WAS NOT SCOPED TO THE PLATFORM WHOSE CAP IS WEIGHTED: nothing stopped a weighted count from being recorded for threads/linkedin/dev.to, whose caps are plain CHARACTER caps -- the card would then read ''ga-jung 319/280'' for a Threads draft whose real cap is 500 characters, a FALSE claim that a comfortably-fitting draft busts its limit; and an x target was allowed to record its size WITHOUT the weighted count, reintroducing the raw-character-count-next-to-a-weighted-limit understatement. FIX: src/content.config.ts now .refine()s each target (draftWeighted REQUIRED for x whenever the size is recorded, FORBIDDEN for the other three) and tools/sns_frontmatter.py enforces the identical rule before writing. VERIFIED: the real ''npm run build'' rejects a threads target carrying draftWeighted with InvalidContentEntryDataError, and accepts the correct payload (49 pages built); zod 4''s .refine() preserves .shape so Astro''s type inference is unaffected. 12 new regression tests, each verified to FAIL against a SYNTAX-VALID reintroduction of the defect (6 targeted failures for the JSON gap, 2 for the platform scope); suite 158 -> 170, all passing. TO UNBLOCK: console.x.com top-up (minimum purchase 5 USD; URL tier 0.200 USD), or supply THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY.'
-    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-    publishPending: true
-    skipCount: 3
-    skipTotal: 4
-    worker: reviewer/minimax-M3
   - attemptedAt: '2026-10-24T19:43:25Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
     blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
@@ -153,6 +120,54 @@ syndication:
     stdout: '[recovered] X weighted length: 214/280 (raw 178 chars) / PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD (no billable POST attempted) / [SKIP] Threads token 없음 / [SKIP] LinkedIn token 없음 / [SKIP] dev.to token 없음 / === publish summary === published=0 blocked=1 skipped=3 failed=0 / exit 3
 
       [recovered] cron run 72be0556 (2026-10-24T20:49:57Z) executed publish-all against the drafts it had just written (.hermes/cron-drafts/2026-10-24T20-50-11Z/) -> published=0 blocked=1 skipped=3 failed=0, exit 3; receipt store 0 records; baseline suite Ran 188 tests OK
+
+      NOTE: the interrupted run did not capture its verbatim publish-all stdout; this summary is reconstructed from its cron output file.'
+    targets:
+    - draftBytes: '327'
+      draftChars: '178'
+      draftWeighted: '214'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '474'
+      draftChars: '241'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1310'
+      draftChars: '599'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1977'
+      draftChars: '1969'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    timestampSource: cron run start time from `hermes cron runs` - the run died before it could record its own attempt timestamp
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-24T22:30:57Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    cronExit: 3
+    cronOutput: 2026-10-25_08-11-09.md
+    cronRunId: a3f2d0fc37ea43689b7f04b9e02971b8
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 197
+    lastMutatedBy: reviewer/minimax-M3
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: /Users/gurumi/HermesPractice/reviewer/fortune-adsense/.hermes/cron-drafts/2026-10-24T20-50-11Z/publish-payload-fire197.json
+    publishPending: true
+    recovered: true
+    recoveredBy: cron run bb610199e13c4809a652fa59b6e501b3
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    skipCount: 3
+    skipTotal: 4
+    stdout: '[recovered] X weighted length: 214/280 (raw 178 chars) / PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD (no billable POST attempted) / [SKIP] Threads token 없음 / [SKIP] LinkedIn token 없음 / [SKIP] dev.to token 없음 / === publish summary === published=0 blocked=1 skipped=3 failed=0 / exit 3
+
+      [recovered] cron run a3f2d0fc (2026-10-24T22:30:57Z) executed publish-all against the previous run''s byte-identical drafts (.hermes/cron-drafts/2026-10-24T20-50-11Z/, SHA-256 identical to fire195) -> published=0 blocked=1 skipped=3 failed=0, exit 3; receipt store 0 records; the port work was still uncommitted and NOT yet connected to the publisher
 
       NOTE: the interrupted run did not capture its verbatim publish-all stdout; this summary is reconstructed from its cron output file.'
     targets:
