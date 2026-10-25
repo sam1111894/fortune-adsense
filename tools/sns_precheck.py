@@ -217,16 +217,53 @@ def select_target(posts, known, pending):
     pending and (b) whose body has NOT changed since that attempt: a
     changed body is new content, not a retry of the old attempt.
 
+    WHY THE NEW-CONTENT TEST MUST ALSO SPAN EVERY POST
+    ---------------------------------------------------
+    The mtime bump has a SECOND and worse consequence. The new-content
+    test used to run on `posts[0]` alone, so a post the ledger had NEVER
+    seen was eligible only while it happened to be the newest file on
+    disk. But the post that was syndicated last is normally the newest
+    one -- its own frontmatter rewrite bumped the mtime -- so that one
+    post held the "new content" slot permanently. Every OTHER post that
+    had never been attempted was in neither the new-content test nor the
+    pending map, so it could NEVER be selected at all.
+
+    On this repo 10 of the 11 posts were in exactly that state: no
+    ledger row, no pending flag, no path to being published. The
+    pipeline could only ever work on the one post it had touched.
+
+    So the new-content test now runs over EVERY post: a post whose body
+    hash the ledger has never seen (or has seen differently) needs a
+    (re)synthesis, wherever it sits in the mtime order.
+
     The oldest outstanding attempt is retried first, so when several
-    posts are pending none of them starves behind another.
+    posts are pending none of them starves behind another, and genuinely
+    new content still wins over an older retry.
 
     Returns a dict with the decision, the selected post (`target`), the
-    newest post (`latest`) and the full retry-candidate list.
+    newest post (`latest`) and the full candidate lists.
     """
     latest = posts[0] if posts else None
     is_new = None
     if latest:
         is_new = known.get(latest["slug"]) != latest["bodySha256"]
+
+    # New content = the ledger has never seen this body, or has seen a
+    # DIFFERENT one (the user edited the post). Collected across EVERY
+    # post, not just the newest: a never-attempted post that sits below
+    # the newest one is still work the pipeline has never done.
+    #
+    # Sorted HERE rather than inherited from the caller's ordering, so the
+    # function picks the newest such post regardless of how `posts` was
+    # arranged.
+    new_candidates = sorted(
+        [
+            post for post in posts
+            if known.get(post["slug"]) != post["bodySha256"]
+        ],
+        key=lambda post: (post["mtime"], post.get("file", "")),
+        reverse=True,
+    )
 
     retry_candidates = [
         post for post in posts
@@ -237,11 +274,12 @@ def select_target(posts, known, pending):
         key=lambda post: (pending[post["slug"]].get("ts") or "", post["slug"])
     )
 
-    if latest is not None and is_new:
-        # The newest post carries content the ledger has never seen:
-        # that is new work, and it wins over retrying an older attempt.
+    if new_candidates:
+        # Content the ledger has never seen is new work, and it wins
+        # over retrying an older attempt. `posts` is newest-mtime first,
+        # so the most recently written such post is picked.
         decision = "SYNTHESIZE"
-        target = latest
+        target = new_candidates[0]
     elif retry_candidates:
         # Body unchanged, but the previous publish never completed
         # (platform credit / outage). Retry the publish instead of
@@ -257,6 +295,11 @@ def select_target(posts, known, pending):
         "target": target,
         "latest": latest,
         "latestIsNewContent": is_new,
+        "targetIsNewContent": bool(
+            target is not None
+            and known.get(target["slug"]) != target["bodySha256"]
+        ),
+        "newCandidates": new_candidates,
         "retryCandidates": retry_candidates,
     }
 
@@ -312,8 +355,10 @@ def main() -> int:
         "postCount": len(posts),
         "latest": latest,
         "target": target,
+        "newCandidateSlugs": [p["slug"] for p in selection["newCandidates"]],
         "retryCandidateSlugs": [p["slug"] for p in selection["retryCandidates"]],
         "latestIsNewContent": is_new,
+        "targetIsNewContent": selection["targetIsNewContent"],
         "retryPendingPublish": retry_pending,
         "pendingDetail": pending.get(target["slug"]) if target else None,
         "ledgerKnownHashes": known,

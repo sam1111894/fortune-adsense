@@ -230,6 +230,92 @@ class TestSelectTarget(unittest.TestCase):
         self.assertEqual(selection["decision"], "NO_NEW_POST")
         self.assertIsNone(selection["target"])
 
+    def test_never_attempted_post_below_the_newest_is_reachable(self):
+        """THE DEFECT: a post the ledger has NEVER seen must still be
+        selectable, even when it is not the newest file on disk.
+
+        Recording an attempt rewrites the article's frontmatter and so
+        BUMPS ITS MTIME. The post published last is therefore normally
+        the newest on disk, and the old code tested ONLY `posts[0]` for
+        new content. Every other never-attempted post was in neither the
+        new-content test nor the pending map, so it could NEVER be
+        selected -- the pipeline could only ever work on the one post it
+        had already touched.
+        """
+        posts = [
+            self._post("touched-post", "sha-touched", 300.0),
+            self._post("never-seen-post", "sha-never-seen", 200.0),
+            self._post("also-never-seen", "sha-also-never", 100.0),
+        ]
+        known = {"touched-post": "sha-touched"}
+        pending = {"touched-post": {"blockedBy": "credit", "outcome": "X",
+                                    "ts": "2026-10-25T00:00:00Z"}}
+        selection = pre.select_target(posts, known, pending)
+        self.assertEqual(selection["decision"], "SYNTHESIZE")
+        self.assertEqual(selection["target"]["slug"], "never-seen-post")
+        self.assertEqual(
+            sorted(p["slug"] for p in selection["newCandidates"]),
+            ["also-never-seen", "never-seen-post"])
+
+    def test_new_content_is_chosen_newest_first_across_all_posts(self):
+        """Among never-seen posts the newest one is picked first."""
+        posts = [
+            self._post("touched-post", "sha-touched", 300.0),
+            self._post("older-new", "sha-older", 100.0),
+            self._post("newer-new", "sha-newer", 200.0),
+        ]
+        known = {"touched-post": "sha-touched"}
+        selection = pre.select_target(posts, known, {})
+        self.assertEqual(selection["decision"], "SYNTHESIZE")
+        self.assertEqual(selection["target"]["slug"], "newer-new")
+
+    def test_edited_body_on_an_older_post_is_new_content(self):
+        """An edited post that is NOT the newest must still be picked."""
+        posts = [
+            self._post("newer-post", "sha-newer-unchanged", 300.0),
+            self._post("edited-post", "sha-edited", 100.0),
+        ]
+        known = {"newer-post": "sha-newer-unchanged", "edited-post": "sha-old"}
+        selection = pre.select_target(posts, known, {})
+        self.assertEqual(selection["decision"], "SYNTHESIZE")
+        self.assertEqual(selection["target"]["slug"], "edited-post")
+
+    def test_every_never_seen_post_eventually_becomes_reachable(self):
+        """No post starves: as each is recorded it leaves the candidate
+        set and the next one takes its place."""
+        posts = [
+            self._post("post-a", "sha-a", 300.0),
+            self._post("post-b", "sha-b", 200.0),
+            self._post("post-c", "sha-c", 100.0),
+        ]
+        known = {}
+        seen = []
+        for _ in range(3):
+            selection = pre.select_target(posts, known, {})
+            self.assertEqual(selection["decision"], "SYNTHESIZE")
+            target = selection["target"]["slug"]
+            seen.append(target)
+            known[target] = {"post-a": "sha-a", "post-b": "sha-b",
+                             "post-c": "sha-c"}[target]
+        self.assertEqual(sorted(seen), ["post-a", "post-b", "post-c"])
+        # And with everything known, the pipeline is idle.
+        selection = pre.select_target(posts, known, {})
+        self.assertEqual(selection["decision"], "NO_NEW_POST")
+
+    def test_pending_retry_still_wins_when_there_is_no_new_content(self):
+        """The fire206 fix must keep working: a pending publish is
+        retried when the ledger has seen every post's current body."""
+        posts = [
+            self._post("touched-post", "sha-touched", 300.0),
+            self._post("pending-post", "sha-pending", 100.0),
+        ]
+        known = {"touched-post": "sha-touched", "pending-post": "sha-pending"}
+        pending = {"pending-post": {"blockedBy": "credit", "outcome": "X",
+                                    "ts": "2026-10-25T00:00:00Z"}}
+        selection = pre.select_target(posts, known, pending)
+        self.assertEqual(selection["decision"], "RETRY_PENDING_PUBLISH")
+        self.assertEqual(selection["target"]["slug"], "pending-post")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

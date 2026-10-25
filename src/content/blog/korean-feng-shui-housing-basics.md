@@ -4,6 +4,109 @@ description: "풍수의 기본 원리, 명堂(明堂)·산(山)·수(水)·향(�
 pubDate: 2026-10-06
 tags: ["풍수", "주거", "인테리어", "한국전통문화"]
 author: "오늘의 운세 편집팀"
+syndication:
+  attemptedAt: '2026-10-25T13:56:24Z'
+  blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+  blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+  codeCommit: c052f22 (the tree this fire published with; includes the fire206 frontmatter + PROGRESS.log commits)
+  cronExit: 3
+  cronOutput: cron run f99460ca (this run; the cron runner writes its output file after this response)
+  cronRunId: f99460caef4446db9f85e90e4fa7e00f
+  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  exitCode: 3
+  lastAttempt: '2026-10-25T13:56:24Z'
+  lastMutatedBy: reviewer/minimax-M3
+  lastSelfTriggerNote: 'RESOLVED at fire206 and unchanged since: the post body sha256 0fdd3165...ace71dae has been unchanged since 2026-10-09 (c437e57) and every commit since then only grew the syndication block, so body-hash detection correctly reports latestIsNewContent=false for daily-fortune-healthy-mindset. No self-trigger occurred and none was suppressed.'
+  outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+  publishPayload: .hermes/cron-drafts/2026-10-25T13-52-10Z/publish-payload.json
+  publishPending: true
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T13-52-10Z/ --content-sha cda1e7a6b05261d7ec18b046b7c75a55a43e78180eeb985bf1a59b6e334d97b0 --devto-title ''Korean Feng Shui Basics: Reading the Flow of Qi in Modern Interiors'' --devto-tags ''feng-shui,korean-culture,interior-design,home'' --devto-canonical-url https://lucksajueun.com/blog/korean-feng-shui-housing-basics/'
+  recovered: false
+  recoveredBy: n/a - fire207 was a normal scheduled run; fire206 completed and recorded itself
+  recoveredFires: []
+  selfTriggerSuppressed: false
+  setupTokenGuide: bash tools/setup-sns-tokens.sh
+  setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+  skipCount: 3
+  skipTotal: 4
+  stdout: "X weighted length: 233/280 (raw 190자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+  targets:
+  - draftBytes: '357'
+    draftChars: '190'
+    draftWeighted: '233'
+    platform: x
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    status: pending
+  - draftBytes: '657'
+    draftChars: '323'
+    platform: threads
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1437'
+    draftChars: '656'
+    platform: linkedin
+    reason: token 없음
+    status: skipped
+  - draftBytes: '2027'
+    draftChars: '1995'
+    platform: dev.to
+    reason: token 없음
+    status: skipped
+  testSuite: npm test exit 0 (Ran 219 tests, OK) - 214 pre-existing + 5 new regression tests for the never-attempted-post selection fix
+  timestampSource: date -u at the moment of the publish attempt (2026-10-25T13:56:24Z)
+  worker: reviewer/minimax-M3
+  history:
+  - attemptedAt: '2026-10-25T13:56:24Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    codeCommit: c052f22 (the tree this fire published with; includes the fire206 frontmatter + PROGRESS.log commits)
+    cronExit: 3
+    cronOutput: cron run f99460ca (this run; the cron runner writes its output file after this response)
+    cronRunId: f99460caef4446db9f85e90e4fa7e00f
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 207
+    lastAttempt: '2026-10-25T13:56:24Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'RESOLVED at fire206 and unchanged since: the post body sha256 0fdd3165...ace71dae has been unchanged since 2026-10-09 (c437e57) and every commit since then only grew the syndication block, so body-hash detection correctly reports latestIsNewContent=false for daily-fortune-healthy-mindset. No self-trigger occurred and none was suppressed.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-25T13-52-10Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T13-52-10Z/ --content-sha cda1e7a6b05261d7ec18b046b7c75a55a43e78180eeb985bf1a59b6e334d97b0 --devto-title ''Korean Feng Shui Basics: Reading the Flow of Qi in Modern Interiors'' --devto-tags ''feng-shui,korean-culture,interior-design,home'' --devto-canonical-url https://lucksajueun.com/blog/korean-feng-shui-housing-basics/'
+    recovered: false
+    recoveredBy: n/a - fire207 was a normal scheduled run; fire206 completed and recorded itself
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 233/280 (raw 190자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+    targets:
+    - draftBytes: '357'
+      draftChars: '190'
+      draftWeighted: '233'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '657'
+      draftChars: '323'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1437'
+      draftChars: '656'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2027'
+      draftChars: '1995'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 214 pre-existing + 5 new regression tests for the never-attempted-post selection fix
+    timestampSource: date -u at the moment of the publish attempt (2026-10-25T13:56:24Z)
+    worker: reviewer/minimax-M3
 ---
 
 # 주거 풍수의 기본 — 한국 전통 풍수와 현대 인테리어의 만남
