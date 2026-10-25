@@ -4,6 +4,109 @@ description: "한국 운세 문화의 역사, 고려·조선시대의 명리학 
 pubDate: 2026-10-06
 tags: ["한국전통문화", "운세역사", "고려", "조선"]
 author: "오늘의 운세 편집팀"
+syndication:
+  attemptedAt: '2026-10-25T17:52:09Z'
+  blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+  blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+  codeCommit: 0b4d3e7 (the tree this fire published with; includes the fire209 frontmatter + PROGRESS.log commits)
+  cronExit: 3
+  cronOutput: cron run bef94e76 (this run; the cron runner writes its output file after this response)
+  cronRunId: bef94e76f77042a89ccea6989767520f
+  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  exitCode: 3
+  lastAttempt: '2026-10-25T17:52:09Z'
+  lastMutatedBy: reviewer/minimax-M3
+  lastSelfTriggerNote: 'No self-trigger in fire210: korean-fortune-history-goryeo-josun is a FIRST syndication attempt (the ledger had never seen body sha256 7f4498ad...161e), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The four earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide) all keep their OWN fire206/207/208/209 timestamps and were NOT touched by this fire.'
+  outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+  publishPayload: .hermes/cron-drafts/2026-10-25T17-45-00Z/publish-payload.json
+  publishPending: true
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T17-45-00Z/ --content-sha 7f4498ad543e430b792883f797d97b5706ae713b33c6460974d842ded464161e --devto-title ''Korea Fortune-Telling as State Policy: Goryeo, Joseon, and the Modern Era'' --devto-tags ''korean-culture,fortune-history,goryeo,joseon'' --devto-canonical-url https://lucksajueun.com/blog/korean-fortune-history-goryeo-josun/'
+  recovered: false
+  recoveredBy: n/a - fire210 was a normal scheduled run; fire209 completed and recorded itself
+  recoveredFires: []
+  selfTriggerSuppressed: false
+  setupTokenGuide: bash tools/setup-sns-tokens.sh
+  setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+  skipCount: 3
+  skipTotal: 4
+  stdout: "X weighted length: 219/280 (raw 189자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  targets:
+  - draftBytes: '338'
+    draftChars: '189'
+    draftWeighted: '219'
+    platform: x
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    status: pending
+  - draftBytes: '766'
+    draftChars: '360'
+    platform: threads
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1966'
+    draftChars: '851'
+    platform: linkedin
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1965'
+    draftChars: '1957'
+    platform: dev.to
+    reason: token 없음
+    status: skipped
+  testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+  timestampSource: date -u at the moment of the publish attempt (2026-10-25T17:52:09Z)
+  worker: reviewer/minimax-M3
+  history:
+  - attemptedAt: '2026-10-25T17:52:09Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    codeCommit: 0b4d3e7 (the tree this fire published with; includes the fire209 frontmatter + PROGRESS.log commits)
+    cronExit: 3
+    cronOutput: cron run bef94e76 (this run; the cron runner writes its output file after this response)
+    cronRunId: bef94e76f77042a89ccea6989767520f
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 210
+    lastAttempt: '2026-10-25T17:52:09Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire210: korean-fortune-history-goryeo-josun is a FIRST syndication attempt (the ledger had never seen body sha256 7f4498ad...161e), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The four earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide) all keep their OWN fire206/207/208/209 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-25T17-45-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T17-45-00Z/ --content-sha 7f4498ad543e430b792883f797d97b5706ae713b33c6460974d842ded464161e --devto-title ''Korea Fortune-Telling as State Policy: Goryeo, Joseon, and the Modern Era'' --devto-tags ''korean-culture,fortune-history,goryeo,joseon'' --devto-canonical-url https://lucksajueun.com/blog/korean-fortune-history-goryeo-josun/'
+    recovered: false
+    recoveredBy: n/a - fire210 was a normal scheduled run; fire209 completed and recorded itself
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 219/280 (raw 189자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '338'
+      draftChars: '189'
+      draftWeighted: '219'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '766'
+      draftChars: '360'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1966'
+      draftChars: '851'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1965'
+      draftChars: '1957'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: date -u at the moment of the publish attempt (2026-10-25T17:52:09Z)
+    worker: reviewer/minimax-M3
 ---
 
 # 한국 전통 운세 문화의 역사 — 고려·조선·근대까지의 흐름
