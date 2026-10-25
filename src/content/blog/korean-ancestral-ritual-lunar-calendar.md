@@ -5,16 +5,16 @@ pubDate: 2026-10-06
 tags: ["제사", "음력", "기신", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-25T15:08:10Z'
+  attemptedAt: '2026-10-25T15:15:30Z'
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-  codeCommit: e030998 (the tree this fire published with; includes the fire207 frontmatter + PROGRESS.log commits)
+  codeCommit: e53b06d (the tree this fire published with; includes the fire207 frontmatter + PROGRESS.log commits)
   cronExit: 3
   cronOutput: cron run a977806c (this run; the cron runner writes its output file after this response)
   cronRunId: a977806ca34e4173acd29ae12d11c86f
   dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
   exitCode: 3
-  lastAttempt: '2026-10-25T15:08:10Z'
+  lastAttempt: '2026-10-25T15:15:30Z'
   lastMutatedBy: reviewer/minimax-M3
   lastSelfTriggerNote: 'No self-trigger in fire208: korean-ancestral-ritual-lunar-calendar is a FIRST syndication attempt (the ledger had never seen body sha256 94114d0b...3623), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The fire206 resolution for daily-fortune-healthy-mindset (body sha256 0fdd3165...ace71dae unchanged since 2026-10-09) still holds and is unchanged.'
   outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
@@ -47,26 +47,26 @@ syndication:
     platform: linkedin
     reason: token 없음
     status: skipped
-  - draftBytes: '2017'
-    draftChars: '1989'
+  - draftBytes: '2009'
+    draftChars: '1981'
     platform: dev.to
     reason: token 없음
     status: skipped
   testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
-  timestampSource: date -u at the moment of the publish attempt (2026-10-25T15:08:10Z)
+  timestampSource: date -u at the moment of the publish attempt (2026-10-25T15:15:30Z)
   worker: reviewer/minimax-M3
   history:
-  - attemptedAt: '2026-10-25T15:08:10Z'
+  - attemptedAt: '2026-10-25T15:15:30Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
     blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-    codeCommit: e030998 (the tree this fire published with; includes the fire207 frontmatter + PROGRESS.log commits)
+    codeCommit: e53b06d (the tree this fire published with; includes the fire207 frontmatter + PROGRESS.log commits)
     cronExit: 3
     cronOutput: cron run a977806c (this run; the cron runner writes its output file after this response)
     cronRunId: a977806ca34e4173acd29ae12d11c86f
     dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
     exitCode: 3
     fire: 208
-    lastAttempt: '2026-10-25T15:08:10Z'
+    lastAttempt: '2026-10-25T15:15:30Z'
     lastMutatedBy: reviewer/minimax-M3
     lastSelfTriggerNote: 'No self-trigger in fire208: korean-ancestral-ritual-lunar-calendar is a FIRST syndication attempt (the ledger had never seen body sha256 94114d0b...3623), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The fire206 resolution for daily-fortune-healthy-mindset (body sha256 0fdd3165...ace71dae unchanged since 2026-10-09) still holds and is unchanged.'
     outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
@@ -99,13 +99,13 @@ syndication:
       platform: linkedin
       reason: token 없음
       status: skipped
-    - draftBytes: '2017'
-      draftChars: '1989'
+    - draftBytes: '2009'
+      draftChars: '1981'
       platform: dev.to
       reason: token 없음
       status: skipped
     testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
-    timestampSource: date -u at the moment of the publish attempt (2026-10-25T15:08:10Z)
+    timestampSource: date -u at the moment of the publish attempt (2026-10-25T15:15:30Z)
     worker: reviewer/minimax-M3
 ---
 
