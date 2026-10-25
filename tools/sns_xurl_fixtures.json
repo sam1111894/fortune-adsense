@@ -1,0 +1,1016 @@
+[
+ {
+  "text": "https://lucksajueun.com/blog/daily-fortune-healthy-mindset/",
+  "urls": [
+   "https://lucksajueun.com/blog/daily-fortune-healthy-mindset/"
+  ],
+  "indices": [
+   [
+    0,
+    59
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "http://example.com",
+  "urls": [
+   "http://example.com"
+  ],
+  "indices": [
+   [
+    0,
+    18
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "HTTPS://EXAMPLE.COM/PATH",
+  "urls": [
+   "HTTPS://EXAMPLE.COM/PATH"
+  ],
+  "indices": [
+   [
+    0,
+    24
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "hTtPs://x.com",
+  "urls": [
+   "hTtPs://x.com"
+  ],
+  "indices": [
+   [
+    0,
+    13
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "https://x.com/a?b=c#d",
+  "urls": [
+   "https://x.com/a?b=c#d"
+  ],
+  "indices": [
+   [
+    0,
+    21
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "https://x.co?q=1",
+  "urls": [
+   "https://x.co?q=1"
+  ],
+  "indices": [
+   [
+    0,
+    16
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "example.com",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    0,
+    11
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "lucksajueun.com/blog/foo",
+  "urls": [
+   "lucksajueun.com/blog/foo"
+  ],
+  "indices": [
+   [
+    0,
+    24
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "www.example.com",
+  "urls": [
+   "www.example.com"
+  ],
+  "indices": [
+   [
+    0,
+    15
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "a.com",
+  "urls": [
+   "a.com"
+  ],
+  "indices": [
+   [
+    0,
+    5
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "x.co",
+  "urls": [
+   "x.co"
+  ],
+  "indices": [
+   [
+    0,
+    4
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.bar",
+  "urls": [
+   "foo.bar"
+  ],
+  "indices": [
+   [
+    0,
+    7
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "sub.domain.example.com/path?q=1",
+  "urls": [
+   "sub.domain.example.com/path?q=1"
+  ],
+  "indices": [
+   [
+    0,
+    31
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.github.io",
+  "urls": [
+   "foo.github.io"
+  ],
+  "indices": [
+   [
+    0,
+    13
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "my-site.co.kr",
+  "urls": [
+   "my-site.co.kr"
+  ],
+  "indices": [
+   [
+    0,
+    13
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "not-a-url.de",
+  "urls": [
+   "not-a-url.de"
+  ],
+  "indices": [
+   [
+    0,
+    12
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "xn--fiqs8s.xn--0zwm56d",
+  "urls": [
+   "xn--fiqs8s.xn--0zwm56d"
+  ],
+  "indices": [
+   [
+    0,
+    22
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "Visit example.com now",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    6,
+    17
+   ]
+  ],
+  "weighted": 33
+ },
+ {
+  "text": "see foo.bar for details",
+  "urls": [
+   "foo.bar"
+  ],
+  "indices": [
+   [
+    4,
+    11
+   ]
+  ],
+  "weighted": 39
+ },
+ {
+  "text": "오늘의 운세는 lucksajueun.com 에서",
+  "urls": [
+   "lucksajueun.com"
+  ],
+  "indices": [
+   [
+    8,
+    23
+   ]
+  ],
+  "weighted": 42
+ },
+ {
+  "text": "오늘의 운세는 도구입니다",
+  "urls": [],
+  "indices": [],
+  "weighted": 24
+ },
+ {
+  "text": "no link here at all",
+  "urls": [],
+  "indices": [],
+  "weighted": 19
+ },
+ {
+  "text": "no url here",
+  "urls": [],
+  "indices": [],
+  "weighted": 11
+ },
+ {
+  "text": "",
+  "urls": [],
+  "indices": [],
+  "weighted": 0
+ },
+ {
+  "text": "file.txt",
+  "urls": [],
+  "indices": [],
+  "weighted": 8
+ },
+ {
+  "text": "version 1.2",
+  "urls": [],
+  "indices": [],
+  "weighted": 11
+ },
+ {
+  "text": "e.g. this",
+  "urls": [],
+  "indices": [],
+  "weighted": 9
+ },
+ {
+  "text": "Dr. Smith",
+  "urls": [],
+  "indices": [],
+  "weighted": 9
+ },
+ {
+  "text": "a.b",
+  "urls": [],
+  "indices": [],
+  "weighted": 3
+ },
+ {
+  "text": "test.",
+  "urls": [],
+  "indices": [],
+  "weighted": 5
+ },
+ {
+  "text": "my_site.com",
+  "urls": [],
+  "indices": [],
+  "weighted": 11
+ },
+ {
+  "text": "notatld.zzzzz",
+  "urls": [],
+  "indices": [],
+  "weighted": 13
+ },
+ {
+  "text": "a.zzzzz",
+  "urls": [],
+  "indices": [],
+  "weighted": 7
+ },
+ {
+  "text": "한국어.한국",
+  "urls": [],
+  "indices": [],
+  "weighted": 11
+ },
+ {
+  "text": "a.한국",
+  "urls": [
+   "a.한국"
+  ],
+  "indices": [
+   [
+    0,
+    4
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "한국.com",
+  "urls": [],
+  "indices": [],
+  "weighted": 8
+ },
+ {
+  "text": "http://한국.com",
+  "urls": [
+   "http://한국.com"
+  ],
+  "indices": [
+   [
+    0,
+    13
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "x.한국",
+  "urls": [
+   "x.한국"
+  ],
+  "indices": [
+   [
+    0,
+    4
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "a.b.한국",
+  "urls": [
+   "a.b.한국"
+  ],
+  "indices": [
+   [
+    0,
+    6
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.한국/path",
+  "urls": [
+   "foo.한국/path"
+  ],
+  "indices": [
+   [
+    0,
+    11
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "한국.a.com",
+  "urls": [
+   "a.com"
+  ],
+  "indices": [
+   [
+    3,
+    8
+   ]
+  ],
+  "weighted": 28
+ },
+ {
+  "text": "a.한국.com",
+  "urls": [
+   "a.한국"
+  ],
+  "indices": [
+   [
+    0,
+    4
+   ]
+  ],
+  "weighted": 27
+ },
+ {
+  "text": "example.com.",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    0,
+    11
+   ]
+  ],
+  "weighted": 24
+ },
+ {
+  "text": "example.com,",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    0,
+    11
+   ]
+  ],
+  "weighted": 24
+ },
+ {
+  "text": "(example.com)",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    1,
+    12
+   ]
+  ],
+  "weighted": 25
+ },
+ {
+  "text": "<example.com>",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    1,
+    12
+   ]
+  ],
+  "weighted": 25
+ },
+ {
+  "text": "\"example.com\"",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    1,
+    12
+   ]
+  ],
+  "weighted": 25
+ },
+ {
+  "text": "@example.com",
+  "urls": [],
+  "indices": [],
+  "weighted": 12
+ },
+ {
+  "text": "foo@example.com",
+  "urls": [],
+  "indices": [],
+  "weighted": 15
+ },
+ {
+  "text": "xexample.com",
+  "urls": [
+   "xexample.com"
+  ],
+  "indices": [
+   [
+    0,
+    12
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "Visit example.com.",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    6,
+    17
+   ]
+  ],
+  "weighted": 30
+ },
+ {
+  "text": "foo.bar/path.",
+  "urls": [
+   "foo.bar/path"
+  ],
+  "indices": [
+   [
+    0,
+    12
+   ]
+  ],
+  "weighted": 24
+ },
+ {
+  "text": "foo.bar/path,",
+  "urls": [
+   "foo.bar/path"
+  ],
+  "indices": [
+   [
+    0,
+    12
+   ]
+  ],
+  "weighted": 24
+ },
+ {
+  "text": "foo.bar/path)",
+  "urls": [
+   "foo.bar/path"
+  ],
+  "indices": [
+   [
+    0,
+    12
+   ]
+  ],
+  "weighted": 24
+ },
+ {
+  "text": "foo.bar/(x)",
+  "urls": [
+   "foo.bar/(x)"
+  ],
+  "indices": [
+   [
+    0,
+    11
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.bar/(x)y",
+  "urls": [
+   "foo.bar/(x)y"
+  ],
+  "indices": [
+   [
+    0,
+    12
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.bar/a.b",
+  "urls": [
+   "foo.bar/a.b"
+  ],
+  "indices": [
+   [
+    0,
+    11
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.bar:8080",
+  "urls": [
+   "foo.bar"
+  ],
+  "indices": [
+   [
+    0,
+    7
+   ]
+  ],
+  "weighted": 28
+ },
+ {
+  "text": "foo.bar:8080/",
+  "urls": [
+   "foo.bar:8080/"
+  ],
+  "indices": [
+   [
+    0,
+    13
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.bar?q=1",
+  "urls": [
+   "foo.bar"
+  ],
+  "indices": [
+   [
+    0,
+    7
+   ]
+  ],
+  "weighted": 27
+ },
+ {
+  "text": "foo.bar?q=1&r=2",
+  "urls": [
+   "foo.bar"
+  ],
+  "indices": [
+   [
+    0,
+    7
+   ]
+  ],
+  "weighted": 31
+ },
+ {
+  "text": "foo.bar/p?q=1#f",
+  "urls": [
+   "foo.bar/p?q=1#f"
+  ],
+  "indices": [
+   [
+    0,
+    15
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.bar/p#frag",
+  "urls": [
+   "foo.bar/p#frag"
+  ],
+  "indices": [
+   [
+    0,
+    14
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "foo.bar?",
+  "urls": [
+   "foo.bar"
+  ],
+  "indices": [
+   [
+    0,
+    7
+   ]
+  ],
+  "weighted": 24
+ },
+ {
+  "text": "foo.bar#x",
+  "urls": [
+   "foo.bar"
+  ],
+  "indices": [
+   [
+    0,
+    7
+   ]
+  ],
+  "weighted": 25
+ },
+ {
+  "text": "foo.bar/a b",
+  "urls": [
+   "foo.bar/a"
+  ],
+  "indices": [
+   [
+    0,
+    9
+   ]
+  ],
+  "weighted": 25
+ },
+ {
+  "text": "https://foo.bar/p.",
+  "urls": [
+   "https://foo.bar/p"
+  ],
+  "indices": [
+   [
+    0,
+    17
+   ]
+  ],
+  "weighted": 24
+ },
+ {
+  "text": "https://foo.bar/p?q=1",
+  "urls": [
+   "https://foo.bar/p?q=1"
+  ],
+  "indices": [
+   [
+    0,
+    21
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "first.com and second.org",
+  "urls": [
+   "first.com",
+   "second.org"
+  ],
+  "indices": [
+   [
+    0,
+    9
+   ],
+   [
+    14,
+    24
+   ]
+  ],
+  "weighted": 51
+ },
+ {
+  "text": "https://a.com https://b.com",
+  "urls": [
+   "https://a.com",
+   "https://b.com"
+  ],
+  "indices": [
+   [
+    0,
+    13
+   ],
+   [
+    14,
+    27
+   ]
+  ],
+  "weighted": 47
+ },
+ {
+  "text": "a.com, b.com.",
+  "urls": [
+   "a.com",
+   "b.com"
+  ],
+  "indices": [
+   [
+    0,
+    5
+   ],
+   [
+    7,
+    12
+   ]
+  ],
+  "weighted": 49
+ },
+ {
+  "text": "https://t.co/abc",
+  "urls": [
+   "https://t.co/abc"
+  ],
+  "indices": [
+   [
+    0,
+    16
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "https://t.co/abc/def",
+  "urls": [
+   "https://t.co/abc"
+  ],
+  "indices": [
+   [
+    0,
+    16
+   ]
+  ],
+  "weighted": 27
+ },
+ {
+  "text": "https://t.co/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "urls": [
+   "https://t.co/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ],
+  "indices": [
+   [
+    0,
+    53
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "https://t.co/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "urls": [],
+  "indices": [],
+  "weighted": 54
+ },
+ {
+  "text": "foo.com_bar",
+  "urls": [
+   "foo.com"
+  ],
+  "indices": [
+   [
+    0,
+    7
+   ]
+  ],
+  "weighted": 27
+ },
+ {
+  "text": "foo.com-bar",
+  "urls": [],
+  "indices": [],
+  "weighted": 11
+ },
+ {
+  "text": "foo.commercial",
+  "urls": [],
+  "indices": [],
+  "weighted": 14
+ },
+ {
+  "text": "foo.co",
+  "urls": [
+   "foo.co"
+  ],
+  "indices": [
+   [
+    0,
+    6
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+  "urls": [
+   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com"
+  ],
+  "indices": [
+   [
+    0,
+    67
+   ]
+  ],
+  "weighted": 23
+ },
+ {
+  "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+  "urls": [],
+  "indices": [],
+  "weighted": 68
+ },
+ {
+  "text": "한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국한국.com",
+  "urls": [],
+  "indices": [],
+  "weighted": 132
+ },
+ {
+  "text": "한국어",
+  "urls": [],
+  "indices": [],
+  "weighted": 6
+ },
+ {
+  "text": "ascii",
+  "urls": [],
+  "indices": [],
+  "weighted": 5
+ },
+ {
+  "text": "😀 emoji",
+  "urls": [],
+  "indices": [],
+  "weighted": 8
+ },
+ {
+  "text": "👨‍👩‍👧 fam",
+  "urls": [],
+  "indices": [],
+  "weighted": 6
+ },
+ {
+  "text": "❤️ love",
+  "urls": [],
+  "indices": [],
+  "weighted": 7
+ },
+ {
+  "text": "👍🏽 ok",
+  "urls": [],
+  "indices": [],
+  "weighted": 5
+ },
+ {
+  "text": "1️⃣ one",
+  "urls": [],
+  "indices": [],
+  "weighted": 6
+ },
+ {
+  "text": "🇰🇷 flag",
+  "urls": [],
+  "indices": [],
+  "weighted": 7
+ },
+ {
+  "text": "한국어 https://example.com/x",
+  "urls": [
+   "https://example.com/x"
+  ],
+  "indices": [
+   [
+    4,
+    25
+   ]
+  ],
+  "weighted": 30
+ },
+ {
+  "text": "한국어 example.com",
+  "urls": [
+   "example.com"
+  ],
+  "indices": [
+   [
+    4,
+    15
+   ]
+  ],
+  "weighted": 30
+ },
+ {
+  "text": "https://example.com",
+  "urls": [
+   "https://example.com"
+  ],
+  "indices": [
+   [
+    0,
+    19
+   ]
+  ],
+  "weighted": 23
+ }
+]

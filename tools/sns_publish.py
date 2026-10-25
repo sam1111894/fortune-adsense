@@ -46,6 +46,7 @@ if _TOOLS_DIR not in sys.path:
     sys.path.insert(0, _TOOLS_DIR)
 
 import sns_receipts  # noqa: E402
+import sns_xurl  # noqa: E402
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -532,43 +533,41 @@ def cmd_verify(_args):
 # count 1 unit, CJK/Hangul/emoji count 2, and every URL is counted as a
 # fixed 23 units after t.co shortening. A 154-char Korean draft can easily
 # exceed 280 weighted units, so the check must be weighted, not raw.
-X_MAX_WEIGHTED = 280
-X_SCALE = 100
-X_URL_WEIGHT = 23
-X_DEFAULT_WEIGHT = 200
-X_WEIGHT_RANGES = (
-    (0, 4351, 100),
-    (8192, 8205, 100),
-    (8208, 8223, 100),
-    (8242, 8247, 100),
-)
-X_URL_RE = re.compile(r"(?:https?://|www\.)[^\s]+", re.I)
-X_URL_TRAIL = ".,;:!?)]}'\"’\"”"
+#
+# The URL DETECTOR and the weighted length both come from tools/sns_xurl.py,
+# which is a port of twitter-text v3.1.0 -- the library X itself uses. The
+# old detector here was a hand-rolled regex that required a scheme:
+#
+#     X_URL_RE = r"(?:https?://|www\.)[^\s]+"
+#
+# twitter-text makes the protocol OPTIONAL, so a BARE DOMAIN is a link:
+#
+#     "example.com"  -> twitter-text: a URL, 23 weighted units
+#     "file.txt"     -> twitter-text: NOT a URL (".txt" is not a TLD)
+#
+# The old detector said "no URL" for the first one, so a draft naming the
+# site without the scheme was measured without the 23-unit link weight AND
+# priced at the $0.015 URL-free tier while X charges $0.200. See
+# tools/sns_xurl.py for the full account.
+X_MAX_WEIGHTED = sns_xurl.X_MAX_WEIGHTED
+X_SCALE = sns_xurl.X_SCALE
+X_URL_WEIGHT = sns_xurl.X_URL_WEIGHT
+X_DEFAULT_WEIGHT = sns_xurl.X_DEFAULT_WEIGHT
+X_WEIGHT_RANGES = sns_xurl.X_WEIGHT_RANGES
 
 
 def _char_weight(code_point: int) -> int:
-    for start, end, weight in X_WEIGHT_RANGES:
-        if start <= code_point <= end:
-            return weight
-    return X_DEFAULT_WEIGHT
+    return sns_xurl._char_weight(code_point)
 
 
 def x_weighted_length(text: str) -> int:
-    """Return the twitter-text v3 weighted length of a tweet."""
-    total = 0
-    cursor = 0
-    for match in X_URL_RE.finditer(text):
-        total += sum(_char_weight(ord(ch)) for ch in text[cursor:match.start()])
-        url = match.group(0)
-        trailing = ""
-        while url and url[-1] in X_URL_TRAIL:
-            trailing = url[-1] + trailing
-            url = url[:-1]
-        total += X_URL_WEIGHT * X_SCALE
-        total += sum(_char_weight(ord(ch)) for ch in trailing)
-        cursor = match.end()
-    total += sum(_char_weight(ord(ch)) for ch in text[cursor:])
-    return total // X_SCALE
+    """Return the twitter-text v3 weighted length of a tweet.
+
+    A URL costs a fixed 23 units no matter how long it is, so the URL
+    spans have to be the ones twitter-text finds -- which is why this
+    delegates to the same module the price tier reads.
+    """
+    return sns_xurl.weighted_length(text)
 
 
 def cmd_weight(args):
@@ -715,20 +714,20 @@ def _has_url(text):
     $0.015 for URL-free ones).
 
     This MUST use the same URL detector as the weighted-length counter
-    (`X_URL_RE`), because the two answer the same question about the same
-    text and must never disagree:
+    (`x_weighted_length`), because the two answer the same question about
+    the same text and must never disagree:
 
-      * the length counter (`x_weighted_length`) replaces a URL with a
-        fixed 23 units -- it already treats "www.example.com" and
-        "HTTPS://example.com" as URLs;
+      * the length counter replaces a URL with a fixed 23 units -- so it
+        already treats "www.example.com", "HTTPS://example.com" and a
+        BARE "example.com" as URLs;
       * this function decides which PRICE TIER the post is billed at.
 
-    They used to use different detectors: the length counter used
-    `X_URL_RE` (case-insensitive, and it also matches a bare "www."
-    host), while this one used a case-SENSITIVE `https?://` search. So a
-    draft containing "www.example.com" or "HTTPS://example.com" was
-    measured as a URL post (23 units) but priced as a URL-FREE post --
-    the gate reserved $0.015 for a request X bills $0.200.
+    They used to use different detectors: the length counter used a
+    case-insensitive regex that also matched a bare "www." host, while
+    this one used a case-SENSITIVE `https?://` search. So a draft
+    containing "www.example.com" or "HTTPS://example.com" was measured
+    as a URL post (23 units) but priced as a URL-FREE post -- the gate
+    reserved $0.015 for a request X bills $0.200.
 
     That is a fail-OPEN bug in the money gate, and the failure is
     silent: the pre-flight approves a billable write it has not
@@ -737,11 +736,12 @@ def _has_url(text):
     charged $0.200.
 
     The tier has to be decided by the SAME rule the platform applies,
-    so both now read `X_URL_RE`. Being wrong in the expensive
-    direction is safe (the gate blocks a publish it could have made);
-    being wrong in the cheap direction is not.
+    so both now read `tools/sns_xurl.py` -- a port of twitter-text v3.1.0,
+    the library X itself uses. Being wrong in the expensive direction is
+    safe (the gate blocks a publish it could have made); being wrong in
+    the cheap direction is not.
     """
-    return bool(X_URL_RE.search(text or ""))
+    return sns_xurl.has_url(text or "")
 
 
 def _usable_post_id(value):
