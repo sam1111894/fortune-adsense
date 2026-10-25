@@ -7,7 +7,7 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-25T04:02:23Z'
+  attemptedAt: '2026-10-25T05:34:00Z'
   worker: reviewer/minimax-M3
   cronExit: 3
   exitCode: 3
@@ -20,9 +20,9 @@ syndication:
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   lastSelfTriggerNote: 'fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
-  publishPayload: .hermes/cron-drafts/2026-10-25T04-02-13Z/publish-payload.json
-  publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T04-02-13Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
-  lastAttempt: '2026-10-25T04:02:23Z'
+  publishPayload: .hermes/cron-drafts/2026-10-25T05-33-06Z/publish-payload.json
+  publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T05-33-06Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
+  lastAttempt: '2026-10-25T05:34:00Z'
   publishPending: true
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -49,65 +49,15 @@ syndication:
     platform: dev.to
     reason: token 없음
     status: skipped
-  cronOutput: cron run c4bb8dd5 (this run; the cron runner writes its output file after this response)
-  cronRunId: c4bb8dd53bdb403fa9b35e08ecfc24bb
+  cronOutput: cron run d1a400d9 (this run; the cron runner writes its output file after this response)
+  cronRunId: d1a400d985d646dbbd09711b3589cfe1
   recovered: false
-  recoveredBy: n/a - fire200 was a normal scheduled run; no earlier unrecorded fire to recover
+  recoveredBy: n/a - fire201 was a normal scheduled run; no earlier unrecorded fire to recover
   timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
-  codeCommit: 15c8c4e (the tree this fire published with; includes the twitter-text v3.1.0 port 5904a2a)
+  codeCommit: 76ea636 (the tree this fire published with; includes the twitter-text v3.1.0 port 5904a2a)
   testSuite: Ran 208 tests, OK
   recoveredFires: []
   history:
-  - attemptedAt: '2026-10-25T00:11:57Z'
-    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
-    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-    codeCommit: 5904a2a4a01c342c40390b1003521b9924c0bd09
-    cronExit: 3
-    cronOutput: 2026-10-25_10-18-03.md
-    cronRunId: afa2500fd61140d5953a118931de5630
-    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
-    exitCode: 3
-    fire: 198
-    lastMutatedBy: reviewer/minimax-M3
-    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-    publishPayload: /Users/gurumi/HermesPractice/reviewer/fortune-adsense/.hermes/cron-drafts/2026-10-24T20-50-11Z/publish-payload-fire198.json
-    publishPending: true
-    recovered: true
-    recoveredBy: cron run bb610199e13c4809a652fa59b6e501b3
-    selfTriggerSuppressed: false
-    setupTokenGuide: bash tools/setup-sns-tokens.sh
-    skipCount: 3
-    skipTotal: 4
-    stdout: '[recovered] X weighted length: 214/280 (raw 178 chars) / PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD (no billable POST attempted) / [SKIP] Threads token 없음 / [SKIP] LinkedIn token 없음 / [SKIP] dev.to token 없음 / === publish summary === published=0 blocked=1 skipped=3 failed=0 / exit 3
-
-      [recovered] cron run afa2500f (2026-10-25T00:11:57Z) executed publish-all against .hermes/cron-drafts/2026-10-24T20-50-11Z/ -> published=0 blocked=1 skipped=3 failed=0, exit 3; receipt store 0 records; the completed port was committed as 5904a2a but the ledger/frontmatter/PROGRESS rows and the deploy were never written
-
-      NOTE: the interrupted run did not capture its verbatim publish-all stdout; this summary is reconstructed from its cron output file.'
-    targets:
-    - draftBytes: '327'
-      draftChars: '178'
-      draftWeighted: '214'
-      platform: x
-      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
-      status: pending
-    - draftBytes: '474'
-      draftChars: '241'
-      platform: threads
-      reason: token 없음
-      status: skipped
-    - draftBytes: '1310'
-      draftChars: '599'
-      platform: linkedin
-      reason: token 없음
-      status: skipped
-    - draftBytes: '1977'
-      draftChars: '1969'
-      platform: dev.to
-      reason: token 없음
-      status: skipped
-    testSuite: Ran 208 tests, OK
-    timestampSource: cron run start time from `hermes cron runs` - the run died before it could record its own attempt timestamp
-    worker: reviewer/minimax-M3
   - attemptedAt: '2026-10-25T02:48:24Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
     blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
@@ -178,6 +128,57 @@ syndication:
     publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T04-02-13Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
     recovered: false
     recoveredBy: n/a - fire200 was a normal scheduled run; no earlier unrecorded fire to recover
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 214/280 (raw 178자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '327'
+      draftChars: '178'
+      draftWeighted: '214'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '474'
+      draftChars: '241'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1310'
+      draftChars: '599'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1977'
+      draftChars: '1969'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: Ran 208 tests, OK
+    timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-25T05:34:00Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    codeCommit: 76ea636 (the tree this fire published with; includes the twitter-text v3.1.0 port 5904a2a)
+    cronExit: 3
+    cronOutput: cron run d1a400d9 (this run; the cron runner writes its output file after this response)
+    cronRunId: d1a400d985d646dbbd09711b3589cfe1
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 201
+    lastAttempt: '2026-10-25T05:34:00Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'fire #15 mtime +4m15s after fire #14, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-25T05-33-06Z/publish-payload.json
+    publishPending: true
+    publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T05-33-06Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
+    recovered: false
+    recoveredBy: n/a - fire201 was a normal scheduled run; no earlier unrecorded fire to recover
     recoveredFires: []
     selfTriggerSuppressed: false
     setupTokenGuide: bash tools/setup-sns-tokens.sh
