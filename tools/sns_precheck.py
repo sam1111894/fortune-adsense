@@ -197,6 +197,70 @@ def read_ledger(ledger_path: str | None = None) -> tuple[dict, dict]:
     return hashes, pending
 
 
+def select_target(posts, known, pending):
+    """Choose the post this fire should act on.
+
+    `posts` must already be sorted newest-mtime first.
+
+    WHY THIS IS NOT JUST "the newest post"
+    --------------------------------------
+    Recording a syndication attempt rewrites the article's frontmatter,
+    which BUMPS ITS MTIME. So the post that was published last is
+    normally also the newest one on disk -- and the pending flag of any
+    OTHER post was invisible: the old code looked at `posts[0]` only, so
+    a publish that never completed (platform credit, outage) sat BELOW
+    the newest post and was skipped forever. `read_ledger()` promises the
+    opposite -- "Those must be RETRIED, not skipping" -- so the retry
+    candidates are collected across EVERY post.
+
+    A retry candidate is a post that (a) the ledger still marks as
+    pending and (b) whose body has NOT changed since that attempt: a
+    changed body is new content, not a retry of the old attempt.
+
+    The oldest outstanding attempt is retried first, so when several
+    posts are pending none of them starves behind another.
+
+    Returns a dict with the decision, the selected post (`target`), the
+    newest post (`latest`) and the full retry-candidate list.
+    """
+    latest = posts[0] if posts else None
+    is_new = None
+    if latest:
+        is_new = known.get(latest["slug"]) != latest["bodySha256"]
+
+    retry_candidates = [
+        post for post in posts
+        if post["slug"] in pending
+        and known.get(post["slug"]) == post["bodySha256"]
+    ]
+    retry_candidates.sort(
+        key=lambda post: (pending[post["slug"]].get("ts") or "", post["slug"])
+    )
+
+    if latest is not None and is_new:
+        # The newest post carries content the ledger has never seen:
+        # that is new work, and it wins over retrying an older attempt.
+        decision = "SYNTHESIZE"
+        target = latest
+    elif retry_candidates:
+        # Body unchanged, but the previous publish never completed
+        # (platform credit / outage). Retry the publish instead of
+        # skipping it.
+        decision = "RETRY_PENDING_PUBLISH"
+        target = retry_candidates[0]
+    else:
+        decision = "NO_NEW_POST"
+        target = None
+
+    return {
+        "decision": decision,
+        "target": target,
+        "latest": latest,
+        "latestIsNewContent": is_new,
+        "retryCandidates": retry_candidates,
+    }
+
+
 def main() -> int:
     env, provenance = load_env()
     credential_state = {}
@@ -230,23 +294,14 @@ def main() -> int:
                 "mtime": os.path.getmtime(path),
             })
     posts.sort(key=lambda item: (item["mtime"], item["file"]), reverse=True)
-    latest = posts[0] if posts else None
 
     known, pending = read_ledger()
-    is_new = None
-    retry_pending = None
-    if latest:
-        is_new = known.get(latest["slug"]) != latest["bodySha256"]
-        retry_pending = latest["slug"] in pending
-
-    if is_new:
-        decision = "SYNTHESIZE"
-    elif retry_pending:
-        # Body unchanged, but the previous publish never completed (platform
-        # credit / outage). Retry the publish instead of skipping.
-        decision = "RETRY_PENDING_PUBLISH"
-    else:
-        decision = "NO_NEW_POST"
+    selection = select_target(posts, known, pending)
+    latest = selection["latest"]
+    is_new = selection["latestIsNewContent"]
+    retry_pending = selection["decision"] == "RETRY_PENDING_PUBLISH"
+    target = selection["target"]
+    decision = selection["decision"]
     if not usable_any and decision == "SYNTHESIZE":
         decision = "SYNTHESIZE_NO_TOKENS"
 
@@ -256,9 +311,11 @@ def main() -> int:
         "usablePlatforms": [p for p, v in credential_state.items() if v["usable"]],
         "postCount": len(posts),
         "latest": latest,
+        "target": target,
+        "retryCandidateSlugs": [p["slug"] for p in selection["retryCandidates"]],
         "latestIsNewContent": is_new,
         "retryPendingPublish": retry_pending,
-        "pendingDetail": pending.get(latest["slug"]) if latest else None,
+        "pendingDetail": pending.get(target["slug"]) if target else None,
         "ledgerKnownHashes": known,
         "decision": decision,
     }

@@ -140,5 +140,96 @@ class TestBodyHashExtraction(unittest.TestCase):
         self.assertEqual(before, after)
 
 
+class TestSelectTarget(unittest.TestCase):
+    """The post a fire acts on must not be chosen by mtime alone.
+
+    Regression: `main()` used `posts[0]` -- the mtime-newest post -- as
+    the only candidate. But recording a syndication attempt rewrites the
+    article's frontmatter, which BUMPS ITS MTIME, so the post published
+    last is normally also the newest on disk. A publish that never
+    completed on a DIFFERENT post therefore sat below the newest one
+    and was skipped forever, even though `read_ledger()` promises that
+    pending slugs "must be RETRIED, not skipping".
+    """
+
+    def _post(self, slug, digest, mtime):
+        return {
+            "file": slug + ".md",
+            "slug": slug,
+            "bodySha256": digest,
+            "bodyChars": 100,
+            "mtime": mtime,
+        }
+
+    def test_pending_post_below_the_newest_is_still_retried(self):
+        """THE DEFECT: the pending post is older on disk than another post."""
+        posts = [
+            self._post("newer-post", "sha-newer", 200.0),
+            self._post("pending-post", "sha-pending", 100.0),
+        ]
+        known = {"pending-post": "sha-pending", "newer-post": "sha-newer"}
+        pending = {"pending-post": {"blockedBy": "credit", "outcome": "X",
+                                   "ts": "2026-10-25T00:00:00Z"}}
+        selection = pre.select_target(posts, known, pending)
+        self.assertEqual(selection["decision"], "RETRY_PENDING_PUBLISH")
+        self.assertEqual(selection["target"]["slug"], "pending-post")
+
+    def test_new_content_still_wins_over_a_pending_retry(self):
+        """A genuinely new post must not be starved by an older pending one."""
+        posts = [
+            self._post("new-post", "sha-brand-new", 200.0),
+            self._post("pending-post", "sha-pending", 100.0),
+        ]
+        known = {"pending-post": "sha-pending"}
+        pending = {"pending-post": {"blockedBy": "credit", "outcome": "X",
+                                   "ts": "2026-10-25T00:00:00Z"}}
+        selection = pre.select_target(posts, known, pending)
+        self.assertEqual(selection["decision"], "SYNTHESIZE")
+        self.assertEqual(selection["target"]["slug"], "new-post")
+
+    def test_changed_body_on_a_pending_post_is_not_a_retry_candidate(self):
+        """A pending post whose body changed is NEW content, not a retry."""
+        posts = [self._post("post-a", "sha-edited", 100.0)]
+        known = {"post-a": "sha-old"}
+        pending = {"post-a": {"blockedBy": "credit", "outcome": "X",
+                              "ts": "2026-10-25T00:00:00Z"}}
+        selection = pre.select_target(posts, known, pending)
+        self.assertEqual(selection["decision"], "SYNTHESIZE")
+        self.assertEqual(selection["retryCandidates"], [])
+
+    def test_oldest_pending_attempt_is_retried_first(self):
+        """With several pending posts, the oldest attempt goes first so
+        none of them starves behind another."""
+        posts = [
+            self._post("post-a", "sha-a", 300.0),
+            self._post("post-b", "sha-b", 200.0),
+        ]
+        known = {"post-a": "sha-a", "post-b": "sha-b"}
+        pending = {
+            "post-a": {"blockedBy": "credit", "outcome": "X",
+                       "ts": "2026-10-25T09:00:00Z"},
+            "post-b": {"blockedBy": "credit", "outcome": "X",
+                       "ts": "2026-10-25T01:00:00Z"},
+        }
+        selection = pre.select_target(posts, known, pending)
+        self.assertEqual(selection["decision"], "RETRY_PENDING_PUBLISH")
+        self.assertEqual(selection["target"]["slug"], "post-b")
+        self.assertEqual(
+            sorted(p["slug"] for p in selection["retryCandidates"]),
+            ["post-a", "post-b"])
+
+    def test_no_pending_and_known_body_is_no_new_post(self):
+        posts = [self._post("post-a", "sha-a", 100.0)]
+        known = {"post-a": "sha-a"}
+        selection = pre.select_target(posts, known, {})
+        self.assertEqual(selection["decision"], "NO_NEW_POST")
+        self.assertIsNone(selection["target"])
+
+    def test_empty_post_list_is_no_new_post(self):
+        selection = pre.select_target([], {}, {})
+        self.assertEqual(selection["decision"], "NO_NEW_POST")
+        self.assertIsNone(selection["target"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
