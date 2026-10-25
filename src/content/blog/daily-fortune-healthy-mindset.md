@@ -49,13 +49,17 @@ syndication:
     platform: dev.to
     reason: token 없음
     status: skipped
-  cronOutput: 2026-10-25_10-18-03.md
+  cronOutput: cron run bb610199 (this run; the cron runner writes its output file after this response)
   cronRunId: bb610199e13c4809a652fa59b6e501b3
   recovered: true
-  recoveredBy: cron run bb610199e13c4809a652fa59b6e501b3
-  timestampSource: cron run start time from `hermes cron runs` - the run died before it could record its own attempt timestamp
-  codeCommit: 5904a2a4a01c342c40390b1003521b9924c0bd09
+  recoveredBy: cron run bb610199e13c4809a652fa59b6e501b3 - it recovered the three earlier invocations that died unrecorded (fire196/197/198)
+  timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
+  codeCommit: 5904a2a (twitter-text v3.1.0 port - the tree this fire published with)
   testSuite: Ran 208 tests, OK
+  recoveredFires:
+  - 196
+  - 197
+  - 198
   history:
   - attemptedAt: '2026-10-24T22:30:57Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -158,7 +162,9 @@ syndication:
   - attemptedAt: '2026-10-25T02:48:24Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
     blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    codeCommit: 5904a2a (twitter-text v3.1.0 port - the tree this fire published with)
     cronExit: 3
+    cronOutput: cron run bb610199 (this run; the cron runner writes its output file after this response)
     cronRunId: bb610199e13c4809a652fa59b6e501b3
     dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
     exitCode: 3
@@ -168,6 +174,12 @@ syndication:
     publishPayload: /Users/gurumi/HermesPractice/reviewer/fortune-adsense/.hermes/cron-drafts/2026-10-25T02-20-58Z/publish-payload.json
     publishPending: true
     publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T02-20-58Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
+    recovered: true
+    recoveredBy: cron run bb610199e13c4809a652fa59b6e501b3 - it recovered the three earlier invocations that died unrecorded (fire196/197/198)
+    recoveredFires:
+    - 196
+    - 197
+    - 198
     selfTriggerSuppressed: false
     setupTokenGuide: bash tools/setup-sns-tokens.sh
     skipCount: 3
@@ -195,6 +207,8 @@ syndication:
       platform: dev.to
       reason: token 없음
       status: skipped
+    testSuite: Ran 208 tests, OK
+    timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
     worker: reviewer/minimax-M3
 ---
 
