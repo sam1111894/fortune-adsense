@@ -4,6 +4,113 @@ description: "24절기의 의미, 계절 변화의 기준, 한국 전통 음식�
 pubDate: 2026-10-06
 tags: ["24절기", "절기", "한국전통문화", "농경문화"]
 author: "오늘의 운세 편집팀"
+syndication:
+  attemptedAt: '2026-10-25T21:46:25Z'
+  blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+  blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+  capWork: 'CAP PITFALL HIT AND FIXED BEFORE THE FINAL ATTEMPT: the dev.to draft measured OVER the 2000 cap three times after the grounding fixes (2075 -> 2076 -> 2021 -> 2003) and was rewritten through five measured candidates until it fit at 1999/2000. An over-cap draft would have been skipped as a false ''token missing''.'
+  codeCommit: 8b9f184 (the tree this fire published with; includes the fire212 frontmatter + PROGRESS.log + ad-hoc-verification commits)
+  cronExit: 3
+  cronOutput: cron run ceec3866 (this run; the cron runner writes its output file after this response)
+  cronRunId: ceec3866056c40e18c1f1d8a5a107609
+  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  exitCode: 3
+  groundingFixes: 'FOUR grounding defects were found by re-reading the article body against the four drafts and were fixed BEFORE the final attempt (the dev.to draft is the one platform that renders publicly): (1) the dev.to draft opened with ''They are astronomy, not folklore.'' - the article never contrasts astronomy against folklore, it presents the two side by side (24절기는 단순한 역법 표기를 넘어, 한국 전통 문화 전반에 스며들어 있습니다) - rewritten to ''The terms are defined by the sun''s position along the ecliptic.''; (2) the dev.to draft listed the seasonal markers as ''the ground thaws, grain sprouts, heat peaks, dew appears, frost falls'' - the article names those five markers 우수(얼음이 녹아 비가 됨), 경칩(겨울잠에서 동물이 깸), 대서(더위가 가장 심함), 백로(이슬이 내리기 시작), 상강(서리가 내림) - rewritten to ''ice melts into rain, animals wake, dew falls on grain, the heat peaks, frost falls''; (3) the dev.to draft claimed the Korean calendar ''still anchors everyday life'' with the article''s ''In Korea the system stayed practical'' paraphrase, and asserted the 24 terms ''align with the solar calendar'' without the article''s actual framing - re-grounded on the article''s closing insight (''24절기라는 큰 시간 눈금'') and its own 양력·음력 section; (4) the LinkedIn draft had written ''24절기의 근거는 천체의 움직임입니다'' - the article''s ground is specifically 태양의 움직임, and 천체 (all celestial bodies) overstates it - corrected to ''태양의 움직임''. A first grounding pass had already removed the dev.to claim ''stopped being an official calendar'' (the article says the opposite: 약 2,000년 전부터 동아시아 전역에서 사용되어 왔습니다) and had softened the LinkedIn phrase ''절기의 간격은 우주의 축척입니다'' to ''절기의 간격은 천체의 운동에서 나옵니다'' -> ''24절기의 근거는 태양의 움직임입니다''.'
+  lastAttempt: '2026-10-25T21:46:25Z'
+  lastMutatedBy: reviewer/minimax-M3
+  lastSelfTriggerNote: 'No self-trigger in fire213: twenty-four-solar-terms is a FIRST syndication attempt (the ledger had never seen body sha256 24702cb2...3361, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The seven earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy) all keep their OWN fire206/207/208/209/210/211/212 timestamps and were NOT touched by this fire.'
+  outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+  publishPayload: .hermes/cron-drafts/2026-10-25T21-41-00Z/publish-payload.json
+  publishPending: true
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T21-41-00Z/ --content-sha 24702cb2ee6ea0de074650f388ba0e37d7b7c4c3d2a29ac1559e7faf3abc3361 --devto-title ''The 24 Solar Terms: How Korea Reads the Year'' --devto-tags ''solar-terms,korean-culture,traditional-calendar,saju'' --devto-canonical-url https://lucksajueun.com/blog/twenty-four-solar-terms/'
+  recovered: false
+  recoveredBy: n/a - fire213 was a normal scheduled run; fire212 completed and recorded itself (cron run c28baa8)
+  recoveredFires: []
+  selfTriggerSuppressed: false
+  setupTokenGuide: bash tools/setup-sns-tokens.sh
+  setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+  skipCount: 3
+  skipTotal: 4
+  stdout: "X weighted length: 269/280 (raw 205자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  targets:
+  - draftBytes: '393'
+    draftChars: '205'
+    draftWeighted: '269'
+    platform: x
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    status: pending
+  - draftBytes: '670'
+    draftChars: '316'
+    platform: threads
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1610'
+    draftChars: '724'
+    platform: linkedin
+    reason: token 없음
+    status: skipped
+  - draftBytes: '2009'
+    draftChars: '1999'
+    platform: dev.to
+    reason: token 없음
+    status: skipped
+  testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+  timestampSource: date -u at the moment of the publish attempt (2026-10-25T21:46:25Z)
+  worker: reviewer/minimax-M3
+  history:
+  - attemptedAt: '2026-10-25T21:46:25Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    capWork: 'CAP PITFALL HIT AND FIXED BEFORE THE FINAL ATTEMPT: the dev.to draft measured OVER the 2000 cap three times after the grounding fixes (2075 -> 2076 -> 2021 -> 2003) and was rewritten through five measured candidates until it fit at 1999/2000. An over-cap draft would have been skipped as a false ''token missing''.'
+    codeCommit: 8b9f184 (the tree this fire published with; includes the fire212 frontmatter + PROGRESS.log + ad-hoc-verification commits)
+    cronExit: 3
+    cronOutput: cron run ceec3866 (this run; the cron runner writes its output file after this response)
+    cronRunId: ceec3866056c40e18c1f1d8a5a107609
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 213
+    groundingFixes: 'FOUR grounding defects were found by re-reading the article body against the four drafts and were fixed BEFORE the final attempt (the dev.to draft is the one platform that renders publicly): (1) the dev.to draft opened with ''They are astronomy, not folklore.'' - the article never contrasts astronomy against folklore, it presents the two side by side (24절기는 단순한 역법 표기를 넘어, 한국 전통 문화 전반에 스며들어 있습니다) - rewritten to ''The terms are defined by the sun''s position along the ecliptic.''; (2) the dev.to draft listed the seasonal markers as ''the ground thaws, grain sprouts, heat peaks, dew appears, frost falls'' - the article names those five markers 우수(얼음이 녹아 비가 됨), 경칩(겨울잠에서 동물이 깸), 대서(더위가 가장 심함), 백로(이슬이 내리기 시작), 상강(서리가 내림) - rewritten to ''ice melts into rain, animals wake, dew falls on grain, the heat peaks, frost falls''; (3) the dev.to draft claimed the Korean calendar ''still anchors everyday life'' with the article''s ''In Korea the system stayed practical'' paraphrase, and asserted the 24 terms ''align with the solar calendar'' without the article''s actual framing - re-grounded on the article''s closing insight (''24절기라는 큰 시간 눈금'') and its own 양력·음력 section; (4) the LinkedIn draft had written ''24절기의 근거는 천체의 움직임입니다'' - the article''s ground is specifically 태양의 움직임, and 천체 (all celestial bodies) overstates it - corrected to ''태양의 움직임''. A first grounding pass had already removed the dev.to claim ''stopped being an official calendar'' (the article says the opposite: 약 2,000년 전부터 동아시아 전역에서 사용되어 왔습니다) and had softened the LinkedIn phrase ''절기의 간격은 우주의 축척입니다'' to ''절기의 간격은 천체의 운동에서 나옵니다'' -> ''24절기의 근거는 태양의 움직임입니다''.'
+    lastAttempt: '2026-10-25T21:46:25Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire213: twenty-four-solar-terms is a FIRST syndication attempt (the ledger had never seen body sha256 24702cb2...3361, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The seven earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy) all keep their OWN fire206/207/208/209/210/211/212 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-25T21-41-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T21-41-00Z/ --content-sha 24702cb2ee6ea0de074650f388ba0e37d7b7c4c3d2a29ac1559e7faf3abc3361 --devto-title ''The 24 Solar Terms: How Korea Reads the Year'' --devto-tags ''solar-terms,korean-culture,traditional-calendar,saju'' --devto-canonical-url https://lucksajueun.com/blog/twenty-four-solar-terms/'
+    recovered: false
+    recoveredBy: n/a - fire213 was a normal scheduled run; fire212 completed and recorded itself (cron run c28baa8)
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 269/280 (raw 205자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '393'
+      draftChars: '205'
+      draftWeighted: '269'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '670'
+      draftChars: '316'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1610'
+      draftChars: '724'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2009'
+      draftChars: '1999'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: date -u at the moment of the publish attempt (2026-10-25T21:46:25Z)
+    worker: reviewer/minimax-M3
 ---
 
 # 24절기(二十四節氣) — 절기의 의미와 한국 생활 속 활용
