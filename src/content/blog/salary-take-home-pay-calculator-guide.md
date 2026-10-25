@@ -4,6 +4,109 @@ description: "월급·연봉의 실수령액을 정확히 계산하는 방법, 4
 pubDate: 2026-10-06
 tags: ["연봉", "실수령액", "4대보험", "소득세"]
 author: "오늘의 운세 편집팀"
+syndication:
+  attemptedAt: '2026-10-25T16:35:24Z'
+  blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+  blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+  codeCommit: 70db94b (the tree this fire published with; includes the fire208 frontmatter + PROGRESS.log commits)
+  cronExit: 3
+  cronOutput: cron run 4d45cea (this run; the cron runner writes its output file after this response)
+  cronRunId: 4d45cea569cc4100a749badb0eca1358
+  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  exitCode: 3
+  lastAttempt: '2026-10-25T16:35:24Z'
+  lastMutatedBy: reviewer/minimax-M3
+  lastSelfTriggerNote: 'No self-trigger in fire209: salary-take-home-pay-calculator-guide is a FIRST syndication attempt (the ledger had never seen body sha256 c90295d7...ccb62), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The three earlier pending retries (daily-fortune-healthy-mindset, korean-feng-shui-housing-basics, korean-ancestral-ritual-lunar-calendar) all still hold their own fire206/fire207/fire208 timestamps and were not touched by this fire.'
+  outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+  publishPayload: .hermes/cron-drafts/2026-10-25T16-22-56Z/publish-payload.json
+  publishPending: true
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T16-22-56Z/ --content-sha c90295d76b082bf8e9039cb04642135e51668c4312d373eb5b14ff3c798ccb62 --devto-title ''Take-Home Pay in Korea: 4 Insurances, Tax, and Allowances'' --devto-tags ''korean-finance,take-home-pay,salary,4-insurances'' --devto-canonical-url https://lucksajueun.com/blog/salary-take-home-pay-calculator-guide/'
+  recovered: false
+  recoveredBy: n/a - fire209 was a normal scheduled run; fire208 completed and recorded itself
+  recoveredFires: []
+  selfTriggerSuppressed: false
+  setupTokenGuide: bash tools/setup-sns-tokens.sh
+  setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+  skipCount: 3
+  skipTotal: 4
+  stdout: "X weighted length: 244/280 (raw 204자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+  targets:
+  - draftBytes: '373'
+    draftChars: '204'
+    draftWeighted: '244'
+    platform: x
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    status: pending
+  - draftBytes: '843'
+    draftChars: '414'
+    platform: threads
+    reason: token 없음
+    status: skipped
+  - draftBytes: '2038'
+    draftChars: '927'
+    platform: linkedin
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1996'
+    draftChars: '1988'
+    platform: dev.to
+    reason: token 없음
+    status: skipped
+  testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+  timestampSource: date -u at the moment of the publish attempt (2026-10-25T16:35:24Z)
+  worker: reviewer/minimax-M3
+  history:
+  - attemptedAt: '2026-10-25T16:35:24Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    codeCommit: 70db94b (the tree this fire published with; includes the fire208 frontmatter + PROGRESS.log commits)
+    cronExit: 3
+    cronOutput: cron run 4d45cea (this run; the cron runner writes its output file after this response)
+    cronRunId: 4d45cea569cc4100a749badb0eca1358
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 209
+    lastAttempt: '2026-10-25T16:35:24Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire209: salary-take-home-pay-calculator-guide is a FIRST syndication attempt (the ledger had never seen body sha256 c90295d7...ccb62), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The three earlier pending retries (daily-fortune-healthy-mindset, korean-feng-shui-housing-basics, korean-ancestral-ritual-lunar-calendar) all still hold their own fire206/fire207/fire208 timestamps and were not touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-25T16-22-56Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T16-22-56Z/ --content-sha c90295d76b082bf8e9039cb04642135e51668c4312d373eb5b14ff3c798ccb62 --devto-title ''Take-Home Pay in Korea: 4 Insurances, Tax, and Allowances'' --devto-tags ''korean-finance,take-home-pay,salary,4-insurances'' --devto-canonical-url https://lucksajueun.com/blog/salary-take-home-pay-calculator-guide/'
+    recovered: false
+    recoveredBy: n/a - fire209 was a normal scheduled run; fire208 completed and recorded itself
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 244/280 (raw 204자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+    targets:
+    - draftBytes: '373'
+      draftChars: '204'
+      draftWeighted: '244'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '843'
+      draftChars: '414'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2038'
+      draftChars: '927'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1996'
+      draftChars: '1988'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: date -u at the moment of the publish attempt (2026-10-25T16:35:24Z)
+    worker: reviewer/minimax-M3
 ---
 
 # 실수령액 계산기 활용법 — 월급·연봉·주휴수당 미리 보는 법
