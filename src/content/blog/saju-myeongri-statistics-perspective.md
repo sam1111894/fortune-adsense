@@ -4,6 +4,109 @@ description: "사주 명리학의 통계적 관점, 실증 연구 동향, 명리
 pubDate: 2026-10-06
 tags: ["사주", "명리학", "통계", "전통문화"]
 author: "오늘의 운세 편집팀"
+syndication:
+  attemptedAt: '2026-10-25T19:16:08Z'
+  blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+  blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+  codeCommit: 5a07a7a (the tree this fire published with; includes the fire210 frontmatter correction + PROGRESS.log commits)
+  cronExit: 3
+  cronOutput: cron run 682a3324 (this run; the cron runner writes its output file after this response)
+  cronRunId: 682a3324951b42ffa0473daf40122cab
+  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  exitCode: 3
+  lastAttempt: '2026-10-25T19:16:08Z'
+  lastMutatedBy: reviewer/minimax-M3
+  lastSelfTriggerNote: 'No self-trigger in fire211: saju-myeongri-statistics-perspective is a FIRST syndication attempt (the ledger had never seen body sha256 601956d0...a11fb, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The five earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun) all keep their OWN fire206/207/208/209/210 timestamps and were NOT touched by this fire.'
+  outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+  publishPayload: .hermes/cron-drafts/2026-10-25T19-13-00Z/publish-payload.json
+  publishPending: true
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T19-13-00Z/ --content-sha 601956d063d0ba43cd42f40d21b74592f9847d563ae665c09b678b2a482a11fb --devto-title ''Saju and Science: What the Statistics Actually Show'' --devto-tags ''saju,fortune,statistics,korean-culture'' --devto-canonical-url https://lucksajueun.com/blog/saju-myeongri-statistics-perspective/'
+  recovered: false
+  recoveredBy: n/a - fire211 was a normal scheduled run; fire210 completed and recorded itself (cron run bef94e76)
+  recoveredFires: []
+  selfTriggerSuppressed: false
+  setupTokenGuide: bash tools/setup-sns-tokens.sh
+  setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+  skipCount: 3
+  skipTotal: 4
+  stdout: "X weighted length: 249/280 (raw 208자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  targets:
+  - draftBytes: '377'
+    draftChars: '208'
+    draftWeighted: '249'
+    platform: x
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    status: pending
+  - draftBytes: '837'
+    draftChars: '392'
+    platform: threads
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1360'
+    draftChars: '609'
+    platform: linkedin
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1973'
+    draftChars: '1961'
+    platform: dev.to
+    reason: token 없음
+    status: skipped
+  testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+  timestampSource: date -u at the moment of the publish attempt (2026-10-25T19:16:08Z)
+  worker: reviewer/minimax-M3
+  history:
+  - attemptedAt: '2026-10-25T19:16:08Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    codeCommit: 5a07a7a (the tree this fire published with; includes the fire210 frontmatter correction + PROGRESS.log commits)
+    cronExit: 3
+    cronOutput: cron run 682a3324 (this run; the cron runner writes its output file after this response)
+    cronRunId: 682a3324951b42ffa0473daf40122cab
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 211
+    lastAttempt: '2026-10-25T19:16:08Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire211: saju-myeongri-statistics-perspective is a FIRST syndication attempt (the ledger had never seen body sha256 601956d0...a11fb, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The five earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun) all keep their OWN fire206/207/208/209/210 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-25T19-13-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T19-13-00Z/ --content-sha 601956d063d0ba43cd42f40d21b74592f9847d563ae665c09b678b2a482a11fb --devto-title ''Saju and Science: What the Statistics Actually Show'' --devto-tags ''saju,fortune,statistics,korean-culture'' --devto-canonical-url https://lucksajueun.com/blog/saju-myeongri-statistics-perspective/'
+    recovered: false
+    recoveredBy: n/a - fire211 was a normal scheduled run; fire210 completed and recorded itself (cron run bef94e76)
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 249/280 (raw 208자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '377'
+      draftChars: '208'
+      draftWeighted: '249'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '837'
+      draftChars: '392'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1360'
+      draftChars: '609'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1973'
+      draftChars: '1961'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: date -u at the moment of the publish attempt (2026-10-25T19:16:08Z)
+    worker: reviewer/minimax-M3
 ---
 
 # 사주 명리학은 과학과 어떤 관계가 있는가 — 통계적 관점에서 본 전통 명리
