@@ -4,6 +4,109 @@ description: "일진의 의미, 천간지지 60갑자, 일간이 운세에 어�
 pubDate: 2026-10-06
 tags: ["일진", "천간지지", "60갑자", "운세원리"]
 author: "오늘의 운세 편집팀"
+syndication:
+  attemptedAt: '2026-10-25T20:28:40Z'
+  blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+  blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+  codeCommit: c26da96 (the tree this fire published with; includes the fire211 frontmatter + PROGRESS.log + verification-evidence commits)
+  cronExit: 3
+  cronOutput: cron run c28baa8 (this run; the cron runner writes its output file after this response)
+  cronRunId: c28baa8189df41ea92202fa5b5f63628
+  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  exitCode: 3
+  lastAttempt: '2026-10-25T20:28:40Z'
+  lastMutatedBy: reviewer/minimax-M3
+  lastSelfTriggerNote: 'No self-trigger in fire212: what-is-iljin-daily-energy is a FIRST syndication attempt (the ledger had never seen body sha256 f3d1e5ec...605, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The six earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective) all keep their OWN fire206/207/208/209/210/211 timestamps and were NOT touched by this fire.'
+  outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+  publishPayload: .hermes/cron-drafts/2026-10-25T20-24-00Z/publish-payload.json
+  publishPending: true
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T20-24-00Z/ --content-sha f3d1e5ec25e77f3421ec9ab80bab9f3c8c249e614d5c05b85b134e23ef710605 --devto-title ''Iljin (Day Pillar): The Unit Behind Daily Fortune'' --devto-tags ''iljin,saju,korean-fortune,sexagenary-cycle'' --devto-canonical-url https://lucksajueun.com/blog/what-is-iljin-daily-energy/'
+  recovered: false
+  recoveredBy: n/a - fire212 was a normal scheduled run; fire211 completed and recorded itself (cron run 682a3324)
+  recoveredFires: []
+  selfTriggerSuppressed: false
+  setupTokenGuide: bash tools/setup-sns-tokens.sh
+  setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+  skipCount: 3
+  skipTotal: 4
+  stdout: "X weighted length: 264/280 (raw 205자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  targets:
+  - draftBytes: '392'
+    draftChars: '205'
+    draftWeighted: '264'
+    platform: x
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    status: pending
+  - draftBytes: '772'
+    draftChars: '377'
+    platform: threads
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1457'
+    draftChars: '686'
+    platform: linkedin
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1972'
+    draftChars: '1960'
+    platform: dev.to
+    reason: token 없음
+    status: skipped
+  testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+  timestampSource: date -u at the moment of the publish attempt (2026-10-25T20:28:40Z)
+  worker: reviewer/minimax-M3
+  history:
+  - attemptedAt: '2026-10-25T20:28:40Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    codeCommit: c26da96 (the tree this fire published with; includes the fire211 frontmatter + PROGRESS.log + verification-evidence commits)
+    cronExit: 3
+    cronOutput: cron run c28baa8 (this run; the cron runner writes its output file after this response)
+    cronRunId: c28baa8189df41ea92202fa5b5f63628
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 212
+    lastAttempt: '2026-10-25T20:28:40Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire212: what-is-iljin-daily-energy is a FIRST syndication attempt (the ledger had never seen body sha256 f3d1e5ec...605, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The six earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective) all keep their OWN fire206/207/208/209/210/211 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-25T20-24-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T20-24-00Z/ --content-sha f3d1e5ec25e77f3421ec9ab80bab9f3c8c249e614d5c05b85b134e23ef710605 --devto-title ''Iljin (Day Pillar): The Unit Behind Daily Fortune'' --devto-tags ''iljin,saju,korean-fortune,sexagenary-cycle'' --devto-canonical-url https://lucksajueun.com/blog/what-is-iljin-daily-energy/'
+    recovered: false
+    recoveredBy: n/a - fire212 was a normal scheduled run; fire211 completed and recorded itself (cron run 682a3324)
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 264/280 (raw 205자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '392'
+      draftChars: '205'
+      draftWeighted: '264'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '772'
+      draftChars: '377'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1457'
+      draftChars: '686'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1972'
+      draftChars: '1960'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: date -u at the moment of the publish attempt (2026-10-25T20:28:40Z)
+    worker: reviewer/minimax-M3
 ---
 
 # 일진(日辰)이란 무엇인가 — 매일 바뀌는 운세 단위의 비밀
