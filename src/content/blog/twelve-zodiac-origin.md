@@ -4,6 +4,113 @@ description: "쥐·소·호랑이·토끼·용·뱀·말·양·원숭이·닭·�
 pubDate: 2026-10-06
 tags: ["12띠", "십이생배", "띠별운세", "한국전통문화"]
 author: "오늘의 운세 편집팀"
+syndication:
+  attemptedAt: '2026-10-26T00:52:19Z'
+  blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+  blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+  capWork: 'CAP WORK: the dev.to draft measured OVER the 2000 cap on the first write (2090/2000) and again after the first trim (2007/2000), and the X draft measured OVER its 280 WEIGHTED cap on the first write (286/280). Both were rewritten and re-measured until every draft fit its cap - the final measurements are x 271/280 weighted, threads 345/500, linkedin 623/1000, dev.to 1995/2000. An over-cap draft would have been skipped as a false ''token missing''.'
+  codeCommit: d8c941f (the tree this fire published with; includes the fire213 frontmatter + PROGRESS.log + verification-evidence commits)
+  cronExit: 3
+  cronOutput: cron run baa8ce97 (this run; the cron runner writes its output file after this response)
+  cronRunId: baa8ce9720a14e47a70898bf9427a043
+  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  exitCode: 3
+  groundingFixes: 'ONE grounding defect was found by re-reading the article body against the four drafts and was fixed BEFORE the final attempt: the X draft said ''각 동물마다 기본 오행이 있어 해석이 깊어집니다'', which dropped the article''s own causal pairing - the body states ''동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'' (the animal''s own NATURE combined with the element is what deepens the reading) - rewritten to ''동물 성질과 기본 오행이 합쳐져 해석이 깊어집니다''. No other claim in the four drafts goes beyond what the body states: the 12지지/12동물 pairing, the two origin theories (동물 숭배 설 / 12시진 시간 표기 설) and the 子時=쥐 · 丑時=소 examples, the 1975 후베이성 운몽 睡虎地 秦墓竹簡 find, the 60갑자 천간 refinement (甲=큰 나무, 乙=덩굴·풀), the per-country swaps (태국 토끼→고양이(猫)·돼지→코끼리(象); 캄보디아·라오스·미얀마 same), the 12 오행 assignments (쥐 水, 소 土, 호랑이 木, 토끼 木, 용 土, 뱀 火, 말 火, 양 土, 원숭이 金, 닭 金, 개 土, 돼지 水) and the 음력 설 기준 + 돌아난 해 all trace to a sentence in the article body.'
+  lastAttempt: '2026-10-26T00:52:19Z'
+  lastMutatedBy: reviewer/minimax-M3
+  lastSelfTriggerNote: 'No self-trigger in fire214: twelve-zodiac-origin is a FIRST syndication attempt (the ledger had never seen body sha256 95e49f44...600, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The eight earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy / twenty-four-solar-terms) all keep their OWN fire206/207/208/209/210/211/212/213 timestamps and were NOT touched by this fire.'
+  outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+  publishPayload: .hermes/cron-drafts/2026-10-26T00-50-00Z/publish-payload.json
+  publishPending: true
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-26T00-50-00Z/ --content-sha 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600 --devto-title ''Twelve Zodiac Animals: Where the Twelve Come From'' --devto-tags ''twelve-zodiac,korean-culture,traditional-calendar,saju'' --devto-canonical-url https://lucksajueun.com/blog/twelve-zodiac-origin/'
+  recovered: false
+  recoveredBy: 'n/a - fire214 was a normal scheduled run; the only unrecorded invocation since fire213 (cron run 503959fa, started 2026-10-26T08:00:45+09:00) FAILED at the provider layer (RuntimeError: Operation interrupted: waiting for the provider to recover) and left NO artifacts - no frontmatter edit, no ledger row, no drafts dir, no receipt, git tree clean - so there was nothing to recover and it does not consume a fire number'
+  recoveredFires: []
+  selfTriggerSuppressed: false
+  setupTokenGuide: bash tools/setup-sns-tokens.sh
+  setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+  skipCount: 3
+  skipTotal: 4
+  stdout: "X weighted length: 271/280 (raw 200자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  targets:
+  - draftBytes: '407'
+    draftChars: '200'
+    draftWeighted: '271'
+    platform: x
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    status: pending
+  - draftBytes: '723'
+    draftChars: '345'
+    platform: threads
+    reason: token 없음
+    status: skipped
+  - draftBytes: '1340'
+    draftChars: '623'
+    platform: linkedin
+    reason: token 없음
+    status: skipped
+  - draftBytes: '2019'
+    draftChars: '1995'
+    platform: dev.to
+    reason: token 없음
+    status: skipped
+  testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+  timestampSource: date -u at the moment of the publish attempt (2026-10-26T00:52:19Z)
+  worker: reviewer/minimax-M3
+  history:
+  - attemptedAt: '2026-10-26T00:52:19Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    capWork: 'CAP WORK: the dev.to draft measured OVER the 2000 cap on the first write (2090/2000) and again after the first trim (2007/2000), and the X draft measured OVER its 280 WEIGHTED cap on the first write (286/280). Both were rewritten and re-measured until every draft fit its cap - the final measurements are x 271/280 weighted, threads 345/500, linkedin 623/1000, dev.to 1995/2000. An over-cap draft would have been skipped as a false ''token missing''.'
+    codeCommit: d8c941f (the tree this fire published with; includes the fire213 frontmatter + PROGRESS.log + verification-evidence commits)
+    cronExit: 3
+    cronOutput: cron run baa8ce97 (this run; the cron runner writes its output file after this response)
+    cronRunId: baa8ce9720a14e47a70898bf9427a043
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 214
+    groundingFixes: 'ONE grounding defect was found by re-reading the article body against the four drafts and was fixed BEFORE the final attempt: the X draft said ''각 동물마다 기본 오행이 있어 해석이 깊어집니다'', which dropped the article''s own causal pairing - the body states ''동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'' (the animal''s own NATURE combined with the element is what deepens the reading) - rewritten to ''동물 성질과 기본 오행이 합쳐져 해석이 깊어집니다''. No other claim in the four drafts goes beyond what the body states: the 12지지/12동물 pairing, the two origin theories (동물 숭배 설 / 12시진 시간 표기 설) and the 子時=쥐 · 丑時=소 examples, the 1975 후베이성 운몽 睡虎地 秦墓竹簡 find, the 60갑자 천간 refinement (甲=큰 나무, 乙=덩굴·풀), the per-country swaps (태국 토끼→고양이(猫)·돼지→코끼리(象); 캄보디아·라오스·미얀마 same), the 12 오행 assignments (쥐 水, 소 土, 호랑이 木, 토끼 木, 용 土, 뱀 火, 말 火, 양 土, 원숭이 金, 닭 金, 개 土, 돼지 水) and the 음력 설 기준 + 돌아난 해 all trace to a sentence in the article body.'
+    lastAttempt: '2026-10-26T00:52:19Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire214: twelve-zodiac-origin is a FIRST syndication attempt (the ledger had never seen body sha256 95e49f44...600, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The eight earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy / twenty-four-solar-terms) all keep their OWN fire206/207/208/209/210/211/212/213 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-26T00-50-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-26T00-50-00Z/ --content-sha 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600 --devto-title ''Twelve Zodiac Animals: Where the Twelve Come From'' --devto-tags ''twelve-zodiac,korean-culture,traditional-calendar,saju'' --devto-canonical-url https://lucksajueun.com/blog/twelve-zodiac-origin/'
+    recovered: false
+    recoveredBy: 'n/a - fire214 was a normal scheduled run; the only unrecorded invocation since fire213 (cron run 503959fa, started 2026-10-26T08:00:45+09:00) FAILED at the provider layer (RuntimeError: Operation interrupted: waiting for the provider to recover) and left NO artifacts - no frontmatter edit, no ledger row, no drafts dir, no receipt, git tree clean - so there was nothing to recover and it does not consume a fire number'
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 271/280 (raw 200자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '407'
+      draftChars: '200'
+      draftWeighted: '271'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '723'
+      draftChars: '345'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1340'
+      draftChars: '623'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2019'
+      draftChars: '1995'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: date -u at the moment of the publish attempt (2026-10-26T00:52:19Z)
+    worker: reviewer/minimax-M3
 ---
 
 # 열두 띠(十二生肖) — 십이생배의 기원과 유래
