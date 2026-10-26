@@ -7,11 +7,11 @@ pubDate: 2026-10-06
 tags: ["오늘의운세", "심리", "마인드풀니스", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-25T11:29:28Z'
+  attemptedAt: '2026-10-26T05:25:28Z'
   worker: reviewer/minimax-M3
   cronExit: 3
   exitCode: 3
-  stdout: "X weighted length: 214/280 (raw 178자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+  stdout: "X weighted length: 214/280 (raw 178자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
   skipCount: 3
   skipTotal: 4
   outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
@@ -19,10 +19,10 @@ syndication:
   lastMutatedBy: reviewer/minimax-M3
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
-  lastSelfTriggerNote: 'RESOLVED at fire206: the fire #18 flag (mtime moved +4m15s after fire #17) was investigated and is NOT a self-trigger - the post body sha256 0fdd3165...ace71dae has been unchanged since 2026-10-09 (c437e57) and every commit since then only grew the syndication block, so body-hash detection correctly reports latestIsNewContent=false. No self-trigger occurred and none was suppressed.'
-  publishPayload: .hermes/cron-drafts/2026-10-25T11-28-43Z/publish-payload.json
-  publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T11-28-43Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
-  lastAttempt: '2026-10-25T11:29:28Z'
+  lastSelfTriggerNote: 'No self-trigger in fire217: daily-fortune-healthy-mindset is a RETRY of an unchanged body (body sha256 0fdd3165...ace71dae, 3996c - byte-identical since 2026-10-09), and the precheck reported targetIsNewContent=false / latestIsNewContent=false, so this fire reused the existing fire199-fire206 drafts rather than synthesizing from our own frontmatter output. The ten other pending retries (korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy / twenty-four-solar-terms / twelve-zodiac-origin / yin-yang-circular-calendar / oh-haeng-five-elements) all keep their OWN fire207-fire216 timestamps and were NOT touched by this fire.'
+  publishPayload: .hermes/cron-drafts/2026-10-26T05-25-00Z/publish-payload.json
+  publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-26T05-25-00Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
+  lastAttempt: '2026-10-26T05:25:28Z'
   publishPending: true
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -49,66 +49,17 @@ syndication:
     platform: dev.to
     reason: token 없음
     status: skipped
-  cronOutput: cron run 56f72781 (this run; the cron runner writes its output file after this response)
-  cronRunId: 56f7278171ed4dd2894580d550d15d31
+  cronOutput: cron run 278fbb64096f4f62bb9753062b7767b9 (this run; the cron runner writes its output file after this response)
+  cronRunId: 278fbb64096f4f62bb9753062b7767b9
   recovered: false
-  recoveredBy: n/a - fire206 was a normal scheduled run; fire205 completed and recorded itself
+  recoveredBy: n/a - fire217 was a normal scheduled run; fire216 (cron run cdcaa5d5610745a7b7ac79819299f850) completed and recorded itself, so there was nothing to recover
   timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
-  codeCommit: 3743076 (the tree this fire published with; includes the fire205 frontmatter + PROGRESS.log commits)
-  testSuite: Ran 214 tests, OK
+  codeCommit: abd236e (the tree this fire published with; includes the fire216 frontmatter + PROGRESS.log commits)
+  testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
   recoveredFires: []
+  capWork: 'NO cap work was needed in fire217 - the reused drafts are byte-identical to the fire199-fire206 drafts that were already measured under cap, and the publisher''s own measure_records re-confirmed them in this fire: x 214/280 weighted (178 chars / 327 bytes), threads 241/500 (241 chars / 474 bytes), linkedin 599/1000 (599 chars / 1310 bytes), dev.to 1969/2000 (1969 chars / 1977 bytes). All four under cap.'
+  groundingFixes: 'NO grounding fix was needed in fire217. This is a RETRY of an unchanged body, so the four drafts were reused byte-identically (SHA-256) from the fire199-fire206 chain - 01-x-tweet.txt 59b94e9e70d677f6, 02-threads.txt 94e416ffc3d1a4a8, 03-linkedin.txt f4b1bf89b7385bad, 04-devto-en.md c06238242e21ab10 - and every claim in them was re-checked against the article body in this fire: 운세는 예언이 아니라 60갑자·24절기·오행을 압축한 문화적 분류 도구 (body TL;DR); 다섯 가지 정보 - 점수·행운의 색·행운의 숫자·메시지·주의 사항 (body 운세는 어떤 정보를 주는가); 도움이 되는 네 가지 - 출근길 마음의 준비·자기 성찰의 트리거·작은 행운의 언어화·문화유산의 학습 (body 운세 활용이 도움 되는 경우); 위험 신호 - 결정 회피·자기 확정·우울·충동적 소비 (body 운세 의존이 위험한 경우, and the same four-item list the body''s own 정리 section names: 결정 회피·자기 확정·우울·충동적 소비·도박); 7가지 규칙 (분류 도구로 읽기·하루 한 번 보기·메시지에서 한 가지만 뽑기·행동은 자기 결정·중요 결정은 전문가와 상의·패턴을 메모·숫자·색은 재미로); 3단계 - 관찰·해석·결정 (body 운세와 자기 결정); 60갑자·24절기·오행의 동아시아 전통 분류 체계 압축; the FAQ''s own statistics caveat (행운의 숫자는 통계적 근거가 없는 상징적 제안이며, 당첨 확률을 높이지 않습니다) and its mental-health signpost (한국정신건강 위기상담 1577-0199, 자살예방상담 1393) as the dev.to draft''s ''no statistical basis'' and ''a real professional'' lines. The dev.to draft''s ''the 60 sexagenary day-cycles, the 24 solar terms, and the five elements (wood, fire, earth, metal, water)'' matches the body''s own element list, and ''cultural artifact built for entertainment and reflection'' matches 문화적 분류 도구 / 자기 성찰의 거울·작은 즐거움의 언어·문화 학습의 통로. No draft sentence claims anything the body does not state.'
   history:
-  - attemptedAt: '2026-10-25T08:57:44Z'
-    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
-    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-    codeCommit: 6c05503 (the tree this fire published with; includes the fire203 verification-evidence commit)
-    cronExit: 3
-    cronOutput: cron run 2d77035b (this run; the cron runner writes its output file after this response)
-    cronRunId: 2d77035bfe7c4d9a8057dc7644e3205a
-    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
-    exitCode: 3
-    fire: 204
-    lastAttempt: '2026-10-25T08:57:44Z'
-    lastMutatedBy: reviewer/minimax-M3
-    lastSelfTriggerNote: 'fire #18 mtime +4m15s after fire #17, no user-edit signature in diff (only syndication block grew) - flagged for next fire review'
-    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-    publishPayload: .hermes/cron-drafts/2026-10-25T08-57-44Z/publish-payload.json
-    publishPending: true
-    publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T08-57-44Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
-    recovered: false
-    recoveredBy: n/a - fire204 was a normal scheduled run; fire203 completed and recorded itself
-    recoveredFires: []
-    selfTriggerSuppressed: false
-    setupTokenGuide: bash tools/setup-sns-tokens.sh
-    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
-    skipCount: 3
-    skipTotal: 4
-    stdout: "X weighted length: 214/280 (raw 178자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
-    targets:
-    - draftBytes: '327'
-      draftChars: '178'
-      draftWeighted: '214'
-      platform: x
-      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
-      status: pending
-    - draftBytes: '474'
-      draftChars: '241'
-      platform: threads
-      reason: token 없음
-      status: skipped
-    - draftBytes: '1310'
-      draftChars: '599'
-      platform: linkedin
-      reason: token 없음
-      status: skipped
-    - draftBytes: '1977'
-      draftChars: '1969'
-      platform: dev.to
-      reason: token 없음
-      status: skipped
-    testSuite: Ran 208 tests, OK
-    timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
-    worker: reviewer/minimax-M3
   - attemptedAt: '2026-10-25T10:05:56Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
     blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
@@ -209,6 +160,59 @@ syndication:
       reason: token 없음
       status: skipped
     testSuite: Ran 214 tests, OK
+    timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-26T05:25:28Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    capWork: 'NO cap work was needed in fire217 - the reused drafts are byte-identical to the fire199-fire206 drafts that were already measured under cap, and the publisher''s own measure_records re-confirmed them in this fire: x 214/280 weighted (178 chars / 327 bytes), threads 241/500 (241 chars / 474 bytes), linkedin 599/1000 (599 chars / 1310 bytes), dev.to 1969/2000 (1969 chars / 1977 bytes). All four under cap.'
+    codeCommit: abd236e (the tree this fire published with; includes the fire216 frontmatter + PROGRESS.log commits)
+    cronExit: 3
+    cronOutput: cron run 278fbb64096f4f62bb9753062b7767b9 (this run; the cron runner writes its output file after this response)
+    cronRunId: 278fbb64096f4f62bb9753062b7767b9
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 217
+    groundingFixes: 'NO grounding fix was needed in fire217. This is a RETRY of an unchanged body, so the four drafts were reused byte-identically (SHA-256) from the fire199-fire206 chain - 01-x-tweet.txt 59b94e9e70d677f6, 02-threads.txt 94e416ffc3d1a4a8, 03-linkedin.txt f4b1bf89b7385bad, 04-devto-en.md c06238242e21ab10 - and every claim in them was re-checked against the article body in this fire: 운세는 예언이 아니라 60갑자·24절기·오행을 압축한 문화적 분류 도구 (body TL;DR); 다섯 가지 정보 - 점수·행운의 색·행운의 숫자·메시지·주의 사항 (body 운세는 어떤 정보를 주는가); 도움이 되는 네 가지 - 출근길 마음의 준비·자기 성찰의 트리거·작은 행운의 언어화·문화유산의 학습 (body 운세 활용이 도움 되는 경우); 위험 신호 - 결정 회피·자기 확정·우울·충동적 소비 (body 운세 의존이 위험한 경우, and the same four-item list the body''s own 정리 section names: 결정 회피·자기 확정·우울·충동적 소비·도박); 7가지 규칙 (분류 도구로 읽기·하루 한 번 보기·메시지에서 한 가지만 뽑기·행동은 자기 결정·중요 결정은 전문가와 상의·패턴을 메모·숫자·색은 재미로); 3단계 - 관찰·해석·결정 (body 운세와 자기 결정); 60갑자·24절기·오행의 동아시아 전통 분류 체계 압축; the FAQ''s own statistics caveat (행운의 숫자는 통계적 근거가 없는 상징적 제안이며, 당첨 확률을 높이지 않습니다) and its mental-health signpost (한국정신건강 위기상담 1577-0199, 자살예방상담 1393) as the dev.to draft''s ''no statistical basis'' and ''a real professional'' lines. The dev.to draft''s ''the 60 sexagenary day-cycles, the 24 solar terms, and the five elements (wood, fire, earth, metal, water)'' matches the body''s own element list, and ''cultural artifact built for entertainment and reflection'' matches 문화적 분류 도구 / 자기 성찰의 거울·작은 즐거움의 언어·문화 학습의 통로. No draft sentence claims anything the body does not state.'
+    lastAttempt: '2026-10-26T05:25:28Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire217: daily-fortune-healthy-mindset is a RETRY of an unchanged body (body sha256 0fdd3165...ace71dae, 3996c - byte-identical since 2026-10-09), and the precheck reported targetIsNewContent=false / latestIsNewContent=false, so this fire reused the existing fire199-fire206 drafts rather than synthesizing from our own frontmatter output. The ten other pending retries (korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy / twenty-four-solar-terms / twelve-zodiac-origin / yin-yang-circular-calendar / oh-haeng-five-elements) all keep their OWN fire207-fire216 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-26T05-25-00Z/publish-payload.json
+    publishPending: true
+    publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-26T05-25-00Z/ --content-sha 0fdd31658655cd35aba5869ce840aed1e1bbfcab8d6c3be266a7c408ace71dae --devto-title 'How to Read Your Daily Fortune Without Letting It Run Your Life' --devto-tags 'self-improvement,mental-health,mindfulness,korean-culture' --devto-canonical-url https://lucksajueun.com/blog/daily-fortune-healthy-mindset/
+    recovered: false
+    recoveredBy: n/a - fire217 was a normal scheduled run; fire216 (cron run cdcaa5d5610745a7b7ac79819299f850) completed and recorded itself, so there was nothing to recover
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 214/280 (raw 178자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '327'
+      draftChars: '178'
+      draftWeighted: '214'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '474'
+      draftChars: '241'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1310'
+      draftChars: '599'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1977'
+      draftChars: '1969'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
     timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
     worker: reviewer/minimax-M3
 ---
