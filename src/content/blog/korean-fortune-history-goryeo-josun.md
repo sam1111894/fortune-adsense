@@ -5,56 +5,58 @@ pubDate: 2026-10-06
 tags: ["한국전통문화", "운세역사", "고려", "조선"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-25T18:09:52Z'
+  attemptedAt: '2026-10-27T11:40:06Z'
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-  codeCommit: 88b18ce (the tree this fire published with; includes the fire209 frontmatter + PROGRESS.log commits)
+  codeCommit: 3d4042d (the tree this fire published with; includes the fire220 recovery frontmatter + PROGRESS.log commit)
   cronExit: 3
-  cronOutput: cron run bef94e76 (this run; the cron runner writes its output file after this response)
-  cronRunId: bef94e76f77042a89ccea6989767520f
+  cronOutput: cron run 13eb80aa269246edb49f2c1012a81b99 (this run; the cron runner writes its output file after this response)
+  cronRunId: 13eb80aa269246edb49f2c1012a81b99
   dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
   exitCode: 3
-  lastAttempt: '2026-10-25T18:09:52Z'
+  lastAttempt: '2026-10-27T11:40:06Z'
   lastMutatedBy: reviewer/minimax-M3
-  lastSelfTriggerNote: 'No self-trigger in fire210: korean-fortune-history-goryeo-josun is a FIRST syndication attempt (the ledger had never seen body sha256 7f4498ad...161e), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The four earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide) all keep their OWN fire206/207/208/209 timestamps and were NOT touched by this fire.'
+  lastSelfTriggerNote: 'No self-trigger in fire221: korean-fortune-history-goryeo-josun is a RETRY of an UNCHANGED body (canonical bodySha256 7f4498ad...161e, 2825 chars - byte-identical to the fire210 first-attempt body), so NO synthesis was performed; re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire210 bundle and RE-GROUNDED against the article body.'
   outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-  publishPayload: .hermes/cron-drafts/2026-10-25T17-45-00Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-27T11-27-00Z/publish-payload.json
   publishPending: true
-  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T17-45-00Z/ --content-sha 7f4498ad543e430b792883f797d97b5706ae713b33c6460974d842ded464161e --devto-title ''Korea Fortune-Telling as State Policy: Goryeo, Joseon, and the Modern Era'' --devto-tags ''korean-culture,fortune-history,goryeo,joseon'' --devto-canonical-url https://lucksajueun.com/blog/korean-fortune-history-goryeo-josun/'
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-27T11-27-00Z/ --content-sha 7f4498ad543e430b792883f797d97b5706ae713b33c6460974d842ded464161e --devto-title ''Korea Fortune-Telling as State Policy: Goryeo, Joseon, and the Modern Era'' --devto-tags ''korean-culture,fortune-history,goryeo,joseon'' --devto-canonical-url https://lucksajueun.com/blog/korean-fortune-history-goryeo-josun/'
   recovered: false
-  recoveredBy: n/a - fire210 was a normal scheduled run; fire209 completed and recorded itself
+  recoveredBy: n/a - fire221 was a normal scheduled fire; the immediately preceding invocation (cron run 64cdc3866dc84c97ba206a22fae0d10d = fire220) had its publish attempt, ledger row and frontmatter record recovered and committed by this run, and the fire before it (cron run a8fd2b708fec4168b66259a91e1f4ff6 = fire219) completed and recorded itself, so nothing was recovered BY this fire (recoveredFires=[])
   recoveredFires: []
   selfTriggerSuppressed: false
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   skipCount: 3
   skipTotal: 4
-  stdout: "X weighted length: 215/280 (raw 186자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  stdout: "X weighted length: 218/280 (raw 187자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
   targets:
-  - draftBytes: '331'
-    draftChars: '186'
-    draftWeighted: '215'
+  - draftBytes: '336'
+    draftChars: '187'
+    draftWeighted: '218'
     platform: x
     reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
     status: pending
-  - draftBytes: '888'
-    draftChars: '409'
+  - draftBytes: '990'
+    draftChars: '454'
     platform: threads
     reason: token 없음
     status: skipped
-  - draftBytes: '1986'
-    draftChars: '859'
+  - draftBytes: '2228'
+    draftChars: '961'
     platform: linkedin
     reason: token 없음
     status: skipped
-  - draftBytes: '1968'
-    draftChars: '1960'
+  - draftBytes: '2006'
+    draftChars: '1998'
     platform: dev.to
     reason: token 없음
     status: skipped
   testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
-  timestampSource: date -u at the moment of the publish attempt (2026-10-25T18:09:52Z)
+  timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
   worker: reviewer/minimax-M3
+  capWork: 'Cap work WAS required in fire221 because the grounding fixes lengthened the drafts, and the re-read pass ran AFTER the cap loop (skill 6d). Each draft was re-measured with the publisher''s own measure command after every patch, and each landed under its cap: x 218/280 weighted (187 chars / 336 bytes); threads 454/500 chars (990 bytes); linkedin 961/1000 chars (2228 bytes); dev.to 1998/2000 chars (2006 bytes). The dev.to draft was written through three MEASURED candidates (2010 / 1999 / 1990 chars) before settling at 1998 - an over-cap dev.to draft would have been skipped by the publisher as a false ''token missing'', which is exactly the failure fire210 had to redo.'
+  groundingFixes: 'SEVEN grounding defects found by re-reading the source body against the reused fire210 drafts, ALL fixed before the FINAL attempt. (1) The X draft''s ''1,000년 뒤'' (after a thousand years) flattened the body''s own ''1,000년이 넘는'' (EXCEEDING a thousand years) - rewritten to ''1,000년 넘게'', and ''그 유산'' (that heritage) was replaced with the body''s own ''문화유산''. (2) The Threads draft''s ''전쟁·혼인·사행·즉위의 길일 판단'' dropped the body''s ''국왕 즉위'' and, more importantly, its ''길일·흉일'' - the body says the institution judged BOTH auspicious and inauspicious days - and its ''자리 선정'' was the body''s ''위치 선정''; the Threads draft now carries ''전쟁·혼인·사행·국왕 즉위 등 주요 일정의 길일·흉일 판단'' and ''위치 선정''. (3) The Threads draft''s ''명리학 서적이 민중에 유통되며'' used ''민중'' (0 occurrences in the body) where the body writes ''민간'' - corrected, and its ''1896년 양력이 공식 병행된 뒤에도 명절·제사는 음력을 유지했습니다'' was replaced with the body''s own 1908 framing ''1908년 음력이 공식 폐지된 뒤에도 명절·제사는 계속 음력을 기준으로 남았습니다'' (the body states the lunar survival AFTER the 1908 formal abolition, not after 1896). (4) The LinkedIn draft''s ''조선은 유교를 통치 이념으로 삼으면서'' dropped the body''s ''건국 초기부터'', and ''세종대 《칠정산》 편찬으로 역법 계산이 정밀해졌고'' dropped the body''s ''천문학'' (astronomy) as well as the ''음양도감의 계산 정확도가 크게 향상'' clause - all three are now the body''s own wording, and the book titles carry the body''s hanja (《칠정산(七政算)》《격국대전(格國大典)》《연해자평(淵海子平)》《적천수(滴天髓)》《자평진전(子平眞詮)》). (5) The LinkedIn draft''s closing sentence ''그 안의 숫자를 읽는 방식이 달라집니다'' asserted something the body NEVER says (the body does not mention reading numbers) - it was replaced with the body''s own closing, ''이 흐름을 이해하면 오늘 우리가 보는 일진 운세와 음력 변환기는 단순한 도구가 아니라 1,000년 넘는 문화유산의 디지털 확장판입니다''. (6) The LinkedIn draft''s ''단순한 "오늘의 운세"가 아닙니다'' dropped the body''s second contrast term ''사주'' - the body contrasts BOTH ''오늘의 운세'' AND ''사주'', so the draft now reads ''단순한 "오늘의 운세"나 "사주"만은 아닙니다''. (7) The dev.to draft''s H1 ''Korea''s Fortune-Telling Was State Policy for 1,000 Years'' did not match the published dev.to title ''Korea Fortune-Telling as State Policy: Goryeo, Joseon, and the Modern Era'' (the same H1/title mismatch class fire219 and fire220 fixed) - the H1 was aligned to the recorded title, and the body claims were re-grounded to it: ''royal and aristocratic monopoly'' (the body''s 왕실과 귀족 계층의 전유물), ''day pillars, date-picking, and feng shui became national administration'' (the body''s 일진·택일·풍수가 국가 행정 체계의 일부가 되고), ''chose auspicious AND inauspicious dates'' (the body''s 길일·흉일), ''state journeys'' for 사행, ''Taoist rites, shamanic rites, and fortune-telling'' for 도참·참위·점술, ''curbed divination offices TO SOME EXTENT'' (the body''s 어느 정도 억제), ''stayed deep in daily life'' (the body''s 생활 속으로 깊이 남았습니다), ''codified state-rites and day-pillar standards into law'' (the body''s 국가 의례와 일진·길일의 기준을 법전으로 정립), and the 1896/1908 solar-lunar split. Every remaining claim traces to a body sentence.'
   history:
   - attemptedAt: '2026-10-25T18:09:52Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -106,6 +108,59 @@ syndication:
       status: skipped
     testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
     timestampSource: date -u at the moment of the publish attempt (2026-10-25T18:09:52Z)
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-27T11:40:06Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    capWork: 'Cap work WAS required in fire221 because the grounding fixes lengthened the drafts, and the re-read pass ran AFTER the cap loop (skill 6d). Each draft was re-measured with the publisher''s own measure command after every patch, and each landed under its cap: x 218/280 weighted (187 chars / 336 bytes); threads 454/500 chars (990 bytes); linkedin 961/1000 chars (2228 bytes); dev.to 1998/2000 chars (2006 bytes). The dev.to draft was written through three MEASURED candidates (2010 / 1999 / 1990 chars) before settling at 1998 - an over-cap dev.to draft would have been skipped by the publisher as a false ''token missing'', which is exactly the failure fire210 had to redo.'
+    codeCommit: 3d4042d (the tree this fire published with; includes the fire220 recovery frontmatter + PROGRESS.log commit)
+    cronExit: 3
+    cronOutput: cron run 13eb80aa269246edb49f2c1012a81b99 (this run; the cron runner writes its output file after this response)
+    cronRunId: 13eb80aa269246edb49f2c1012a81b99
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 221
+    groundingFixes: 'SEVEN grounding defects found by re-reading the source body against the reused fire210 drafts, ALL fixed before the FINAL attempt. (1) The X draft''s ''1,000년 뒤'' (after a thousand years) flattened the body''s own ''1,000년이 넘는'' (EXCEEDING a thousand years) - rewritten to ''1,000년 넘게'', and ''그 유산'' (that heritage) was replaced with the body''s own ''문화유산''. (2) The Threads draft''s ''전쟁·혼인·사행·즉위의 길일 판단'' dropped the body''s ''국왕 즉위'' and, more importantly, its ''길일·흉일'' - the body says the institution judged BOTH auspicious and inauspicious days - and its ''자리 선정'' was the body''s ''위치 선정''; the Threads draft now carries ''전쟁·혼인·사행·국왕 즉위 등 주요 일정의 길일·흉일 판단'' and ''위치 선정''. (3) The Threads draft''s ''명리학 서적이 민중에 유통되며'' used ''민중'' (0 occurrences in the body) where the body writes ''민간'' - corrected, and its ''1896년 양력이 공식 병행된 뒤에도 명절·제사는 음력을 유지했습니다'' was replaced with the body''s own 1908 framing ''1908년 음력이 공식 폐지된 뒤에도 명절·제사는 계속 음력을 기준으로 남았습니다'' (the body states the lunar survival AFTER the 1908 formal abolition, not after 1896). (4) The LinkedIn draft''s ''조선은 유교를 통치 이념으로 삼으면서'' dropped the body''s ''건국 초기부터'', and ''세종대 《칠정산》 편찬으로 역법 계산이 정밀해졌고'' dropped the body''s ''천문학'' (astronomy) as well as the ''음양도감의 계산 정확도가 크게 향상'' clause - all three are now the body''s own wording, and the book titles carry the body''s hanja (《칠정산(七政算)》《격국대전(格國大典)》《연해자평(淵海子平)》《적천수(滴天髓)》《자평진전(子平眞詮)》). (5) The LinkedIn draft''s closing sentence ''그 안의 숫자를 읽는 방식이 달라집니다'' asserted something the body NEVER says (the body does not mention reading numbers) - it was replaced with the body''s own closing, ''이 흐름을 이해하면 오늘 우리가 보는 일진 운세와 음력 변환기는 단순한 도구가 아니라 1,000년 넘는 문화유산의 디지털 확장판입니다''. (6) The LinkedIn draft''s ''단순한 "오늘의 운세"가 아닙니다'' dropped the body''s second contrast term ''사주'' - the body contrasts BOTH ''오늘의 운세'' AND ''사주'', so the draft now reads ''단순한 "오늘의 운세"나 "사주"만은 아닙니다''. (7) The dev.to draft''s H1 ''Korea''s Fortune-Telling Was State Policy for 1,000 Years'' did not match the published dev.to title ''Korea Fortune-Telling as State Policy: Goryeo, Joseon, and the Modern Era'' (the same H1/title mismatch class fire219 and fire220 fixed) - the H1 was aligned to the recorded title, and the body claims were re-grounded to it: ''royal and aristocratic monopoly'' (the body''s 왕실과 귀족 계층의 전유물), ''day pillars, date-picking, and feng shui became national administration'' (the body''s 일진·택일·풍수가 국가 행정 체계의 일부가 되고), ''chose auspicious AND inauspicious dates'' (the body''s 길일·흉일), ''state journeys'' for 사행, ''Taoist rites, shamanic rites, and fortune-telling'' for 도참·참위·점술, ''curbed divination offices TO SOME EXTENT'' (the body''s 어느 정도 억제), ''stayed deep in daily life'' (the body''s 생활 속으로 깊이 남았습니다), ''codified state-rites and day-pillar standards into law'' (the body''s 국가 의례와 일진·길일의 기준을 법전으로 정립), and the 1896/1908 solar-lunar split. Every remaining claim traces to a body sentence.'
+    lastAttempt: '2026-10-27T11:40:06Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire221: korean-fortune-history-goryeo-josun is a RETRY of an UNCHANGED body (canonical bodySha256 7f4498ad...161e, 2825 chars - byte-identical to the fire210 first-attempt body), so NO synthesis was performed; re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire210 bundle and RE-GROUNDED against the article body.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-27T11-27-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-27T11-27-00Z/ --content-sha 7f4498ad543e430b792883f797d97b5706ae713b33c6460974d842ded464161e --devto-title ''Korea Fortune-Telling as State Policy: Goryeo, Joseon, and the Modern Era'' --devto-tags ''korean-culture,fortune-history,goryeo,joseon'' --devto-canonical-url https://lucksajueun.com/blog/korean-fortune-history-goryeo-josun/'
+    recovered: false
+    recoveredBy: n/a - fire221 was a normal scheduled fire; the immediately preceding invocation (cron run 64cdc3866dc84c97ba206a22fae0d10d = fire220) had its publish attempt, ledger row and frontmatter record recovered and committed by this run, and the fire before it (cron run a8fd2b708fec4168b66259a91e1f4ff6 = fire219) completed and recorded itself, so nothing was recovered BY this fire (recoveredFires=[])
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 218/280 (raw 187자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+    targets:
+    - draftBytes: '336'
+      draftChars: '187'
+      draftWeighted: '218'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '990'
+      draftChars: '454'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2228'
+      draftChars: '961'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2006'
+      draftChars: '1998'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
     worker: reviewer/minimax-M3
 ---
 
