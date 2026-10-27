@@ -5,56 +5,58 @@ pubDate: 2026-10-06
 tags: ["연봉", "실수령액", "4대보험", "소득세"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-25T16:35:24Z'
+  attemptedAt: '2026-10-27T09:11:00Z'
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-  codeCommit: 70db94b (the tree this fire published with; includes the fire208 frontmatter + PROGRESS.log commits)
+  codeCommit: 61e21ca (the tree this fire published with; includes the fire219 frontmatter + PROGRESS.log commits)
   cronExit: 3
-  cronOutput: cron run 4d45cea (this run; the cron runner writes its output file after this response)
-  cronRunId: 4d45cea569cc4100a749badb0eca1358
+  cronOutput: cron run 64cdc3866dc84c97ba206a22fae0d10d (this run; the cron runner writes its output file after this response)
+  cronRunId: 64cdc3866dc84c97ba206a22fae0d10d
   dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
   exitCode: 3
-  lastAttempt: '2026-10-25T16:35:24Z'
+  lastAttempt: '2026-10-27T09:11:00Z'
   lastMutatedBy: reviewer/minimax-M3
-  lastSelfTriggerNote: 'No self-trigger in fire209: salary-take-home-pay-calculator-guide is a FIRST syndication attempt (the ledger had never seen body sha256 c90295d7...ccb62), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The three earlier pending retries (daily-fortune-healthy-mindset, korean-feng-shui-housing-basics, korean-ancestral-ritual-lunar-calendar) all still hold their own fire206/fire207/fire208 timestamps and were not touched by this fire.'
+  lastSelfTriggerNote: 'No self-trigger in fire220: salary-take-home-pay-calculator-guide is a RETRY of an UNCHANGED body (canonical bodySha256 c90295d7...ccb62, 2829 chars - byte-identical to the fire209 first-attempt body), so NO synthesis was performed; re-synthesizing would be a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire209 bundle and RE-GROUNDED against the article body.'
   outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-  publishPayload: .hermes/cron-drafts/2026-10-25T16-22-56Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-27T07-51-00Z/publish-payload.json
   publishPending: true
-  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T16-22-56Z/ --content-sha c90295d76b082bf8e9039cb04642135e51668c4312d373eb5b14ff3c798ccb62 --devto-title ''Take-Home Pay in Korea: 4 Insurances, Tax, and Allowances'' --devto-tags ''korean-finance,take-home-pay,salary,4-insurances'' --devto-canonical-url https://lucksajueun.com/blog/salary-take-home-pay-calculator-guide/'
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-27T07-51-00Z/ --content-sha c90295d76b082bf8e9039cb04642135e51668c4312d373eb5b14ff3c798ccb62 --devto-title ''Take-Home Pay in Korea: 4 Insurances, Tax, and Allowances'' --devto-tags ''korean-finance,take-home-pay,salary,4-insurances'' --devto-canonical-url https://lucksajueun.com/blog/salary-take-home-pay-calculator-guide/'
   recovered: false
-  recoveredBy: n/a - fire209 was a normal scheduled run; fire208 completed and recorded itself
+  recoveredBy: n/a - fire220 was a normal scheduled fire; the immediately preceding invocation (cron run a8fd2b708fec4168b66259a91e1f4ff6 = fire219) completed and recorded itself, so nothing was recovered (recoveredFires=[])
   recoveredFires: []
   selfTriggerSuppressed: false
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   skipCount: 3
   skipTotal: 4
-  stdout: "X weighted length: 244/280 (raw 204자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+  stdout: "X weighted length: 263/280 (raw 215자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
   targets:
-  - draftBytes: '373'
-    draftChars: '204'
-    draftWeighted: '244'
+  - draftBytes: '400'
+    draftChars: '215'
+    draftWeighted: '263'
     platform: x
     reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
     status: pending
-  - draftBytes: '843'
-    draftChars: '414'
+  - draftBytes: '991'
+    draftChars: '481'
     platform: threads
     reason: token 없음
     status: skipped
-  - draftBytes: '2038'
-    draftChars: '927'
+  - draftBytes: '2207'
+    draftChars: '989'
     platform: linkedin
     reason: token 없음
     status: skipped
-  - draftBytes: '1996'
-    draftChars: '1988'
+  - draftBytes: '2003'
+    draftChars: '1995'
     platform: dev.to
     reason: token 없음
     status: skipped
   testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
-  timestampSource: date -u at the moment of the publish attempt (2026-10-25T16:35:24Z)
+  timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
   worker: reviewer/minimax-M3
+  capWork: 'Cap work WAS required in fire220 because the grounding fixes lengthened the drafts, and the re-read pass ran AFTER the cap loop (skill 6d). Each draft was re-measured with the publisher''s own measure command after every patch, and each landed under its cap: x 263/280 weighted (215 chars / 400 bytes); threads 481/500 chars (991 bytes); linkedin 989/1000 chars (2207 bytes); dev.to 1995/2000 chars (2003 bytes). The LinkedIn draft was shortened three times (993 -> 989 chars) to make room for the restored year-end settlement sentence, and the dev.to draft was rewritten to fit the body-matched H1.'
+  groundingFixes: 'SEVEN grounding defects found by re-reading the source body against the reused fire209 drafts, ALL fixed before the FINAL attempt. (1) The X draft wrote ''4대보험'' (no space) - the body spells it ''4대 보험'' in all 12 of its occurrences and never uses the unspaced form, so the term was corrected in the X, Threads and LinkedIn drafts. (2) The X draft''s opener ''연봉 협상에서'' replaced the body''s own framing ''연봉이나 월급을 책정할 때'' - the body''s ''협상'' occurs exactly once and in a different sentence (the allowance inclusion check), so the opener was rewritten to the body''s own wording. (3) The X draft wrote ''0~35%가 빠집니다'', dropping the body''s load-bearing hedge ''수준으로'' and its monthly cadence - the body says ''0~35% 수준으로 매월 빠릅니다'', so both were restored (and the Threads draft had the same dropped ''수준으로''). (4) The Threads draft wrote ''실수령액 = 월급 - 4대보험 - 소득세 - 지방소득세'' with a missing space and the wrong first term - the body''s own formula line is ''실수령액 = 월급여 - 4대 보험 - 소득세 - 지방소득세'', and the draft also dropped the ''기납부세액'' spelling the body uses for the withholding total (the body never writes the variant the draft used). (5) The Threads and LinkedIn drafts asserted the National Pension rate as a bare ''4.5%'' and the Health Insurance rate as a bare ''3.545%'' - the body qualifies the first with ''(상한·하한 적용)'' and the second with ''(연도별 변동)'', and both were restored. (6) The LinkedIn draft''s ''요율은 한국 근로복지공드의 1월 고시마다 바뀌므로'' dropped the body''s own ''매년'' and ''에 따라 변동'', and the year-end settlement sentence did not exist in the fire209 draft at all - the body''s ''12월 말 또는 이직 ''시점에 정산을 거쳐 환급·추가납부가 결정됩니다'' was restored, together with the body''s own ''매년 원천징수된 세금은 잠정 금액'' framing. (7) The dev.to draft''s H1 ''Take-Home Pay: 4 Insurances and Tax'' did not match the published dev.to title ''Take-Home Pay in Korea: 4 Insurances, Tax, and Allowances'' (the same H1/title mismatch class fire219 fixed), and its ''You prepay part of it monthly'' inverted the body''s ''매월 원천징수되는 세금은 잠정 금액이고'' - the H1 was aligned to the recorded title and the withholding sentence was rewritten to the body''s own provisional-tax framing. Every remaining claim traces to a body sentence: the take-home formula, the four insurances with their 2026 rates, the progressive-then-deductions income-tax structure, the year-end settlement timing, the local income tax at 10% of the assessed or final tax, the three non-taxable allowances and their monthly caps, the weekly rest allowance and its 5-day/6-day arithmetic, and the 4.345 conversion factor with its 52.14-week reason.'
   history:
   - attemptedAt: '2026-10-25T16:35:24Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -106,6 +108,59 @@ syndication:
       status: skipped
     testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
     timestampSource: date -u at the moment of the publish attempt (2026-10-25T16:35:24Z)
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-27T09:11:00Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    capWork: 'Cap work WAS required in fire220 because the grounding fixes lengthened the drafts, and the re-read pass ran AFTER the cap loop (skill 6d). Each draft was re-measured with the publisher''s own measure command after every patch, and each landed under its cap: x 263/280 weighted (215 chars / 400 bytes); threads 481/500 chars (991 bytes); linkedin 989/1000 chars (2207 bytes); dev.to 1995/2000 chars (2003 bytes). The LinkedIn draft was shortened three times (993 -> 989 chars) to make room for the restored year-end settlement sentence, and the dev.to draft was rewritten to fit the body-matched H1.'
+    codeCommit: 61e21ca (the tree this fire published with; includes the fire219 frontmatter + PROGRESS.log commits)
+    cronExit: 3
+    cronOutput: cron run 64cdc3866dc84c97ba206a22fae0d10d (this run; the cron runner writes its output file after this response)
+    cronRunId: 64cdc3866dc84c97ba206a22fae0d10d
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 220
+    groundingFixes: 'SEVEN grounding defects found by re-reading the source body against the reused fire209 drafts, ALL fixed before the FINAL attempt. (1) The X draft wrote ''4대보험'' (no space) - the body spells it ''4대 보험'' in all 12 of its occurrences and never uses the unspaced form, so the term was corrected in the X, Threads and LinkedIn drafts. (2) The X draft''s opener ''연봉 협상에서'' replaced the body''s own framing ''연봉이나 월급을 책정할 때'' - the body''s ''협상'' occurs exactly once and in a different sentence (the allowance inclusion check), so the opener was rewritten to the body''s own wording. (3) The X draft wrote ''0~35%가 빠집니다'', dropping the body''s load-bearing hedge ''수준으로'' and its monthly cadence - the body says ''0~35% 수준으로 매월 빠릅니다'', so both were restored (and the Threads draft had the same dropped ''수준으로''). (4) The Threads draft wrote ''실수령액 = 월급 - 4대보험 - 소득세 - 지방소득세'' with a missing space and the wrong first term - the body''s own formula line is ''실수령액 = 월급여 - 4대 보험 - 소득세 - 지방소득세'', and the draft also dropped the ''기납부세액'' spelling the body uses for the withholding total (the body never writes the variant the draft used). (5) The Threads and LinkedIn drafts asserted the National Pension rate as a bare ''4.5%'' and the Health Insurance rate as a bare ''3.545%'' - the body qualifies the first with ''(상한·하한 적용)'' and the second with ''(연도별 변동)'', and both were restored. (6) The LinkedIn draft''s ''요율은 한국 근로복지공드의 1월 고시마다 바뀌므로'' dropped the body''s own ''매년'' and ''에 따라 변동'', and the year-end settlement sentence did not exist in the fire209 draft at all - the body''s ''12월 말 또는 이직 ''시점에 정산을 거쳐 환급·추가납부가 결정됩니다'' was restored, together with the body''s own ''매년 원천징수된 세금은 잠정 금액'' framing. (7) The dev.to draft''s H1 ''Take-Home Pay: 4 Insurances and Tax'' did not match the published dev.to title ''Take-Home Pay in Korea: 4 Insurances, Tax, and Allowances'' (the same H1/title mismatch class fire219 fixed), and its ''You prepay part of it monthly'' inverted the body''s ''매월 원천징수되는 세금은 잠정 금액이고'' - the H1 was aligned to the recorded title and the withholding sentence was rewritten to the body''s own provisional-tax framing. Every remaining claim traces to a body sentence: the take-home formula, the four insurances with their 2026 rates, the progressive-then-deductions income-tax structure, the year-end settlement timing, the local income tax at 10% of the assessed or final tax, the three non-taxable allowances and their monthly caps, the weekly rest allowance and its 5-day/6-day arithmetic, and the 4.345 conversion factor with its 52.14-week reason.'
+    lastAttempt: '2026-10-27T09:11:00Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire220: salary-take-home-pay-calculator-guide is a RETRY of an UNCHANGED body (canonical bodySha256 c90295d7...ccb62, 2829 chars - byte-identical to the fire209 first-attempt body), so NO synthesis was performed; re-synthesizing would be a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire209 bundle and RE-GROUNDED against the article body.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-27T07-51-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-27T07-51-00Z/ --content-sha c90295d76b082bf8e9039cb04642135e51668c4312d373eb5b14ff3c798ccb62 --devto-title ''Take-Home Pay in Korea: 4 Insurances, Tax, and Allowances'' --devto-tags ''korean-finance,take-home-pay,salary,4-insurances'' --devto-canonical-url https://lucksajueun.com/blog/salary-take-home-pay-calculator-guide/'
+    recovered: false
+    recoveredBy: n/a - fire220 was a normal scheduled fire; the immediately preceding invocation (cron run a8fd2b708fec4168b66259a91e1f4ff6 = fire219) completed and recorded itself, so nothing was recovered (recoveredFires=[])
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 263/280 (raw 215자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+    targets:
+    - draftBytes: '400'
+      draftChars: '215'
+      draftWeighted: '263'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '991'
+      draftChars: '481'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2207'
+      draftChars: '989'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2003'
+      draftChars: '1995'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
     worker: reviewer/minimax-M3
 ---
 
