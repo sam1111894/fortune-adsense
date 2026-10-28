@@ -5,58 +5,61 @@ pubDate: 2026-10-06
 tags: ["풍수", "주거", "인테리어", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-26T07:29:10Z'
+  attemptedAt: '2026-10-28T20:53:44Z'
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-  codeCommit: 9e28a09 (the tree this fire published with; includes the fire217 frontmatter + PROGRESS.log commits)
+  codeCommit: c02bc5f (the tree this fire published with; the frontmatter + PROGRESS.log commits are created after this attempt)
   cronExit: 3
-  cronOutput: cron run 8e0c7154cc6f4fff89a15f22bab385f9 (this run; the cron runner writes its output file after this response)
-  cronRunId: 8e0c7154cc6f4fff89a15f22bab385f9
-  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  cronOutput: cron run 05925f556c4c41fca9b6ffb63b0b98a7 (this run; the cron runner writes its output file after this response)
+  cronRunId: 05925f556c4c41fca9b6ffb63b0b98a7
+  dupGuard: 'statuses_count=0 -> NO DUPLICATE POSSIBLE (free read: GET /1.1/account/verify_credentials.json HTTP 200; the v2 /2/users/:id/tweets read is HTTP 402 credits depleted, so statuses_count is the only free read available; the durable publish-receipt store holds 0 records)'
   exitCode: 3
-  lastAttempt: '2026-10-26T07:29:10Z'
+  lastAttempt: '2026-10-28T20:53:44Z'
   lastMutatedBy: reviewer/minimax-M3
-  lastSelfTriggerNote: 'No self-trigger in fire218: korean-feng-shui-housing-basics is a RETRY of an unchanged body (body sha256 cda1e7a6...334d97b0, 2583c - byte-identical to the fire207 attempt), and the precheck reported targetIsNewContent=false / latestIsNewContent=false, so this fire reused and re-grounded the existing fire207 drafts rather than synthesizing from our own frontmatter output. The ten other pending retries (korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy / twenty-four-solar-terms / twelve-zodiac-origin / yin-yang-circular-calendar / oh-haeng-five-elements / daily-fortune-healthy-mindset) all keep their OWN fire207-fire217 timestamps and were NOT touched by this fire.'
+  lastSelfTriggerNote: 'No self-trigger in fire229: korean-feng-shui-housing-basics is a RETRY of an UNCHANGED body - the body sha256 cda1e7a6...334d97b0 (2583c) is byte-identical to the fire207 and fire218 attempts on this slug, and the precheck reported targetIsNewContent=false / latestIsNewContent=false, so NO synthesis was performed; re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire218 bundle (.hermes/cron-drafts/2026-10-26T06-46-00Z/) and RE-GROUNDED against the article body in this fire, then written into a FRESH drafts dir (.hermes/cron-drafts/2026-10-28T20-32-00Z/). The ten other pending retries keep their OWN fire timestamps and were NOT touched by this fire.'
   outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-  publishPayload: .hermes/cron-drafts/2026-10-26T06-46-00Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-28T20-32-00Z/publish-payload.json
   publishPending: true
-  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-26T06-46-00Z/ --content-sha cda1e7a6b05261d7ec18b046b7c75a55a43e78180eeb985bf1a59b6e334d97b0 --devto-title ''Korean Feng Shui Basics: Reading the Flow of Qi in Modern Interiors'' --devto-tags ''feng-shui,korean-culture,interior-design,home'' --devto-canonical-url https://lucksajueun.com/blog/korean-feng-shui-housing-basics/'
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-28T20-32-00Z/ --content-sha cda1e7a6b05261d7ec18b046b7c75a55a43e78180eeb985bf1a59b6e334d97b0 --devto-title ''Korean Feng Shui Basics: Reading the Flow of Qi in Modern Interiors'' --devto-tags ''feng-shui,korean-culture,interior-design,home'' --devto-canonical-url https://lucksajueun.com/blog/korean-feng-shui-housing-basics/'
   recovered: false
-  recoveredBy: n/a - fire218 was a normal scheduled run; fire217 (cron run 278fbb64) completed and recorded itself, so there was nothing to recover
+  recoveredBy: n/a - fire229 was a normal scheduled fire. The interrupted fire227 (cron run d6b0b7823c1f41fc9c766e7d041c3761) and the credit-blocked-final-response fire228 (cron run be96b6eaa0e04ae3980df51c0c882c8d) were BOTH already recovered and recorded under their OWN numbers (9500a38 and c02bc5f) before this run started, so there was nothing left to recover here - this is a genuinely NEW attempt on a different slug.
   recoveredFires: []
   selfTriggerSuppressed: false
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   skipCount: 3
   skipTotal: 4
-  stdout: "X weighted length: 243/280 (raw 196자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  stdout: "X weighted length: 276/280 (raw 215자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
   targets:
-  - draftBytes: '372'
-    draftChars: '196'
-    draftWeighted: '243'
+  - draftBytes: '418'
+    draftChars: '215'
+    draftWeighted: '276'
     platform: x
     reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
     status: pending
-  - draftBytes: '664'
-    draftChars: '326'
+  - draftBytes: '809'
+    draftChars: '388'
     platform: threads
     reason: token 없음
     status: skipped
-  - draftBytes: '1486'
-    draftChars: '677'
+  - draftBytes: '1715'
+    draftChars: '775'
     platform: linkedin
     reason: token 없음
     status: skipped
-  - draftBytes: '2028'
-    draftChars: '1996'
+  - draftBytes: '2022'
+    draftChars: '1990'
     platform: dev.to
     reason: token 없음
     status: skipped
   testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
-  timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
+  timestampSource: 'publish-all attempt time - the mtime of the captured publish-all stdout in this run''s drafts dir (2026-10-28T20:53:44Z). NOT the drafts-directory name (2026-10-28T20-32-00Z): the fire226 recovery proved a directory name is a drafting-session label, never the attempt time.'
   worker: reviewer/minimax-M3
-  capWork: 'Cap work WAS required in fire218 because the grounding fixes lengthened three of the four drafts. The dev.to draft was rewritten and re-measured until it fit: one rewritten version measured exactly 2000/2000 chars (zero headroom) and the final version measures 1996/2000. The final tool-derived measurements (sns_publish.py measure --json) are: x 196 chars / 372 bytes / weighted 243 of 280; threads 326/664; linkedin 677/1486; dev.to 1996/2028 - all four under cap, verified AFTER every grounding patch.'
-  groundingFixes: 'SIX grounding defects found by re-reading the source body against the reused fire207 drafts, ALL fixed before the FINAL attempt. (1) The X draft wrote ''양택(宅)과 음택(墓)'' - the body never uses 墓 (0 occurrences) and its own wording is ''양택(陽宅, 양택)인 주거 풍수'' / ''음택(陰宅, 음택)인 산택 풍수'' (2 occurrences each of 陽宅 and 陰宅), so the hanja pair was corrected to 양택(陽宅)과 음택(陰宅). (2) The X draft compressed the body''s criteria list into ''방배·종좌·대문'' - ''종좌'' is not the body''s word (0 occurrences; the body writes ''건물의 종(宗)과 좌(佐)''), so it was rewritten to the body''s own ''방배·종·좌·대문''. (3) ''한국 양택'' (0 occurrences in the body; the body writes ''한국 전통 양택'', 3 occurrences) appeared in the X, Threads and LinkedIn drafts and was corrected to the body''s own wording in all three; the LinkedIn heading ''한국 양택에서 실제로 보는 기준'' additionally used ''실제로'' (0 occurrences) and was rewritten to ''한국 전통 양택의 특징과 기준''. (4) The LinkedIn draft''s closing line read "''전통 지혜를 번역해 받아들이기'' - 이 태도가 가장 현실적입니다" - a fabricated quote that does not appear in the body plus an unanchored superlative (''가장''); the body''s actual closing insight is "풍수의 원리를 ''기(氣)의 흐름''으로 번역해 받아들이면, 전통 지혜와 현대 인테리어를 균형 있게 결합할 수 있습니다", so the line was rewritten to the body''s own closing insight, quoting only the body''s own ''기(氣)의 흐름''. The same draft''s line ''한국 전통 양택 풍수의 기본 구조를 정리했습니다'' used ''기본 구조'' (0 occurrences; the body writes ''한국 전통 양택 풍수의 특징'' and ''이 기준들은'') and was rewritten to ''한국 전통 양택 풍수의 특징과 기준을 정리했습니다''. (5) The X draft''s line ''단정론이 아닌 ''참고의 영역''이라는 점'' quoted a phrase the body does not contain - the body writes ''풍수는 "참고"의 영역으로 활용하는 것이 안전합니다'' - so the quoted span was narrowed to the body''s own wording, "''참고''의 영역". (6) The dev.to draft wrote ''**Main and side rooms (宗 and 佐)** - central room relative to the side room'' and ''whether the fire space conflicts with the main room or gate'' - the body says the two rooms are 큰방(안채, 종)과 작은방(사랑채, 좌), i.e. a BIG room and a SMALL room, and the kitchen criterion is ''화(火)를 다루는 부엌이 안방·대문과 충돌하지 않는가'' (안방 = the inner/master bedroom, a DIFFERENT room from 안채), so the draft''s ''central room''/''main room'' was a conflation the body never makes; it was rewritten to ''Big and small rooms (宗 and 佐) - their positions relative to each other'' and ''the master bedroom or gate''. The dev.to H1 was also aligned with the published dev.to title (''...in Modern Interiors''). Every remaining claim in the four drafts traces to a sentence in the body: 산·수·향·명 4대 요소; 양택/음택의 구분과 한국에서는 양택이 보편적; 방배·향, 종(안채)과 좌(사랑채), 부엌·화로와 안방·대문, 대문·중심선, 수·우물; 명(明)과 채광·환기, ''기가 막히지 않는다''와 동선, 공간 분리; 결정론적 길흉 아님, 과학적 인과 통계 미증명, 의료·법률·재정 진단 대체 불가, ''참고''의 영역, 전문가 조언과 생활 습관·가족 구성·업무 패턴을 함께 고려; and the body''s own closing sentence.'
+  capWork: 'CAP WORK WAS required in fire229: the grounding fixes lengthened three of the four drafts (the restored 보편적 정답 clause alone added a sentence to each), so every candidate was measured with the PUBLISHER''s OWN measurement - sns_publish.measure_records, which uses the publisher''s _read_text and x_weighted_length - and the wording was chosen from the FITTING candidates rather than guessed. NO BODY FACT WAS DROPPED TO FIT A CAP: only the DRAFTS'' own connective wording was trimmed (the dev.to opener''s trailing ''not a prediction'' clause, the ''a few overlap modern design'' connector, the ''the stream, river or road'' article and the ''Full guide:'' label were shortened or removed; the dev.to body fact that replaced the opener clause - ''An interpretation of flow, not a verdict on a house'' - is the body''s own caution 1 wording, ''흐름의 해석이지 ... 결론이 아닙니다'', and sits in the section where the body states it). Final tool-derived measurements (sns_publish.py measure --json, re-measured on the FINAL files after the last write): x 276/280 weighted (215 chars / 418 bytes); threads 388/500 chars (388 / 809); linkedin 775/1000 chars (775 / 1715); dev.to 1990/2000 chars (1990 / 2022) - all four under cap, verified AFTER every grounding patch.'
+  groundingFixes: 'GROUNDING FIXES - SIX defects found by re-reading the canonical body against the reused fire218 drafts, ALL fixed before the FINAL attempt. (1) THE BODY''S FOUR CAUTIONS WERE REDUCED TO THREE IN ALL FOUR DRAFTS: the body lists 네 가지 (1 결정론적 길흉 / 2 과학적 인과 / 3 보편적 정답 - 같은 집이라도 가문·생일·용도에 따라 다른 길흉 판단이 나올 수 있습니다 / 4 의료·법률·재정 진단 대체 불가), and EVERY fire218 draft silently dropped the THIRD one (보편적 정답) - the same class fire222 caught at fire211 (''the body''s FOUR limits were reduced to two in LinkedIn and to one in the Threads draft ... both restored''). The missing caveat is now carried in all four drafts: X ''같은 집이라도 가문·생일·용도에 따라 다를 수 있습니다'', Threads ''같은 집이라도 가문·생일·용도에 따라 다른 길흉 판단이 나올 수 있습니다'', LinkedIn ''같은 집이라도 가문·생일·용도에 따라 다른 길흉 판단이 나올 수 있습니다'', dev.to ''The same house may yield different readings by family, birthday or purpose''. (2) THE X/Threads/LinkedIn OPENERS CALLED FENG SHUI A ''도구'' (a TOOL) - ''도구'' appears 0 times in this body, and the body''s own closing words are ''풍수 자체는 "결정론적 예언"이 아니라 "흐름의 해석"입니다''; all three Korean openers were rewritten to the body''s own closing formulation, and the dev.to opener''s trailing ''a framework for reading a space, not a prediction'' was dropped - ''framework'' is not the body''s word, and the body''s caution 1 is already carried verbatim in the guarantees section as ''An interpretation of flow, not a verdict on a house'' (the body''s own ''흐름의 해석이지 ... 결론이 아닙니다''). (3) ''4요소'' / ''핵심 4요소'' IS NOT THE BODY''S WORD - the body''s heading is ''풍수의 4대 요소 - 산·수·향·명'' (4요소 count 0, 4대 요소 count 1), so the X/Threads/LinkedIn headings were rewritten to ''4대 요소''. (4) THE LinkedIn 수/명 BULLETS DROPPED THE BODY''S OWN DETAIL: the body writes 수(水) as ''집 앞을 흐르는 시내·강·길. 흐름과 변화의(symbolic)'' and 명(明) as ''집 앞의 트인 공간. 광활한 트임은 길한 흐름의(symbolic)'', while the reused draft had flattened both to ''집 앞의 흐름과 변화'' / ''집 앞의 트인 공간'' - the 시내·강·길 wording and the ''상징'' (symbolic) framing were restored in both bullets, and the 산(山) bullet''s ''등을 기대는 안정의(symbolic)'' qualifier was restored too. (5) THE LinkedIn/Threads MODERN-INTERIOR LIST DROPPED THE BODY''S OWN THIRD ITEM: the body lists 네 가지 (자연 채광과 환기 / 동선과 흐름 / 방위와 기능 / 공간 분리) and the reused drafts listed only three - ''방위와 기능 - 부엌을 화(火)가 강한 방위에 두는 원리'' was restored in both drafts, and the dev.to ''Where it overlaps with modern interiors'' paragraph gained the body''s 공간 분리 item (''separating living, sleeping and study rooms mirrors the yin-yang split''). (6) THE dev.to DRAFT DROPPED BODY FACTS: the body''s 水 is ''시내·강·길'' (the reused draft said only ''the stream or road''), the body''s kitchen criterion is ''화(火)를 다루는 부엌이 안방·대문과 충돌'' (the reused draft said ''the fire space''), the body''s classic ideal is ''뒤에 산, 앞에 물, 좌청룡·우백호'' (the reused draft quoted only ''mountain behind, water in front''), and the body''s closing ''자신의 생활 습관·가족 구성·업무 패턴'' (the reused draft said only ''with your habits'') - all four were restored. EVERY remaining claim in the four drafts traces to a sentence in the body.'
+  bodyChars: 2583
+  bodySha256: cda1e7a6b05261d7ec18b046b7c75a55a43e78180eeb985bf1a59b6e334d97b0
+  cronExitNote: exit 3 = BLOCKED (the write was never attempted), NOT failed
   history:
   - attemptedAt: '2026-10-25T13:56:24Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -161,6 +164,62 @@ syndication:
       status: skipped
     testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
     timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in this run's drafts dir
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-28T20:53:44Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    bodyChars: 2583
+    bodySha256: cda1e7a6b05261d7ec18b046b7c75a55a43e78180eeb985bf1a59b6e334d97b0
+    capWork: 'CAP WORK WAS required in fire229: the grounding fixes lengthened three of the four drafts (the restored 보편적 정답 clause alone added a sentence to each), so every candidate was measured with the PUBLISHER''s OWN measurement - sns_publish.measure_records, which uses the publisher''s _read_text and x_weighted_length - and the wording was chosen from the FITTING candidates rather than guessed. NO BODY FACT WAS DROPPED TO FIT A CAP: only the DRAFTS'' own connective wording was trimmed (the dev.to opener''s trailing ''not a prediction'' clause, the ''a few overlap modern design'' connector, the ''the stream, river or road'' article and the ''Full guide:'' label were shortened or removed; the dev.to body fact that replaced the opener clause - ''An interpretation of flow, not a verdict on a house'' - is the body''s own caution 1 wording, ''흐름의 해석이지 ... 결론이 아닙니다'', and sits in the section where the body states it). Final tool-derived measurements (sns_publish.py measure --json, re-measured on the FINAL files after the last write): x 276/280 weighted (215 chars / 418 bytes); threads 388/500 chars (388 / 809); linkedin 775/1000 chars (775 / 1715); dev.to 1990/2000 chars (1990 / 2022) - all four under cap, verified AFTER every grounding patch.'
+    codeCommit: c02bc5f (the tree this fire published with; the frontmatter + PROGRESS.log commits are created after this attempt)
+    cronExit: 3
+    cronExitNote: exit 3 = BLOCKED (the write was never attempted), NOT failed
+    cronOutput: cron run 05925f556c4c41fca9b6ffb63b0b98a7 (this run; the cron runner writes its output file after this response)
+    cronRunId: 05925f556c4c41fca9b6ffb63b0b98a7
+    dupGuard: 'statuses_count=0 -> NO DUPLICATE POSSIBLE (free read: GET /1.1/account/verify_credentials.json HTTP 200; the v2 /2/users/:id/tweets read is HTTP 402 credits depleted, so statuses_count is the only free read available; the durable publish-receipt store holds 0 records)'
+    exitCode: 3
+    fire: 229
+    groundingFixes: 'GROUNDING FIXES - SIX defects found by re-reading the canonical body against the reused fire218 drafts, ALL fixed before the FINAL attempt. (1) THE BODY''S FOUR CAUTIONS WERE REDUCED TO THREE IN ALL FOUR DRAFTS: the body lists 네 가지 (1 결정론적 길흉 / 2 과학적 인과 / 3 보편적 정답 - 같은 집이라도 가문·생일·용도에 따라 다른 길흉 판단이 나올 수 있습니다 / 4 의료·법률·재정 진단 대체 불가), and EVERY fire218 draft silently dropped the THIRD one (보편적 정답) - the same class fire222 caught at fire211 (''the body''s FOUR limits were reduced to two in LinkedIn and to one in the Threads draft ... both restored''). The missing caveat is now carried in all four drafts: X ''같은 집이라도 가문·생일·용도에 따라 다를 수 있습니다'', Threads ''같은 집이라도 가문·생일·용도에 따라 다른 길흉 판단이 나올 수 있습니다'', LinkedIn ''같은 집이라도 가문·생일·용도에 따라 다른 길흉 판단이 나올 수 있습니다'', dev.to ''The same house may yield different readings by family, birthday or purpose''. (2) THE X/Threads/LinkedIn OPENERS CALLED FENG SHUI A ''도구'' (a TOOL) - ''도구'' appears 0 times in this body, and the body''s own closing words are ''풍수 자체는 "결정론적 예언"이 아니라 "흐름의 해석"입니다''; all three Korean openers were rewritten to the body''s own closing formulation, and the dev.to opener''s trailing ''a framework for reading a space, not a prediction'' was dropped - ''framework'' is not the body''s word, and the body''s caution 1 is already carried verbatim in the guarantees section as ''An interpretation of flow, not a verdict on a house'' (the body''s own ''흐름의 해석이지 ... 결론이 아닙니다''). (3) ''4요소'' / ''핵심 4요소'' IS NOT THE BODY''S WORD - the body''s heading is ''풍수의 4대 요소 - 산·수·향·명'' (4요소 count 0, 4대 요소 count 1), so the X/Threads/LinkedIn headings were rewritten to ''4대 요소''. (4) THE LinkedIn 수/명 BULLETS DROPPED THE BODY''S OWN DETAIL: the body writes 수(水) as ''집 앞을 흐르는 시내·강·길. 흐름과 변화의(symbolic)'' and 명(明) as ''집 앞의 트인 공간. 광활한 트임은 길한 흐름의(symbolic)'', while the reused draft had flattened both to ''집 앞의 흐름과 변화'' / ''집 앞의 트인 공간'' - the 시내·강·길 wording and the ''상징'' (symbolic) framing were restored in both bullets, and the 산(山) bullet''s ''등을 기대는 안정의(symbolic)'' qualifier was restored too. (5) THE LinkedIn/Threads MODERN-INTERIOR LIST DROPPED THE BODY''S OWN THIRD ITEM: the body lists 네 가지 (자연 채광과 환기 / 동선과 흐름 / 방위와 기능 / 공간 분리) and the reused drafts listed only three - ''방위와 기능 - 부엌을 화(火)가 강한 방위에 두는 원리'' was restored in both drafts, and the dev.to ''Where it overlaps with modern interiors'' paragraph gained the body''s 공간 분리 item (''separating living, sleeping and study rooms mirrors the yin-yang split''). (6) THE dev.to DRAFT DROPPED BODY FACTS: the body''s 水 is ''시내·강·길'' (the reused draft said only ''the stream or road''), the body''s kitchen criterion is ''화(火)를 다루는 부엌이 안방·대문과 충돌'' (the reused draft said ''the fire space''), the body''s classic ideal is ''뒤에 산, 앞에 물, 좌청룡·우백호'' (the reused draft quoted only ''mountain behind, water in front''), and the body''s closing ''자신의 생활 습관·가족 구성·업무 패턴'' (the reused draft said only ''with your habits'') - all four were restored. EVERY remaining claim in the four drafts traces to a sentence in the body.'
+    lastAttempt: '2026-10-28T20:53:44Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire229: korean-feng-shui-housing-basics is a RETRY of an UNCHANGED body - the body sha256 cda1e7a6...334d97b0 (2583c) is byte-identical to the fire207 and fire218 attempts on this slug, and the precheck reported targetIsNewContent=false / latestIsNewContent=false, so NO synthesis was performed; re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire218 bundle (.hermes/cron-drafts/2026-10-26T06-46-00Z/) and RE-GROUNDED against the article body in this fire, then written into a FRESH drafts dir (.hermes/cron-drafts/2026-10-28T20-32-00Z/). The ten other pending retries keep their OWN fire timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-28T20-32-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-28T20-32-00Z/ --content-sha cda1e7a6b05261d7ec18b046b7c75a55a43e78180eeb985bf1a59b6e334d97b0 --devto-title ''Korean Feng Shui Basics: Reading the Flow of Qi in Modern Interiors'' --devto-tags ''feng-shui,korean-culture,interior-design,home'' --devto-canonical-url https://lucksajueun.com/blog/korean-feng-shui-housing-basics/'
+    recovered: false
+    recoveredBy: n/a - fire229 was a normal scheduled fire. The interrupted fire227 (cron run d6b0b7823c1f41fc9c766e7d041c3761) and the credit-blocked-final-response fire228 (cron run be96b6eaa0e04ae3980df51c0c882c8d) were BOTH already recovered and recorded under their OWN numbers (9500a38 and c02bc5f) before this run started, so there was nothing left to recover here - this is a genuinely NEW attempt on a different slug.
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 276/280 (raw 215자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+    targets:
+    - draftBytes: '418'
+      draftChars: '215'
+      draftWeighted: '276'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '809'
+      draftChars: '388'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1715'
+      draftChars: '775'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2022'
+      draftChars: '1990'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: 'publish-all attempt time - the mtime of the captured publish-all stdout in this run''s drafts dir (2026-10-28T20:53:44Z). NOT the drafts-directory name (2026-10-28T20-32-00Z): the fire226 recovery proved a directory name is a drafting-session label, never the attempt time.'
     worker: reviewer/minimax-M3
 ---
 
