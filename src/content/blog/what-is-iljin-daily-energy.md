@@ -5,56 +5,60 @@ pubDate: 2026-10-06
 tags: ["일진", "천간지지", "60갑자", "운세원리"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-25T20:28:40Z'
+  attemptedAt: '2026-10-28T08:50:21Z'
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-  codeCommit: c26da96 (the tree this fire published with; includes the fire211 frontmatter + PROGRESS.log + verification-evidence commits)
+  codeCommit: 865277c
   cronExit: 3
-  cronOutput: cron run c28baa8 (this run; the cron runner writes its output file after this response)
-  cronRunId: c28baa8189df41ea92202fa5b5f63628
+  cronOutput: cron run 3e6641fc (this run; the cron runner writes its output file after this response)
+  cronRunId: 3e6641fc229b4d6d951ccdc26e12495e
   dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
   exitCode: 3
-  lastAttempt: '2026-10-25T20:28:40Z'
+  lastAttempt: '2026-10-28T08:50:21Z'
   lastMutatedBy: reviewer/minimax-M3
-  lastSelfTriggerNote: 'No self-trigger in fire212: what-is-iljin-daily-energy is a FIRST syndication attempt (the ledger had never seen body sha256 f3d1e5ec...605, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The six earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective) all keep their OWN fire206/207/208/209/210/211 timestamps and were NOT touched by this fire.'
+  lastSelfTriggerNote: 'No self-trigger in fire223: what-is-iljin-daily-energy is a RETRY of an UNCHANGED body (body sha256 f3d1e5ec...605 is byte-identical to the fire212 first attempt, and the precheck reported targetIsNewContent=false with retryPendingPublish=true), so NO synthesis was performed - re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire212 bundle and RE-GROUNDED against the article body, written into a FRESH drafts dir. The other ten pending retries keep their OWN fire206-fire222 timestamps and were NOT touched by this fire.'
   outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-  publishPayload: .hermes/cron-drafts/2026-10-25T20-24-00Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-28T08-30-00Z/publish-payload.json
   publishPending: true
-  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-25T20-24-00Z/ --content-sha f3d1e5ec25e77f3421ec9ab80bab9f3c8c249e614d5c05b85b134e23ef710605 --devto-title ''Iljin (Day Pillar): The Unit Behind Daily Fortune'' --devto-tags ''iljin,saju,korean-fortune,sexagenary-cycle'' --devto-canonical-url https://lucksajueun.com/blog/what-is-iljin-daily-energy/'
+  publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-28T08-30-00Z/ --content-sha f3d1e5ec25e77f3421ec9ab80bab9f3c8c249e614d5c05b85b134e23ef710605 --devto-title 'What Is Iljin (Day Pillar)? The Unit Behind Daily Fortune' --devto-tags 'iljin,saju,korean-fortune,sexagenary-cycle' --devto-canonical-url https://lucksajueun.com/blog/what-is-iljin-daily-energy/
   recovered: false
-  recoveredBy: n/a - fire212 was a normal scheduled run; fire211 completed and recorded itself (cron run 682a3324)
+  recoveredBy: n/a - fire223 was a normal scheduled run; the cron run before it (e803eb73) completed and recorded itself as fire222
   recoveredFires: []
   selfTriggerSuppressed: false
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   skipCount: 3
   skipTotal: 4
-  stdout: "X weighted length: 264/280 (raw 205자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  stdout: "X weighted length: 265/280 (raw 206자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
   targets:
-  - draftBytes: '392'
-    draftChars: '205'
-    draftWeighted: '264'
+  - draftBytes: '393'
+    draftChars: '206'
+    draftWeighted: '265'
     platform: x
     reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
     status: pending
-  - draftBytes: '772'
-    draftChars: '377'
+  - draftBytes: '785'
+    draftChars: '384'
     platform: threads
     reason: token 없음
     status: skipped
-  - draftBytes: '1457'
-    draftChars: '686'
+  - draftBytes: '1699'
+    draftChars: '785'
     platform: linkedin
     reason: token 없음
     status: skipped
-  - draftBytes: '1972'
-    draftChars: '1960'
+  - draftBytes: '1994'
+    draftChars: '1984'
     platform: dev.to
     reason: token 없음
     status: skipped
   testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
-  timestampSource: date -u at the moment of the publish attempt (2026-10-25T20:28:40Z)
+  timestampSource: date -u at the moment of the publish attempt (2026-10-28T08:50:21Z)
   worker: reviewer/minimax-M3
+  bodyChars: 2384
+  bodySha256: f3d1e5ec25e77f3421ec9ab80bab9f3c8c249e614d5c05b85b134e23ef710605
+  capWork: 'Cap work WAS required in fire223 because the grounding fixes lengthened the drafts, and the re-read pass ran AFTER the cap loop (skill 6d). Every draft was re-measured with the publisher''s own measure command after every patch, and each landed under its cap: x 265/280 weighted (206 chars / 393 bytes); threads 384/500 chars (785 bytes); linkedin 785/1000 chars (1699 bytes); dev.to 1984/2000 chars (1994 bytes). The dev.to draft was written through a MEASURED candidate set (144 candidates, 83 fitting the cap, 10 of those carrying all five fixes AND the in-body link) until one landed at 1984 with every fix and the trailing ''More:'' link retained. An over-cap draft is skipped by the publisher as a false ''token missing'', the exact failure fire210 had to redo.'
+  groundingFixes: FIVE grounding defects found by re-reading the canonical body (bodySha256 f3d1e5ec...605, 2384c - byte-identical to the fire212 first attempt) against the reused fire212 drafts, ALL fixed before the FINAL attempt. (1) The X draft quoted the definition as '그날의 하늘과 땅의 기운' (no space) while the body writes "그 날의 하늘과 땅의 기운" - a quoted span that is not the body's verbatim text, so the three Korean drafts now carry the body's own quoted form. (2) The dev.to draft's fifth scoring item read 'whether the day's ELEMENT touches the special spirit, injury officer or wealth star', but the body says '그날의 일진이 사주의 어떤 글자와 의미적으로 닿는가' - the subject is the day's 일진 (day pillar), not its element, and the natal-chart context was missing; the dev.to draft now says 'the day's iljin touches the special spirit, injury officer or wealth star in the natal chart'. (3) The dev.to draft stated the score flatly ('The score is a weighted total of five components on a 0-100 scale') while the body hedges twice ('점수는 보통 다음 다섯 가지를', '환산하는 방식이 일반적입니다'); the draft now says 'is usually ... the general way'. (4) All four drafts dropped the body's qualifier on how the fortune is written ('운세는 통계·문화·심리적 측면을 고려해 작성됩니다') - the Korean drafts now carry it and the dev.to draft says 'the message weighs statistical, cultural and psychological factors'. (5) The LinkedIn and dev.to drafts stated the day unit flatly ('한 자정부터 다음 자정까지' / 'the day runs from one midnight to the next') and dropped the body's caveat that the unit is NOT always on a 0시-midnight basis ('자정 0시 기준이 아니라 한·중국의 전통 시각을 쓰는 경우도 있습니다'); the LinkedIn draft now carries the caveat and the dev.to draft says 'though traditional East Asian time may set another hour'. The dev.to draft's first scoring component also lacked the body's bonus/clash rule ('같은 오행이면 보너스, 상극이면 감점') and now reads 'a match a bonus and a clash a penalty'. The dev.to draft's H1 was also re-worded so it matches the dev.to title the publisher is given, instead of showing one heading and then a differently-worded one.
   history:
   - attemptedAt: '2026-10-25T20:28:40Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -106,6 +110,61 @@ syndication:
       status: skipped
     testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
     timestampSource: date -u at the moment of the publish attempt (2026-10-25T20:28:40Z)
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-28T08:50:21Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    bodyChars: 2384
+    bodySha256: f3d1e5ec25e77f3421ec9ab80bab9f3c8c249e614d5c05b85b134e23ef710605
+    capWork: 'Cap work WAS required in fire223 because the grounding fixes lengthened the drafts, and the re-read pass ran AFTER the cap loop (skill 6d). Every draft was re-measured with the publisher''s own measure command after every patch, and each landed under its cap: x 265/280 weighted (206 chars / 393 bytes); threads 384/500 chars (785 bytes); linkedin 785/1000 chars (1699 bytes); dev.to 1984/2000 chars (1994 bytes). The dev.to draft was written through a MEASURED candidate set (144 candidates, 83 fitting the cap, 10 of those carrying all five fixes AND the in-body link) until one landed at 1984 with every fix and the trailing ''More:'' link retained. An over-cap draft is skipped by the publisher as a false ''token missing'', the exact failure fire210 had to redo.'
+    codeCommit: 865277c
+    cronExit: 3
+    cronOutput: cron run 3e6641fc (this run; the cron runner writes its output file after this response)
+    cronRunId: 3e6641fc229b4d6d951ccdc26e12495e
+    dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+    exitCode: 3
+    fire: 223
+    groundingFixes: FIVE grounding defects found by re-reading the canonical body (bodySha256 f3d1e5ec...605, 2384c - byte-identical to the fire212 first attempt) against the reused fire212 drafts, ALL fixed before the FINAL attempt. (1) The X draft quoted the definition as '그날의 하늘과 땅의 기운' (no space) while the body writes "그 날의 하늘과 땅의 기운" - a quoted span that is not the body's verbatim text, so the three Korean drafts now carry the body's own quoted form. (2) The dev.to draft's fifth scoring item read 'whether the day's ELEMENT touches the special spirit, injury officer or wealth star', but the body says '그날의 일진이 사주의 어떤 글자와 의미적으로 닿는가' - the subject is the day's 일진 (day pillar), not its element, and the natal-chart context was missing; the dev.to draft now says 'the day's iljin touches the special spirit, injury officer or wealth star in the natal chart'. (3) The dev.to draft stated the score flatly ('The score is a weighted total of five components on a 0-100 scale') while the body hedges twice ('점수는 보통 다음 다섯 가지를', '환산하는 방식이 일반적입니다'); the draft now says 'is usually ... the general way'. (4) All four drafts dropped the body's qualifier on how the fortune is written ('운세는 통계·문화·심리적 측면을 고려해 작성됩니다') - the Korean drafts now carry it and the dev.to draft says 'the message weighs statistical, cultural and psychological factors'. (5) The LinkedIn and dev.to drafts stated the day unit flatly ('한 자정부터 다음 자정까지' / 'the day runs from one midnight to the next') and dropped the body's caveat that the unit is NOT always on a 0시-midnight basis ('자정 0시 기준이 아니라 한·중국의 전통 시각을 쓰는 경우도 있습니다'); the LinkedIn draft now carries the caveat and the dev.to draft says 'though traditional East Asian time may set another hour'. The dev.to draft's first scoring component also lacked the body's bonus/clash rule ('같은 오행이면 보너스, 상극이면 감점') and now reads 'a match a bonus and a clash a penalty'. The dev.to draft's H1 was also re-worded so it matches the dev.to title the publisher is given, instead of showing one heading and then a differently-worded one.
+    lastAttempt: '2026-10-28T08:50:21Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire223: what-is-iljin-daily-energy is a RETRY of an UNCHANGED body (body sha256 f3d1e5ec...605 is byte-identical to the fire212 first attempt, and the precheck reported targetIsNewContent=false with retryPendingPublish=true), so NO synthesis was performed - re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire212 bundle and RE-GROUNDED against the article body, written into a FRESH drafts dir. The other ten pending retries keep their OWN fire206-fire222 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-28T08-30-00Z/publish-payload.json
+    publishPending: true
+    publishScript: python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-28T08-30-00Z/ --content-sha f3d1e5ec25e77f3421ec9ab80bab9f3c8c249e614d5c05b85b134e23ef710605 --devto-title 'What Is Iljin (Day Pillar)? The Unit Behind Daily Fortune' --devto-tags 'iljin,saju,korean-fortune,sexagenary-cycle' --devto-canonical-url https://lucksajueun.com/blog/what-is-iljin-daily-energy/
+    recovered: false
+    recoveredBy: n/a - fire223 was a normal scheduled run; the cron run before it (e803eb73) completed and recorded itself as fire222
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 265/280 (raw 206자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+    targets:
+    - draftBytes: '393'
+      draftChars: '206'
+      draftWeighted: '265'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '785'
+      draftChars: '384'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1699'
+      draftChars: '785'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1994'
+      draftChars: '1984'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: date -u at the moment of the publish attempt (2026-10-28T08:50:21Z)
     worker: reviewer/minimax-M3
 ---
 
