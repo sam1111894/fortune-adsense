@@ -5,58 +5,60 @@ pubDate: 2026-10-06
 tags: ["12띠", "십이생배", "띠별운세", "한국전통문화"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-26T00:52:19Z'
+  attemptedAt: '2026-10-28T12:31:23Z'
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-  capWork: 'CAP WORK: the dev.to draft measured OVER the 2000 cap on the first write (2090/2000) and again after the first trim (2007/2000), and the X draft measured OVER its 280 WEIGHTED cap on the first write (286/280). Both were rewritten and re-measured until every draft fit its cap - the final measurements are x 271/280 weighted, threads 345/500, linkedin 623/1000, dev.to 1995/2000. An over-cap draft would have been skipped as a false ''token missing''.'
-  codeCommit: d8c941f (the tree this fire published with; includes the fire213 frontmatter + PROGRESS.log + verification-evidence commits)
+  capWork: 'CAP WORK WAS required in fire225: the grounding fixes lengthened every draft, so measure was re-run after every patch and the re-read/grounding pass ran AFTER the cap loop (skill 6d). Every draft was measured with the publisher''s OWN measure command (sns_publish.measure_records, which uses the publisher''s _read_text and x_weighted_length): x 275/280 weighted (204 chars / 411 bytes); threads 499/500 chars (499 chars / 1062 bytes); linkedin 986/1000 chars (986 chars / 2179 bytes); dev.to 1955/2000 chars (1955 chars / 1979 bytes). The fire225 RECOVERY then repaired the Threads and LinkedIn drafts (the 12지지 fact and the body''s own 水/土/木), which lengthened the Threads draft, so the cap loop was run again on the repaired drafts and the Threads draft was trimmed ONLY of a body connective and draft-invented final copulas - no body fact was dropped. An over-cap draft would have been skipped by the publisher as a false ''token 없음''.'
+  codeCommit: 906af20 (the tree this fire published with; the fire225 recovery commit that carries this record is created after this attempt)
   cronExit: 3
-  cronOutput: cron run baa8ce97 (this run; the cron runner writes its output file after this response)
-  cronRunId: baa8ce9720a14e47a70898bf9427a043
-  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  cronOutput: cron run bca30b8d (the interrupted run that made this publish attempt; its output file is the cron output written after that run ended)
+  cronRunId: bca30b8d
+  dupGuard: 'statuses_count=0 -> NO DUPLICATE POSSIBLE (free fallback: v2 /2/users/:id/tweets HTTP 402 credits depleted, so the free GET /1.1/account/verify_credentials.json probe was used; re-checked AFTER the attempt with the same verdict)'
   exitCode: 3
-  groundingFixes: 'ONE grounding defect was found by re-reading the article body against the four drafts and was fixed BEFORE the final attempt: the X draft said ''각 동물마다 기본 오행이 있어 해석이 깊어집니다'', which dropped the article''s own causal pairing - the body states ''동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'' (the animal''s own NATURE combined with the element is what deepens the reading) - rewritten to ''동물 성질과 기본 오행이 합쳐져 해석이 깊어집니다''. No other claim in the four drafts goes beyond what the body states: the 12지지/12동물 pairing, the two origin theories (동물 숭배 설 / 12시진 시간 표기 설) and the 子時=쥐 · 丑時=소 examples, the 1975 후베이성 운몽 睡虎地 秦墓竹簡 find, the 60갑자 천간 refinement (甲=큰 나무, 乙=덩굴·풀), the per-country swaps (태국 토끼→고양이(猫)·돼지→코끼리(象); 캄보디아·라오스·미얀마 same), the 12 오행 assignments (쥐 水, 소 土, 호랑이 木, 토끼 木, 용 土, 뱀 火, 말 火, 양 土, 원숭이 金, 닭 金, 개 土, 돼지 水) and the 음력 설 기준 + 돌아난 해 all trace to a sentence in the article body.'
-  lastAttempt: '2026-10-26T00:52:19Z'
+  groundingFixes: 'SIX grounding defects were found by re-reading the canonical body (bodySha256 95e49f44...600, 2390c - byte-identical to the fire214 first attempt) against the reused fire214 drafts, and ALL were fixed before the FINAL attempt. (1) THE FIRE214 FIX HAD ONLY EVER LANDED ON THE X DRAFT - the body says ''12동물에는 각각 기본 오행이 매핑되어 있습니다. 동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'' (the animal''s own NATURE combined with the element is what deepens the reading), but only the X draft carried that causal pairing; the Threads, LinkedIn and dev.to drafts all stated the elements alone. All four drafts now carry the pairing, and the body author''s OWN emphasis is preserved: the LinkedIn draft says ''각 띠에 기본 오행이 있고, 동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'', the Threads draft says ''각 동물에 기본 오행이 있고, 동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'', and the dev.to draft says ''it is the two together that deepen the reading''. (2) The Threads and LinkedIn drafts asserted the array is the same across countries (''배열은 기본적으로 같습니다'' / ''같은 동물 배열이 기본이지만'') while naming 태국·캄보디아·미얀마 as users, and the dev.to draft said ''the order is basically the same everywhere'' - but the body''s own 나라별 12띠 차이 section says the array is only 기본 12동물 and that 태국 replaces 토끼 with 고양이(猫) and 돼지 with 코끼리(象), and 캄보디아·라오스·미얀마 do the same. The THREE LONGER DRAFTS (Threads, LinkedIn and dev.to) now state the body''s own split - 한국·중국·일본·베트남 keep all twelve and the substitutions are named. THE X DRAFT CARRIES NEITHER AND CANNOT: it is at 275/280 weighted, so the country split is beyond its cap, and the X draft states no country claim at all, so it asserts nothing the body does not say. (3) The dev.to draft''s country list omitted the body''s own swap sentence and its closing ''한국·중국·일본은 동일한 12동물 배열을 공유하고'' fact; the dev.to draft now names Thailand, Cambodia, Laos and Myanmar and the swaps. (4) The Threads and LinkedIn drafts dropped the body''s 12지지 fact ''12지지는 시간·방위·월을 표시하는 12단위 체계입니다''. The LinkedIn draft carries it, but THE THREADS DRAFT DID NOT - the fix this record claimed for both drafts had never been written to the file. That is the same class of defect fire222 found on the fire211 ''민속'' correction: .hermes/ is gitignored, so a bundle edit never reaches the commit and a record can claim a fix that is not on disk. CAUGHT during the fire225 RECOVERY by re-diffing the draft against the body instead of trusting the record, and CORRECTED there: the Threads draft now carries ''12지지는 시간·방위·월을 표시하는 12단위 체계'' together with the 12지지-12동물 pairing, and the dev.to draft carries ''a twelve-part system for time, direction and month''. (5) The dev.to draft dropped the body''s two hedges on the return-year rule - the body says ''한국 전통에서는 "돌아난 해"(만 나이가 1년이 되는 해)로 계산하는 경우도 있어'' and that 본인의 음력 생원과 양력 생원을 함께 확인하는 것이 안전합니다. The dev.to draft now says ''Korean tradition also counts a "return year" (the year a baby counts as one) for some conception or birth dates, so check both calendars'', and the LinkedIn draft carries the same gloss plus the body''s 양력 생年和 음력 생년 함께 확인 wording. (6) FOUND DURING THE RECOVERY - THE KOREAN DRAFTS HAD TRANSLATED THE BODY''S OWN ELEMENT CHARACTERS: the body writes 쥐(子, 水), 소(丑, 土), 호랑이(寅, 木) and 돼지(亥, 水), but the Threads draft wrote 쥐 Water / 소 Earth / 호랑이 Wood and the LinkedIn draft wrote ''돼지 Water'' next to its eleven 水/土/木/火/金 siblings. Per the fire222 precedent (the Korean draft keeps the article''s own spelling) both drafts now use the body''s own 水/土/木. ADDITIONALLY, the body''s own closing insight - ''자신의 띠와 오행, 그리고 음력 생년을 함께 알아두면 올해의 흐름을 읽을 데 한층 더 풍부한 관점을 가질 수 있습니다'' - was absent from all four reused drafts; the LinkedIn draft now ends with ''자신의 띠와 오행, 음력 생년을 함께 알면 올해 흐름을 읽는 데 한층 더 풍부한 관점을 가집니다'' and the dev.to draft with ''Knowing your animal, its element and your lunar birth year gives a fuller read on the year''s flow''. The X draft also gained the body''s practical lunar-year point (''12띠는 음력 새해(설)를 기준으로 정합니다''), which the fire214 X draft had omitted entirely.'
+  lastAttempt: '2026-10-28T12:31:23Z'
   lastMutatedBy: reviewer/minimax-M3
-  lastSelfTriggerNote: 'No self-trigger in fire214: twelve-zodiac-origin is a FIRST syndication attempt (the ledger had never seen body sha256 95e49f44...600, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The eight earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy / twenty-four-solar-terms) all keep their OWN fire206/207/208/209/210/211/212/213 timestamps and were NOT touched by this fire.'
+  lastSelfTriggerNote: 'No self-trigger in fire225: twelve-zodiac-origin is a RETRY of an UNCHANGED body - the precheck reported decision=RETRY_PENDING_PUBLISH, target=twelve-zodiac-origin, targetIsNewContent=false, retryPendingPublish=true, and the body sha256 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600 is byte-identical to the fire214 first attempt (2390 chars, unchanged) - so NO synthesis was performed; re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire214 bundle (.hermes/cron-drafts/2026-10-26T00-50-00Z/) and RE-GROUNDED against the article body, written into a FRESH drafts dir (.hermes/cron-drafts/2026-10-28T11-44-00Z/). The other pending retries keep their OWN fire207-fire224 timestamps and were NOT touched by this fire.'
   outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-  publishPayload: .hermes/cron-drafts/2026-10-26T00-50-00Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-28T11-44-00Z/publish-payload.json
   publishPending: true
-  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-26T00-50-00Z/ --content-sha 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600 --devto-title ''Twelve Zodiac Animals: Where the Twelve Come From'' --devto-tags ''twelve-zodiac,korean-culture,traditional-calendar,saju'' --devto-canonical-url https://lucksajueun.com/blog/twelve-zodiac-origin/'
-  recovered: false
-  recoveredBy: 'n/a - fire214 was a normal scheduled run; the only unrecorded invocation since fire213 (cron run 503959fa, started 2026-10-26T08:00:45+09:00) FAILED at the provider layer (RuntimeError: Operation interrupted: waiting for the provider to recover) and left NO artifacts - no frontmatter edit, no ledger row, no drafts dir, no receipt, git tree clean - so there was nothing to recover and it does not consume a fire number'
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-28T11-44-00Z/ --content-sha 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600 --devto-title ''Twelve Zodiac Animals: Where the Twelve Come From'' --devto-tags ''twelve-zodiac,korean-culture,traditional-calendar,saju'' --devto-canonical-url https://lucksajueun.com/blog/twelve-zodiac-origin/'
+  recovered: true
+  recoveredBy: cron run d0d7a0e0d9ef4d31a1776858d6191d4f - it recovered the interrupted fire225 (cron run bca30b8d), which died AFTER its publish attempt and its ledger row + frontmatter record but BEFORE its PROGRESS.log row, its git commit and its deploy. The recovery re-verified the artifacts, found that two of the recorded grounding fixes had never landed on disk (the body's 12지지 fact the record claimed for the Threads draft, and the body's own 水/土/木 element characters the Korean drafts had translated into Water/Earth/Wood), repaired the drafts, re-recorded fire225 ONCE with accurate values for every carried key, and committed the recovered work under fire225's own number.
   recoveredFires: []
   selfTriggerSuppressed: false
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   skipCount: 3
   skipTotal: 4
-  stdout: "X weighted length: 271/280 (raw 200자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  stdout: "X weighted length: 275/280 (raw 204자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
   targets:
-  - draftBytes: '407'
-    draftChars: '200'
-    draftWeighted: '271'
-    platform: x
-    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+  - platform: x
     status: pending
-  - draftBytes: '723'
-    draftChars: '345'
-    platform: threads
-    reason: token 없음
+    reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+    draftChars: '204'
+    draftBytes: '411'
+    draftWeighted: '275'
+  - platform: threads
     status: skipped
-  - draftBytes: '1340'
-    draftChars: '623'
-    platform: linkedin
     reason: token 없음
+    draftChars: '499'
+    draftBytes: '1062'
+  - platform: linkedin
     status: skipped
-  - draftBytes: '2019'
-    draftChars: '1995'
-    platform: dev.to
     reason: token 없음
+    draftChars: '986'
+    draftBytes: '2179'
+  - platform: dev.to
     status: skipped
+    reason: token 없음
+    draftChars: '1955'
+    draftBytes: '1979'
   testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
-  timestampSource: date -u at the moment of the publish attempt (2026-10-26T00:52:19Z)
+  timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in the interrupted run's drafts dir (2026-10-28T12:31:23Z)
   worker: reviewer/minimax-M3
+  bodyChars: 2390
+  bodySha256: 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600
   history:
   - attemptedAt: '2026-10-26T00:52:19Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -110,6 +112,61 @@ syndication:
       status: skipped
     testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
     timestampSource: date -u at the moment of the publish attempt (2026-10-26T00:52:19Z)
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-28T12:31:23Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    bodyChars: 2390
+    bodySha256: 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600
+    capWork: 'CAP WORK WAS required in fire225: the grounding fixes lengthened every draft, so measure was re-run after every patch and the re-read/grounding pass ran AFTER the cap loop (skill 6d). Every draft was measured with the publisher''s OWN measure command (sns_publish.measure_records, which uses the publisher''s _read_text and x_weighted_length): x 275/280 weighted (204 chars / 411 bytes); threads 499/500 chars (499 chars / 1062 bytes); linkedin 986/1000 chars (986 chars / 2179 bytes); dev.to 1955/2000 chars (1955 chars / 1979 bytes). The fire225 RECOVERY then repaired the Threads and LinkedIn drafts (the 12지지 fact and the body''s own 水/土/木), which lengthened the Threads draft, so the cap loop was run again on the repaired drafts and the Threads draft was trimmed ONLY of a body connective and draft-invented final copulas - no body fact was dropped. An over-cap draft would have been skipped by the publisher as a false ''token 없음''.'
+    codeCommit: 906af20 (the tree this fire published with; the fire225 recovery commit that carries this record is created after this attempt)
+    cronExit: 3
+    cronOutput: cron run bca30b8d (the interrupted run that made this publish attempt; its output file is the cron output written after that run ended)
+    cronRunId: bca30b8d
+    dupGuard: 'statuses_count=0 -> NO DUPLICATE POSSIBLE (free fallback: v2 /2/users/:id/tweets HTTP 402 credits depleted, so the free GET /1.1/account/verify_credentials.json probe was used; re-checked AFTER the attempt with the same verdict)'
+    exitCode: 3
+    fire: 225
+    groundingFixes: 'SIX grounding defects were found by re-reading the canonical body (bodySha256 95e49f44...600, 2390c - byte-identical to the fire214 first attempt) against the reused fire214 drafts, and ALL were fixed before the FINAL attempt. (1) THE FIRE214 FIX HAD ONLY EVER LANDED ON THE X DRAFT - the body says ''12동물에는 각각 기본 오행이 매핑되어 있습니다. 동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'' (the animal''s own NATURE combined with the element is what deepens the reading), but only the X draft carried that causal pairing; the Threads, LinkedIn and dev.to drafts all stated the elements alone. All four drafts now carry the pairing, and the body author''s OWN emphasis is preserved: the LinkedIn draft says ''각 띠에 기본 오행이 있고, 동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'', the Threads draft says ''각 동물에 기본 오행이 있고, 동물 자체의 성질과 오행이 합쳐져 해석의 깊이가 생깁니다'', and the dev.to draft says ''it is the two together that deepen the reading''. (2) The Threads and LinkedIn drafts asserted the array is the same across countries (''배열은 기본적으로 같습니다'' / ''같은 동물 배열이 기본이지만'') while naming 태국·캄보디아·미얀마 as users, and the dev.to draft said ''the order is basically the same everywhere'' - but the body''s own 나라별 12띠 차이 section says the array is only 기본 12동물 and that 태국 replaces 토끼 with 고양이(猫) and 돼지 with 코끼리(象), and 캄보디아·라오스·미얀마 do the same. The THREE LONGER DRAFTS (Threads, LinkedIn and dev.to) now state the body''s own split - 한국·중국·일본·베트남 keep all twelve and the substitutions are named. THE X DRAFT CARRIES NEITHER AND CANNOT: it is at 275/280 weighted, so the country split is beyond its cap, and the X draft states no country claim at all, so it asserts nothing the body does not say. (3) The dev.to draft''s country list omitted the body''s own swap sentence and its closing ''한국·중국·일본은 동일한 12동물 배열을 공유하고'' fact; the dev.to draft now names Thailand, Cambodia, Laos and Myanmar and the swaps. (4) The Threads and LinkedIn drafts dropped the body''s 12지지 fact ''12지지는 시간·방위·월을 표시하는 12단위 체계입니다''. The LinkedIn draft carries it, but THE THREADS DRAFT DID NOT - the fix this record claimed for both drafts had never been written to the file. That is the same class of defect fire222 found on the fire211 ''민속'' correction: .hermes/ is gitignored, so a bundle edit never reaches the commit and a record can claim a fix that is not on disk. CAUGHT during the fire225 RECOVERY by re-diffing the draft against the body instead of trusting the record, and CORRECTED there: the Threads draft now carries ''12지지는 시간·방위·월을 표시하는 12단위 체계'' together with the 12지지-12동물 pairing, and the dev.to draft carries ''a twelve-part system for time, direction and month''. (5) The dev.to draft dropped the body''s two hedges on the return-year rule - the body says ''한국 전통에서는 "돌아난 해"(만 나이가 1년이 되는 해)로 계산하는 경우도 있어'' and that 본인의 음력 생원과 양력 생원을 함께 확인하는 것이 안전합니다. The dev.to draft now says ''Korean tradition also counts a "return year" (the year a baby counts as one) for some conception or birth dates, so check both calendars'', and the LinkedIn draft carries the same gloss plus the body''s 양력 생年和 음력 생년 함께 확인 wording. (6) FOUND DURING THE RECOVERY - THE KOREAN DRAFTS HAD TRANSLATED THE BODY''S OWN ELEMENT CHARACTERS: the body writes 쥐(子, 水), 소(丑, 土), 호랑이(寅, 木) and 돼지(亥, 水), but the Threads draft wrote 쥐 Water / 소 Earth / 호랑이 Wood and the LinkedIn draft wrote ''돼지 Water'' next to its eleven 水/土/木/火/金 siblings. Per the fire222 precedent (the Korean draft keeps the article''s own spelling) both drafts now use the body''s own 水/土/木. ADDITIONALLY, the body''s own closing insight - ''자신의 띠와 오행, 그리고 음력 생년을 함께 알아두면 올해의 흐름을 읽을 데 한층 더 풍부한 관점을 가질 수 있습니다'' - was absent from all four reused drafts; the LinkedIn draft now ends with ''자신의 띠와 오행, 음력 생년을 함께 알면 올해 흐름을 읽는 데 한층 더 풍부한 관점을 가집니다'' and the dev.to draft with ''Knowing your animal, its element and your lunar birth year gives a fuller read on the year''s flow''. The X draft also gained the body''s practical lunar-year point (''12띠는 음력 새해(설)를 기준으로 정합니다''), which the fire214 X draft had omitted entirely.'
+    lastAttempt: '2026-10-28T12:31:23Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire225: twelve-zodiac-origin is a RETRY of an UNCHANGED body - the precheck reported decision=RETRY_PENDING_PUBLISH, target=twelve-zodiac-origin, targetIsNewContent=false, retryPendingPublish=true, and the body sha256 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600 is byte-identical to the fire214 first attempt (2390 chars, unchanged) - so NO synthesis was performed; re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire214 bundle (.hermes/cron-drafts/2026-10-26T00-50-00Z/) and RE-GROUNDED against the article body, written into a FRESH drafts dir (.hermes/cron-drafts/2026-10-28T11-44-00Z/). The other pending retries keep their OWN fire207-fire224 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-28T11-44-00Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-28T11-44-00Z/ --content-sha 95e49f44c72082220564af50fbd2c89875a42a6aca41dadf90d136cfe6c4c600 --devto-title ''Twelve Zodiac Animals: Where the Twelve Come From'' --devto-tags ''twelve-zodiac,korean-culture,traditional-calendar,saju'' --devto-canonical-url https://lucksajueun.com/blog/twelve-zodiac-origin/'
+    recovered: true
+    recoveredBy: cron run d0d7a0e0d9ef4d31a1776858d6191d4f - it recovered the interrupted fire225 (cron run bca30b8d), which died AFTER its publish attempt and its ledger row + frontmatter record but BEFORE its PROGRESS.log row, its git commit and its deploy. The recovery re-verified the artifacts, found that two of the recorded grounding fixes had never landed on disk (the body's 12지지 fact the record claimed for the Threads draft, and the body's own 水/土/木 element characters the Korean drafts had translated into Water/Earth/Wood), repaired the drafts, re-recorded fire225 ONCE with accurate values for every carried key, and committed the recovered work under fire225's own number.
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 275/280 (raw 204자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+    targets:
+    - platform: x
+      status: pending
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      draftChars: '204'
+      draftBytes: '411'
+      draftWeighted: '275'
+    - platform: threads
+      status: skipped
+      reason: token 없음
+      draftChars: '499'
+      draftBytes: '1062'
+    - platform: linkedin
+      status: skipped
+      reason: token 없음
+      draftChars: '986'
+      draftBytes: '2179'
+    - platform: dev.to
+      status: skipped
+      reason: token 없음
+      draftChars: '1955'
+      draftBytes: '1979'
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: publish-all attempt time - the mtime of the captured publish-all stdout in the interrupted run's drafts dir (2026-10-28T12:31:23Z)
     worker: reviewer/minimax-M3
 ---
 
