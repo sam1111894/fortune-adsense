@@ -5,37 +5,37 @@ pubDate: 2026-10-06
 tags: ["오행", "음양오행", "명리학", "사주"]
 author: "오늘의 운세 편집팀"
 syndication:
-  attemptedAt: '2026-10-26T04:04:25Z'
+  attemptedAt: '2026-10-28T17:08:53Z'
   blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
   blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
-  capWork: 'CAP WORK: the dev.to draft measured OVER the 2000 cap four times (2207 -> 2180 -> 2109 -> 2009) and the Threads draft measured OVER the 500 cap once (510); all were rewritten and re-measured until every draft fit its cap. Final measurements (tool-derived, publisher''s own measure_records): x 257/280 weighted (186 chars / 390 bytes), threads 498/500 (498 chars / 1098 bytes), linkedin 954/1000 (954 chars / 2117 bytes), dev.to 1995/2000 (1995 chars / 1995 bytes). An over-cap draft would have been skipped as a false ''token missing''.'
-  codeCommit: pending - the tree this fire published with (the frontmatter + PROGRESS.log commits are created after this attempt)
+  capWork: 'CAP WORK WAS required in fire227: the grounding fixes lengthened the X and LinkedIn drafts, so every candidate was measured with the publisher''s OWN measure command (sns_publish.measure_records, which uses the publisher''s _read_text and x_weighted_length) and the wording was chosen from the FITTING candidates rather than guessed - the X candidates were swept over both the element-character form and the balance/combination wordings, and the LinkedIn candidates over the long and short forms of the closing insight. Final measurements (tool-derived): x 271/280 weighted (197 chars / 407 bytes); threads 498/500 chars (498 chars / 1098 bytes); linkedin 994/1000 chars (994 chars / 2213 bytes); dev.to 1978/2000 chars (1978 chars / 1978 bytes). The LinkedIn long form of the closing insight measured 1004/1000 and was REJECTED as over-cap; the dev.to R3 fix measured 2015/2000 before the connective trim and was only accepted after the trim brought it to 1978/2000. An over-cap draft would have been skipped by the publisher as a false ''token 없음''.'
+  codeCommit: b3195e7 (the tree this fire published with; the frontmatter + PROGRESS.log commits are created after this attempt)
   cronExit: 3
-  cronOutput: cron run cdcaa5d5610745a7b7ac79819299f850 (this run; the cron runner writes its output file after this response)
-  cronRunId: cdcaa5d5610745a7b7ac79819299f850
-  dupGuard: statuses_count=0 -> NO DUPLICATE POSSIBLE
+  cronOutput: cron run d6b0b7823c1f41fc9c766e7d041c3761 (the interrupted run that made this publish attempt; its output file is the cron output written after that run ended)
+  cronRunId: d6b0b7823c1f41fc9c766e7d041c3761
+  dupGuard: 'statuses_count=0 -> NO DUPLICATE POSSIBLE (free fallback: the v2 /2/users/:id/tweets read is HTTP 402 credits depleted, so the free GET /1.1/account/verify_credentials.json probe was used; re-checked AFTER the attempt with the same verdict)'
   exitCode: 3
-  groundingFixes: 'TWO grounding defects were found by re-reading the article body against the four drafts and ALL were fixed BEFORE the final attempt: (1) the dev.to draft had described 용신(用神) as ''the element that helps'', a definition the article never gives - the body only says the 상극 cycle is the core tool used when settling 용신 - rewritten to ''the key tool used to settle the yongshin''; (2) the Threads draft said the system needs ''긴장감'' (tension) where the article''s own wording is ''적절한 긴장감'' (the RIGHT AMOUNT of tension) - the qualifier was added, because dropping it overstates the article''s claim that a cycle needs balanced tension rather than tension as such. No other claim in the four drafts goes beyond what the body states: the five elements 목·화·토·금·수 as an East Asian framework for sorting natural phenomena, the natural correspondences (목 = 봄·바람·성장·시작·푸른색·간·눈 / 화 = 여름·더위·밝음·확산·빨간색·심장·혀 / 토 = 환절기·안정·중심·노란색·비장·입 / 금 = 가을·서늘함·결실·수렴·흰색·폐·코 / 수 = 겨울·차가움·저장·순환·검정·파랑·신장·귀), the generating cycle 목생화→화생토→토생금→금생수→수생목 and its natural reading (나무는 불을 낳고, 불은 재가 되고, 흙 속에서 금속이 생겨나고, 금속 표면에 이슬·수증기가 맺히고, 물은 다시 나무를 키웁니다), the overcoming cycle 목극토→토극수→수극화→화극금→금극목 and its reading (나무는 흙을 뚫고 자라고, 흙은 물을 막으며, 물은 불을 끄고, 불은 금속을 녹이며, 금속은 나무를 자릅니다), the 점수와 메시지로 가공된 일진 기반 운세, the 丙(화·양화) / 수극화 / 목생화 example, and the 2,000년 넘도록 의학·건축·요리·명리에 쓰인 흔적 (오장 대응, 중심을 토로 보는 풍수, 제철 음식·계절 색채, 일진 운세) all trace to a sentence in the article body.'
-  lastAttempt: '2026-10-26T04:04:25Z'
+  groundingFixes: 'THREE grounding defects were found by re-reading the canonical body (bodySha256 0815ab85...c5de, 2409c - byte-identical to the fire216 first attempt) against the reused fire216 drafts, and ALL were fixed before the FINAL attempt. (1) THE X DRAFT HAD STRIPPED THE BODY''S OWN ELEMENT CHARACTERS: the body names them 목(木)·화(火)·토(土)·금(金)·수(水) and uses the characters every time it names an element, but the reused X draft wrote plain 목·화·토·금·수 - while its two sibling KOREAN drafts in the same bundle (Threads, LinkedIn) both KEPT the characters. The fire225 precedent is explicit that the Korean drafts must carry the article''s OWN characters, so the X draft now reads ''목(木)·화(火)·토(土)·금(金)·수(水)''. (2) THE BODY''S OWN CLOSING INSIGHT WAS ABSENT FROM ALL FOUR REUSED DRAFTS: the body ends ''오행의 기본 골격을 알아두면 다른 콘텐츠를 볼 때도 훨씬 깊이 있는 해석이 가능합니다'', and the LinkedIn draft now carries it as ''오행의 기본 골격을 알면 다른 콘텐츠도 훨씬 깊이 해석할 수 있습니다''. (3) THE DEV.TO DRAFT COLLAPSED A PAIR THE BODY GIVES: the body lists 수(水) as ''겨울, 차가움, 저장·순환, 검정·파랑, 신장·귀'' - a PAIR of colours plus a cycle term - but the reused draft said only ''winter cold, storage and black'', dropping 순환 and one of the two colours; it now reads ''winter cold, storage, circulation, black and blue''. That trim was paid for by removing ONLY the draft''s own connective sentence (''Two cycles hold the five together.''), never a body fact - the fire225 precedent. TWO CANDIDATE FIXES WERE WITHDRAWN AFTER RE-READING THE BODY: ''상극은 제어하는 관계'' is NOT a defect, because the body''s own closing line says ''상생은 살리는 힘, 상극은 제어하는 힘이며'', so the reused X draft''s wording traces to the body; and ''오늘의 운세는 일간의 오행으로'' is not a defect either, because the body says ''간(日干)이 어떤 오행이냐에 따라 그날의 기운이 결정되고''. Both were my expectations being wrong rather than the artifacts (skill 6n). The Threads draft was NOT edited: it already carries the body''s own 상극 qualifier (''제어하고 균형을 잡는''), the tension caveat (''적절한 긴장감이 필요'') and the yongshin tool, and it sits at 498/500 chars with no room for anything else, so it asserts nothing the body does not say. No other claim in the four drafts goes beyond what the body states: the five elements as an East Asian framework for sorting natural phenomena, the natural correspondences (목 = 봄·바람·성장·시작·푸른색·간·눈 / 화 = 여름·더위·밝음·확산·빨간색·심장·혀 / 토 = 환절기·안정·중심·노란색·비장·입 / 금 = 가을·서늘함·결실·수렴·흰색·폐·코 / 수 = 겨울·차가움·저장·순환·검정·파랑·신장·귀), the generating cycle 목생화→화생토→토생금→금생수→수생목 and its natural reading (나무는 불을 낳고, 불은 재가 되고, 흙 속에서 금속이 생겨나고, 금속 표면에 이슬·수증기가 맺히고, 물은 다시 나무를 키웁니다), the overcoming cycle 목극토→토극수→수극화→화극금→금극목 and its reading (나무는 흙을 뚫고 자라고, 흙은 물을 막으며, 물은 불을 끄고, 불은 금속을 녹이며, 금속은 나무를 자릅니다), the 점수와 메시지로 가공된 일진 기반 운세, the 丙(화·양화) example and the 2,000년 넘도록 의학·건축·요리·명리에 쓰인 흔적 (오장 대응, 중심이 토인 풍수, 제철 음식·계절 색채, 일진 운세) all trace to a sentence in the body.'
+  lastAttempt: '2026-10-28T17:08:53Z'
   lastMutatedBy: reviewer/minimax-M3
-  lastSelfTriggerNote: 'No self-trigger in fire216: oh-haeng-five-elements is a FIRST syndication attempt (the ledger had never seen body sha256 0815ab85...c5de, and the article had no syndication block at all - sns_frontmatter status reported historyLength 0, hasTargets false), so SYNTHESIZE here is genuine new content, not a re-fire on our own frontmatter output. The ten earlier pending retries (daily-fortune-healthy-mindset / korean-feng-shui-housing-basics / korean-ancestral-ritual-lunar-calendar / salary-take-home-pay-calculator-guide / korean-fortune-history-goryeo-josun / saju-myeongri-statistics-perspective / what-is-iljin-daily-energy / twenty-four-solar-terms / twelve-zodiac-origin / yin-yang-circular-calendar) all keep their OWN fire206/207/208/209/210/211/212/213/214/215 timestamps and were NOT touched by this fire.'
+  lastSelfTriggerNote: 'No self-trigger in fire227: oh-haeng-five-elements is a RETRY of an UNCHANGED body - the body sha256 0815ab85...c5de is byte-identical to the fire216 first attempt (bodyChars 2409 unchanged), so NO synthesis was performed; re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire216 bundle (.hermes/cron-drafts/2026-10-26T03-53-00Z/) and RE-GROUNDED against the article body, written into a FRESH drafts dir (.hermes/cron-drafts/2026-10-28T16-58-13Z/). The other pending retries keep their OWN fire207-fire226 timestamps and were NOT touched by this fire.'
   outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
-  publishPayload: .hermes/cron-drafts/2026-10-26T03-53-00Z/publish-payload.json
+  publishPayload: .hermes/cron-drafts/2026-10-28T16-58-13Z/publish-payload.json
   publishPending: true
-  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-26T03-53-00Z/ --content-sha 0815ab8545eedef6364c1548a3a7f4eac59bf45ae22a331298c385867c69c5de --devto-title ''The Five Elements: How Wood, Fire, Earth, Metal and Water Cycle'' --devto-tags ''five-elements,oh-haeng,korean-fortune,saju,east-asian-medicine'' --devto-canonical-url https://lucksajueun.com/blog/oh-haeng-five-elements/'
-  recovered: false
-  recoveredBy: n/a - fire216 was a normal scheduled run; fire215 (cron run c4e017df9fec4f5da2a1e8712cd40a74) completed and recorded itself, so there was nothing to recover
+  publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-28T16-58-13Z/ --content-sha 0815ab8545eedef6364c1548a3a7f4eac59bf45ae22a331298c385867c69c5de --devto-title ''The Five Elements: How Wood, Fire, Earth, Metal and Water Cycle'' --devto-tags ''five-elements,oh-haeng,korean-fortune,saju,east-asian-medicine'' --devto-canonical-url https://lucksajueun.com/blog/oh-haeng-five-elements/'
+  recovered: true
+  recoveredBy: 'cron run be96b6eaa0e04ae3980df51c0c882c8d - it recovered the interrupted fire227 (cron run d6b0b7823c1f41fc9c766e7d041c3761), which completed its publish attempt and wrote its ledger row + frontmatter record + a PROGRESS.log row, then DIED before its git commit and its deploy. Nothing was re-published: the durable publish-receipt store holds 0 records, exactly what a credit-blocked attempt leaves, so the interrupted run''s attempt stands as the one attempt for fire227.'
   recoveredFires: []
   selfTriggerSuppressed: false
   setupTokenGuide: bash tools/setup-sns-tokens.sh
   setupTokenGuideCreated: '2026-10-07T05:56:30Z'
   skipCount: 3
   skipTotal: 4
-  stdout: "X weighted length: 257/280 (raw 186자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0\n"
+  stdout: "X weighted length: 271/280 (raw 197자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
   targets:
-  - draftBytes: '390'
-    draftChars: '186'
-    draftWeighted: '257'
+  - draftBytes: '407'
+    draftChars: '197'
+    draftWeighted: '271'
     platform: x
     reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
     status: pending
@@ -44,19 +44,21 @@ syndication:
     platform: threads
     reason: token 없음
     status: skipped
-  - draftBytes: '2117'
-    draftChars: '954'
+  - draftBytes: '2213'
+    draftChars: '994'
     platform: linkedin
     reason: token 없음
     status: skipped
-  - draftBytes: '1995'
-    draftChars: '1995'
+  - draftBytes: '1978'
+    draftChars: '1978'
     platform: dev.to
     reason: token 없음
     status: skipped
   testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
-  timestampSource: date -u at the moment of the publish attempt (2026-10-26T04:04:25Z)
+  timestampSource: 'publish-all attempt time - the mtime of the captured publish-all stdout in this run''s drafts dir (2026-10-28T17:08:53Z). NOT the drafts-directory name (2026-10-28T16-58-13Z): the fire226 recovery found that name recorded as the attempt time in a record whose own timestampSource claimed the stdout mtime, and the two disagreed by an hour - an attempt cannot predate the drafts it publishes.'
   worker: reviewer/minimax-M3
+  bodyChars: 2409
+  bodySha256: 0815ab8545eedef6364c1548a3a7f4eac59bf45ae22a331298c385867c69c5de
   history:
   - attemptedAt: '2026-10-26T04:04:25Z'
     blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
@@ -110,6 +112,61 @@ syndication:
       status: skipped
     testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
     timestampSource: date -u at the moment of the publish attempt (2026-10-26T04:04:25Z)
+    worker: reviewer/minimax-M3
+  - attemptedAt: '2026-10-28T17:08:53Z'
+    blockedAction: X Developer Console(console.x.com)에서 이 앱에 크레딧을 충전한 뒤 재실행 - URL 포함 Post 0.200 USD, URL 미포함 0.015 USD (최소 구매 5 USD). 또는 THREADS_TOKEN / LINKEDIN_TOKEN / DEVTO_API_KEY 를 .env 에 추가하면 나머지 3개 플랫폼이 즉시 발행됩니다.
+    blockedBy: X credit balance 0.000 USD (URL tier 0.200 USD / no-URL tier 0.015 USD)
+    bodyChars: 2409
+    bodySha256: 0815ab8545eedef6364c1548a3a7f4eac59bf45ae22a331298c385867c69c5de
+    capWork: 'CAP WORK WAS required in fire227: the grounding fixes lengthened the X and LinkedIn drafts, so every candidate was measured with the publisher''s OWN measure command (sns_publish.measure_records, which uses the publisher''s _read_text and x_weighted_length) and the wording was chosen from the FITTING candidates rather than guessed - the X candidates were swept over both the element-character form and the balance/combination wordings, and the LinkedIn candidates over the long and short forms of the closing insight. Final measurements (tool-derived): x 271/280 weighted (197 chars / 407 bytes); threads 498/500 chars (498 chars / 1098 bytes); linkedin 994/1000 chars (994 chars / 2213 bytes); dev.to 1978/2000 chars (1978 chars / 1978 bytes). The LinkedIn long form of the closing insight measured 1004/1000 and was REJECTED as over-cap; the dev.to R3 fix measured 2015/2000 before the connective trim and was only accepted after the trim brought it to 1978/2000. An over-cap draft would have been skipped by the publisher as a false ''token 없음''.'
+    codeCommit: b3195e7 (the tree this fire published with; the frontmatter + PROGRESS.log commits are created after this attempt)
+    cronExit: 3
+    cronOutput: cron run d6b0b7823c1f41fc9c766e7d041c3761 (the interrupted run that made this publish attempt; its output file is the cron output written after that run ended)
+    cronRunId: d6b0b7823c1f41fc9c766e7d041c3761
+    dupGuard: 'statuses_count=0 -> NO DUPLICATE POSSIBLE (free fallback: the v2 /2/users/:id/tweets read is HTTP 402 credits depleted, so the free GET /1.1/account/verify_credentials.json probe was used; re-checked AFTER the attempt with the same verdict)'
+    exitCode: 3
+    fire: 227
+    groundingFixes: 'THREE grounding defects were found by re-reading the canonical body (bodySha256 0815ab85...c5de, 2409c - byte-identical to the fire216 first attempt) against the reused fire216 drafts, and ALL were fixed before the FINAL attempt. (1) THE X DRAFT HAD STRIPPED THE BODY''S OWN ELEMENT CHARACTERS: the body names them 목(木)·화(火)·토(土)·금(金)·수(水) and uses the characters every time it names an element, but the reused X draft wrote plain 목·화·토·금·수 - while its two sibling KOREAN drafts in the same bundle (Threads, LinkedIn) both KEPT the characters. The fire225 precedent is explicit that the Korean drafts must carry the article''s OWN characters, so the X draft now reads ''목(木)·화(火)·토(土)·금(金)·수(水)''. (2) THE BODY''S OWN CLOSING INSIGHT WAS ABSENT FROM ALL FOUR REUSED DRAFTS: the body ends ''오행의 기본 골격을 알아두면 다른 콘텐츠를 볼 때도 훨씬 깊이 있는 해석이 가능합니다'', and the LinkedIn draft now carries it as ''오행의 기본 골격을 알면 다른 콘텐츠도 훨씬 깊이 해석할 수 있습니다''. (3) THE DEV.TO DRAFT COLLAPSED A PAIR THE BODY GIVES: the body lists 수(水) as ''겨울, 차가움, 저장·순환, 검정·파랑, 신장·귀'' - a PAIR of colours plus a cycle term - but the reused draft said only ''winter cold, storage and black'', dropping 순환 and one of the two colours; it now reads ''winter cold, storage, circulation, black and blue''. That trim was paid for by removing ONLY the draft''s own connective sentence (''Two cycles hold the five together.''), never a body fact - the fire225 precedent. TWO CANDIDATE FIXES WERE WITHDRAWN AFTER RE-READING THE BODY: ''상극은 제어하는 관계'' is NOT a defect, because the body''s own closing line says ''상생은 살리는 힘, 상극은 제어하는 힘이며'', so the reused X draft''s wording traces to the body; and ''오늘의 운세는 일간의 오행으로'' is not a defect either, because the body says ''간(日干)이 어떤 오행이냐에 따라 그날의 기운이 결정되고''. Both were my expectations being wrong rather than the artifacts (skill 6n). The Threads draft was NOT edited: it already carries the body''s own 상극 qualifier (''제어하고 균형을 잡는''), the tension caveat (''적절한 긴장감이 필요'') and the yongshin tool, and it sits at 498/500 chars with no room for anything else, so it asserts nothing the body does not say. No other claim in the four drafts goes beyond what the body states: the five elements as an East Asian framework for sorting natural phenomena, the natural correspondences (목 = 봄·바람·성장·시작·푸른색·간·눈 / 화 = 여름·더위·밝음·확산·빨간색·심장·혀 / 토 = 환절기·안정·중심·노란색·비장·입 / 금 = 가을·서늘함·결실·수렴·흰색·폐·코 / 수 = 겨울·차가움·저장·순환·검정·파랑·신장·귀), the generating cycle 목생화→화생토→토생금→금생수→수생목 and its natural reading (나무는 불을 낳고, 불은 재가 되고, 흙 속에서 금속이 생겨나고, 금속 표면에 이슬·수증기가 맺히고, 물은 다시 나무를 키웁니다), the overcoming cycle 목극토→토극수→수극화→화극금→금극목 and its reading (나무는 흙을 뚫고 자라고, 흙은 물을 막으며, 물은 불을 끄고, 불은 금속을 녹이며, 금속은 나무를 자릅니다), the 점수와 메시지로 가공된 일진 기반 운세, the 丙(화·양화) example and the 2,000년 넘도록 의학·건축·요리·명리에 쓰인 흔적 (오장 대응, 중심이 토인 풍수, 제철 음식·계절 색채, 일진 운세) all trace to a sentence in the body.'
+    lastAttempt: '2026-10-28T17:08:53Z'
+    lastMutatedBy: reviewer/minimax-M3
+    lastSelfTriggerNote: 'No self-trigger in fire227: oh-haeng-five-elements is a RETRY of an UNCHANGED body - the body sha256 0815ab85...c5de is byte-identical to the fire216 first attempt (bodyChars 2409 unchanged), so NO synthesis was performed; re-synthesizing would have been a self-trigger on our own frontmatter output. The four drafts were REUSED from the fire216 bundle (.hermes/cron-drafts/2026-10-26T03-53-00Z/) and RE-GROUNDED against the article body, written into a FRESH drafts dir (.hermes/cron-drafts/2026-10-28T16-58-13Z/). The other pending retries keep their OWN fire207-fire226 timestamps and were NOT touched by this fire.'
+    outcome: PUBLISH_BLOCKED_PLATFORM_CREDIT
+    publishPayload: .hermes/cron-drafts/2026-10-28T16-58-13Z/publish-payload.json
+    publishPending: true
+    publishScript: 'python3 tools/sns_publish.py publish-all --drafts-dir .hermes/cron-drafts/2026-10-28T16-58-13Z/ --content-sha 0815ab8545eedef6364c1548a3a7f4eac59bf45ae22a331298c385867c69c5de --devto-title ''The Five Elements: How Wood, Fire, Earth, Metal and Water Cycle'' --devto-tags ''five-elements,oh-haeng,korean-fortune,saju,east-asian-medicine'' --devto-canonical-url https://lucksajueun.com/blog/oh-haeng-five-elements/'
+    recovered: true
+    recoveredBy: 'cron run be96b6eaa0e04ae3980df51c0c882c8d - it recovered the interrupted fire227 (cron run d6b0b7823c1f41fc9c766e7d041c3761), which completed its publish attempt and wrote its ledger row + frontmatter record + a PROGRESS.log row, then DIED before its git commit and its deploy. Nothing was re-published: the durable publish-receipt store holds 0 records, exactly what a credit-blocked attempt leaves, so the interrupted run''s attempt stands as the one attempt for fire227.'
+    recoveredFires: []
+    selfTriggerSuppressed: false
+    setupTokenGuide: bash tools/setup-sns-tokens.sh
+    setupTokenGuideCreated: '2026-10-07T05:56:30Z'
+    skipCount: 3
+    skipTotal: 4
+    stdout: "X weighted length: 271/280 (raw 197자)\nPUBLISH BLOCKED — 크레딧 부족 (잔액 $0.000 < URL 포함($0.200))\n  조치: console.x.com에서 이 앱에 크레딧 충전 후 재실행.\n[SKIP] Threads token 없음\n[SKIP] LinkedIn token 없음\n[SKIP] dev.to token 없음\n=== publish summary ===\npublished=0 blocked=1 skipped=3 failed=0"
+    targets:
+    - draftBytes: '407'
+      draftChars: '197'
+      draftWeighted: '271'
+      platform: x
+      reason: PUBLISH BLOCKED - credit balance 0.000 USD < URL tier 0.200 USD
+      status: pending
+    - draftBytes: '1098'
+      draftChars: '498'
+      platform: threads
+      reason: token 없음
+      status: skipped
+    - draftBytes: '2213'
+      draftChars: '994'
+      platform: linkedin
+      reason: token 없음
+      status: skipped
+    - draftBytes: '1978'
+      draftChars: '1978'
+      platform: dev.to
+      reason: token 없음
+      status: skipped
+    testSuite: npm test exit 0 (Ran 219 tests, OK) - 219 tests, no new regression tests required this fire
+    timestampSource: 'publish-all attempt time - the mtime of the captured publish-all stdout in this run''s drafts dir (2026-10-28T17:08:53Z). NOT the drafts-directory name (2026-10-28T16-58-13Z): the fire226 recovery found that name recorded as the attempt time in a record whose own timestampSource claimed the stdout mtime, and the two disagreed by an hour - an attempt cannot predate the drafts it publishes.'
     worker: reviewer/minimax-M3
 ---
 
